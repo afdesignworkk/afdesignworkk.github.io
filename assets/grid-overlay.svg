@@ -1,43 +1,43 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1282" height="2765" viewBox="0 0 1282 2765" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1440" height="2765" viewBox="0 0 1440 2765" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="graphic-elements">
-<circle id="Ellipse 1" cx="4.5" cy="277.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 14" cx="1277.5" cy="277.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 9" cx="4.5" cy="556.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 16" cx="4.5" cy="1114.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 20" cx="4.5" cy="835.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 24" cx="4.5" cy="1393.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 28" cx="4.5" cy="1672.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 32" cx="4.5" cy="1951.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 36" cx="4.5" cy="2230.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 40" cx="4.5" cy="2509.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 21" cx="641.5" cy="835.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 25" cx="641.5" cy="1393.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 29" cx="641.5" cy="1672.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 33" cx="641.5" cy="1951.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 37" cx="641.5" cy="2230.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 41" cx="641.5" cy="2509.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 15" cx="1277.5" cy="556.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 19" cx="1277.5" cy="1114.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 23" cx="1277.5" cy="835.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 27" cx="1277.5" cy="1393.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 31" cx="1277.5" cy="1672.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 35" cx="1277.5" cy="1951.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 39" cx="1277.5" cy="2230.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 43" cx="1277.5" cy="2509.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 10" cx="641.5" cy="277.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 11" cx="641.5" cy="556.5" r="4" stroke="#ABABAB"/>
-<circle id="Ellipse 17" cx="641.5" cy="1114.5" r="4" stroke="#ABABAB"/>
-<rect id="Rectangle 32" x="4" width="1" height="2765" fill="#ABABAB"/>
-<rect id="Rectangle 34" x="641" width="1" height="2765" fill="#ABABAB"/>
-<rect id="Rectangle 36" x="8" y="278" width="0.999945" height="1265" transform="rotate(-90 8 278)" fill="#ABABAB"/>
-<rect id="Rectangle 37" x="9" y="557" width="0.999945" height="1265" transform="rotate(-90 9 557)" fill="#ABABAB"/>
-<rect id="Rectangle 38" x="9" y="836" width="0.999945" height="1265" transform="rotate(-90 9 836)" fill="#ABABAB"/>
-<rect id="Rectangle 39" x="9" y="1115" width="0.999945" height="1265" transform="rotate(-90 9 1115)" fill="#ABABAB"/>
-<rect id="Rectangle 41" x="9" y="1394" width="0.999945" height="1265" transform="rotate(-90 9 1394)" fill="#ABABAB"/>
-<rect id="Rectangle 42" x="9" y="1673" width="0.999945" height="1265" transform="rotate(-90 9 1673)" fill="#ABABAB"/>
-<rect id="Rectangle 43" x="9" y="1952" width="0.999945" height="1265" transform="rotate(-90 9 1952)" fill="#ABABAB"/>
-<rect id="Rectangle 44" x="9" y="2231" width="0.999945" height="1265" transform="rotate(-90 9 2231)" fill="#ABABAB"/>
-<rect id="Rectangle 45" x="9" y="2510" width="0.999945" height="1265" transform="rotate(-90 9 2510)" fill="#ABABAB"/>
-<rect id="Rectangle 33" x="1277" width="1" height="2765" fill="#ABABAB"/>
+<circle id="Ellipse 1" cx="83.5" cy="277.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 2" cx="83.5" cy="556.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 3" cx="83.5" cy="835.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 4" cx="83.5" cy="1114.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 5" cx="83.5" cy="1393.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 6" cx="83.5" cy="1672.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 7" cx="83.5" cy="1951.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 8" cx="83.5" cy="2230.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 9" cx="83.5" cy="2509.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 10" cx="720.5" cy="277.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 11" cx="720.5" cy="556.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 12" cx="720.5" cy="835.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 13" cx="720.5" cy="1114.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 14" cx="720.5" cy="1393.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 15" cx="720.5" cy="1672.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 16" cx="720.5" cy="1951.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 17" cx="720.5" cy="2230.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 18" cx="720.5" cy="2509.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 19" cx="1356.5" cy="277.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 20" cx="1356.5" cy="556.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 21" cx="1356.5" cy="835.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 22" cx="1356.5" cy="1114.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 23" cx="1356.5" cy="1393.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 24" cx="1356.5" cy="1672.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 25" cx="1356.5" cy="1951.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 26" cx="1356.5" cy="2230.5" r="4" stroke="#ABABAB"/>
+<circle id="Ellipse 27" cx="1356.5" cy="2509.5" r="4" stroke="#ABABAB"/>
+<rect id="Line V1" x="83" y="0" width="1" height="2765" fill="#ABABAB"/>
+<rect id="Line V2" x="720" y="0" width="1" height="2765" fill="#ABABAB"/>
+<rect id="Line V3" x="1356" y="0" width="1" height="2765" fill="#ABABAB"/>
+<rect id="Line H1" x="0" y="277" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H2" x="0" y="556" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H3" x="0" y="835" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H4" x="0" y="1114" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H5" x="0" y="1393" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H6" x="0" y="1672" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H7" x="0" y="1951" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H8" x="0" y="2230" width="1440" height="1" fill="#ABABAB"/>
+<rect id="Line H9" x="0" y="2509" width="1440" height="1" fill="#ABABAB"/>
 </g>
 </svg>

@@ -152,12 +152,12 @@ img {
 /* ---------- Layering (mirrors Figma layer order) ---------- */
 
 /* The grid lines stay fixed to the viewport while the sections scroll past.
-   They line up with the centred 1440px page (79px in from its left edge). */
+   They line up with the centred 1440px page and the rows run its full width. */
 .grid-overlay {
   position: fixed;
-  left: max(79px, calc(50% - 641px));
+  left: max(0px, calc(50% - 720px));
   top: 0;
-  width: 1282px;
+  width: 1440px;
   height: 2765px;
   z-index: 1;
   opacity: var(--grid-line-opacity);
@@ -755,7 +755,7 @@ img {
    image takes over again once the loader is done. */
 .loader-grid {
   position: fixed;
-  left: max(79px, calc(50% - 641px));
+  left: max(0px, calc(50% - 720px));
   top: 0;
   z-index: 1;
   overflow: visible;

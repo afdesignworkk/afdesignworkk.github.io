@@ -70,7 +70,7 @@
   </main>
 
   <!-- 3. Grid overlay, fixed to the viewport (same as the home page) -->
-  <img class="grid-overlay" src="assets/grid-overlay.svg?v=4" width="1282" height="2765" alt="" aria-hidden="true">
+  <img class="grid-overlay" src="assets/grid-overlay.svg?v=5" width="1440" height="2765" alt="" aria-hidden="true">
 
   <!-- 4. Full-size view of a piece -->
   <div class="pg-view" role="dialog" aria-modal="true" aria-label="Work, full size" hidden>
@@ -134,13 +134,13 @@
     grid = document.createElementNS(NS, 'svg');
     const attrs = (el, list) => { for (const k in list) el.setAttribute(k, list[k]); return el; };
     const shape = (tag, list) => grid.appendChild(attrs(document.createElementNS(NS, tag), list));
-    attrs(grid, {class: 'loader-grid', width: 1282, height: H, 'aria-hidden': 'true'});
-    const COLS = [4, 641, 1277];
+    attrs(grid, {class: 'loader-grid', width: 1440, height: H, 'aria-hidden': 'true'});
+    const COLS = [83, 720, 1356];
     lines = COLS.map(x => shape('rect', {class: 'loader-v', x, y: 0, width: 1, height: H, fill: '#ABABAB'}));
     rows = [];
     dots = [];
     for (let k = 0; 277 + 279 * k < H; k++) {
-      rows.push(shape('rect', {class: 'loader-h', x: k ? 9 : 8, y: 277 + 279 * k, width: 1265, height: 1, fill: '#ABABAB'}));
+      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: 1440, height: 1, fill: '#ABABAB'}));
       COLS.forEach((x, col) => dots.push({row: k, col, el: shape('circle', {cx: x + 0.5, cy: 277.5 + 279 * k, r: 4, fill: 'none', stroke: '#ABABAB'})}));
     }
     document.body.append(grid);
