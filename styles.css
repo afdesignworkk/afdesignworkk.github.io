@@ -1,0 +1,797 @@
+/* Portfolio home — fixed 1440 × 2765 desktop mockup.
+   Every element is absolutely positioned against .page using the
+   Figma frame coordinates (node 127:1369). */
+
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-blue: #2030d4;
+  --color-gray-216: #d9d9d9;
+  --color-gray-213: #d5d5d5;
+  --color-gray-160: #a0a0a0;
+
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Hero → intro transition: the plate stays pinned for --hero-pin of scroll
+     while it shrinks, and everything from the intro down starts --hero-shift
+     lower to make room for it. */
+  --hero-pin: 410px;
+  --hero-shift: 279px;
+
+  /* Services: once revealed, the last screen stays pinned for --services-pin
+     more of scroll while the services text rises and breaks apart (its 476px
+     rise at the preview prototype's pace of about 0.41px per px of scroll). */
+  --services-pin: 1150px;
+
+  /* Footer: once the services text is gone, the last screen stays pinned for
+     --footer-reveal more of scroll while the footer comes up over it (its
+     bars rise only 660px, so this is shorter than the reveal into services,
+     which keeps the empty blue screen brief). */
+  --footer-reveal: 800px;
+
+  /* Grid lines are a light grey (#ababab) at this opacity rather than a solid
+     one: #e9e9e9 on white, and still visible on the blue services and black
+     footer screens (about #2d2d2d on black). */
+  --grid-line-opacity: 0.262;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --hero-pin: 0px;
+    --hero-shift: 0px;
+    --services-pin: 0px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--color-white);
+}
+
+body {
+  min-width: 1440px;
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+}
+
+/* overflow: clip (not hidden) so .page is not a scroll container and the
+   pinned stages can stick to the viewport. The page ends where the pinned
+   services and footer screens finish (see 7–8). */
+.page {
+  position: relative;
+  width: 1440px;
+  height: calc(var(--hero-shift) + 4219px + 50vh + var(--services-pin) + var(--footer-reveal));
+  margin: 0 auto;
+  overflow: clip;
+  background: var(--color-white);
+}
+
+/* ---------- Type styles ---------- */
+
+.type-mono-16 {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.type-mono-12 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.type-body-16 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.type-body-30 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 32px;
+}
+
+.type-display-40 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 42px;
+}
+
+.type-display-60 {
+  font-family: var(--font-display);
+  font-size: 60px;
+  line-height: 60px;
+  text-transform: uppercase;
+}
+
+.type-display-72 {
+  font-family: var(--font-display);
+  font-size: 72px;
+  line-height: 72px;
+  text-transform: uppercase;
+}
+
+/* ---------- Layering (mirrors Figma layer order) ---------- */
+
+/* The grid lines stay fixed to the viewport while the sections scroll past.
+   They line up with the centred 1440px page (79px in from its left edge). */
+.grid-overlay {
+  position: fixed;
+  left: max(79px, calc(50% - 641px));
+  top: 0;
+  width: 1282px;
+  height: 2765px;
+  z-index: 1;
+  opacity: var(--grid-line-opacity);
+  pointer-events: none;
+}
+
+/* Text sits above the grid lines; images, the hero plate and the colour
+   bands stay beneath them. */
+.above-grid {
+  z-index: 2;
+}
+
+/* ---------- 1. Top bar ---------- */
+
+.topbar__brand {
+  position: absolute;
+  left: 100px;
+  top: 32px;
+}
+
+.topbar__nav {
+  position: absolute;
+  left: 540px;
+  top: 32px;
+  display: flex;
+  gap: 24px;
+}
+
+.topbar__status {
+  position: absolute;
+  left: 1209px;
+  top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.topbar__dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  flex: none;
+}
+
+.topbar__dot img {
+  width: 9px;
+  height: 9px;
+}
+
+/* Live indicator: a ring ripples out of the static dot. It grows via inset,
+   not transform: scale, so the stroke stays exactly 1px the whole way. */
+.topbar__dot-ring {
+  position: absolute;
+  inset: -0.5px;
+  border: 1px solid var(--color-blue);
+  border-radius: 50%;
+  opacity: 0;
+  animation: status-dot-ring 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+@keyframes status-dot-ring {
+  from { inset: -0.5px; opacity: 0.9; }
+  to { inset: -17.5px; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar__dot-ring {
+    animation: none;
+  }
+}
+
+/* ---------- 2–4. Hero ---------- */
+
+.hero__title {
+  position: absolute;
+  left: 206px;
+  top: 132px;
+  width: 1029px;
+  text-align: center;
+}
+
+.hero__time {
+  position: absolute;
+  left: 100px;
+  top: 332px;
+}
+
+.hero__location {
+  position: absolute;
+  right: 100px;
+  top: 332px;
+}
+
+/* The track is the scroll distance the plate stays pinned for. The plate
+   sticks 84px from the viewport top (its time row sits at 32px above it). */
+.hero__track {
+  position: absolute;
+  left: 100px;
+  top: 384px;
+  width: 1240px;
+  height: calc(435px + var(--hero-pin));
+}
+
+.hero__media {
+  position: sticky;
+  top: 84px;
+  width: 1240px;
+  height: 435px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-black);
+}
+
+.hero__media canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- 5–6. Intro and case studies ---------- */
+
+/* Children keep their Figma coordinates; each section box starts lower to
+   leave room for the hero transition above it. */
+.intro,
+.cases {
+  position: absolute;
+  left: 0;
+  top: var(--hero-shift);
+  width: 1440px;
+}
+
+/* ---------- 5. Intro ---------- */
+
+.intro__photo {
+  position: absolute;
+  left: 100px;
+  top: 959px;
+  width: 211px;
+  height: 296px;
+  border-radius: 4px;
+  background: var(--color-gray-216);
+}
+
+.intro__label {
+  position: absolute;
+  left: 416px;
+  top: 959px;
+  color: var(--color-blue);
+}
+
+.intro__lead {
+  position: absolute;
+  left: 416px;
+  top: 979px;
+  width: 924px;
+}
+
+.intro__aside {
+  position: absolute;
+  left: 521px;
+  top: 1091px;
+  width: 819px;
+}
+
+.intro__link {
+  position: absolute;
+  left: 521px;
+  top: 1235px;
+}
+
+/* ---------- 6. Case studies ---------- */
+
+/* The track is the scroll distance the works stay pinned for: 2628px, the
+   row's full travel, so it moves 1:1 with the scroll. Its top is set so the
+   row (centred in the 100vh stage) sits at its Figma position until pinning
+   starts. */
+.cases__track {
+  position: absolute;
+  left: 0;
+  top: calc(1591px - 50vh);
+  width: 1440px;
+  height: calc(100vh + 2628px);
+  display: grid;
+}
+
+/* Two pinned layers share the track: the text sits in the front one so it
+   stays above the grid overlay, like .above-grid elsewhere, and the images in
+   the back one beneath it. The front cards are transparent boxes over the
+   images, so hovering an image still finds its card. */
+.cases__stage {
+  grid-area: 1 / 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.cases__stage--front {
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Row coordinates are the Figma ones measured from the case image top (y 1315). */
+.cases__row {
+  position: absolute;
+  left: 0;
+  top: calc(50vh - 196px);
+  width: 1440px;
+  height: 392px;
+}
+
+.cases__label {
+  position: absolute;
+  left: 100px;
+  top: 90px;
+  color: var(--color-blue);
+}
+
+.cases__title {
+  position: absolute;
+  left: 100px;
+  top: 110px;
+  width: 608px;
+}
+
+.cases__more {
+  position: absolute;
+  left: 100px;
+  top: 246px;
+}
+
+/* Works are 608px wide, 24px apart — the gap the design leaves between the
+   title column and the first work. */
+.cases__card {
+  position: absolute;
+  top: 0;
+  width: 608px;
+  height: 392px;
+}
+
+.cases__card--1 { left: 732px; }
+.cases__card--2 { left: 1364px; }
+.cases__card--3 { left: 1996px; }
+
+.cases__image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 608px;
+  height: 356px;
+  border-radius: 4px;
+  background: var(--color-gray-213);
+}
+
+.cases__image--1 { left: 732px; }
+.cases__image--2 { left: 1364px; }
+.cases__image--3 { left: 1996px; }
+
+.cases__name {
+  position: absolute;
+  left: 0;
+  top: 372px;
+}
+
+.cases__year {
+  position: absolute;
+  right: 0;
+  top: 372px;
+}
+
+/* ---------- 7–8. Services + footer ---------- */
+
+/* Services and the footer are the last two full screens, one over the other.
+   Both sections are identical tracks whose stages stay pinned while services
+   is uncovered from the right in horizontal bars as the works row leaves
+   (1440px, the case-studies script sets its clip), then for --services-pin
+   while the services text breaks apart, then for --footer-reveal while the
+   footer comes up over it from the bottom in vertical bars (the footer script
+   sets its clip) — only 660px, so the emptied blue services screen stays above
+   it. .end__block keeps the Figma page coordinates. */
+.services,
+.footer {
+  position: absolute;
+  left: 0;
+  top: calc(var(--hero-shift) + 2779px - 50vh);
+  width: 1440px;
+  height: calc(100vh + 1440px + var(--services-pin) + var(--footer-reveal));
+  display: grid;
+}
+
+.end__stage {
+  grid-area: 1 / 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  clip-path: inset(0 0 0 100%);
+}
+
+.footer .end__stage {
+  clip-path: inset(100% 0 0 0);
+}
+
+/* Covers the case studies underneath wherever the reveal has passed. */
+.end__stage--ground {
+  background: var(--color-white);
+}
+
+/* Text sits in the front layers so it stays above the grid overlay; the
+   colour bands stay in the layers beneath it. */
+.end__stage--front {
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* The footer (660px, the Figma text block at its top) sits at the bottom of
+   its screen; the services text stays in the middle of its screen, where it
+   sits in its Figma band (centre y 2202). */
+.end__block {
+  position: absolute;
+  left: 0;
+  top: calc(100vh - 2765px);
+  width: 1440px;
+  height: 2765px;
+}
+
+.services .end__block {
+  top: calc(50vh - 2202px);
+}
+
+/* The tracks and pinned stages overlap neighbouring sections, so only their
+   actual content takes the pointer. */
+.cases__track,
+.services,
+.footer {
+  pointer-events: none;
+}
+
+.cases__row > *,
+.end__block > * {
+  pointer-events: auto;
+}
+
+/* ---------- 7. Services ---------- */
+
+.services {
+  color: var(--color-white);
+}
+
+.services__band {
+  position: absolute;
+  left: 0;
+  top: calc(2202px - 50vh);
+  width: 1440px;
+  height: 100vh;
+  background: var(--color-blue);
+}
+
+.services__label {
+  position: absolute;
+  left: 677px;
+  top: 1981px;
+  width: 80px;
+  text-align: center;
+}
+
+/* Each name box matches its Figma text box so the centre point is identical. */
+.services__name {
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.services__name--1 { left: 521px; top: 2027px; width: 398px; }
+.services__name--2 { left: 471px; top: 2111px; width: 498px; }
+.services__name--3 { left: 430px; top: 2195px; width: 581px; }
+.services__name--4 { left: 461px; top: 2279px; width: 518px; }
+.services__name--5 { left: 392px; top: 2363px; width: 657px; }
+
+.services__index {
+  position: absolute;
+}
+
+.services__index--1 { left: 500px; top: 2033px; }
+.services__index--2 { left: 975px; top: 2117px; }
+.services__index--3 { left: 409px; top: 2201px; }
+.services__index--4 { left: 985px; top: 2285px; }
+.services__index--5 { left: 371px; top: 2369px; }
+
+/* Letters of the services text, split at runtime so each can fly off. */
+.services__letter {
+  display: inline-block;
+}
+
+/* ---------- 8. Footer ---------- */
+
+.footer {
+  color: var(--color-white);
+}
+
+/* 660px at the bottom of the screen: the mockup's text block at its top (the
+   same offsets from the band top as in Figma), and chrome dripping from under
+   the text on a canvas beneath the grid lines (see the footer drips script). */
+.footer__band {
+  position: absolute;
+  left: 0;
+  top: 2105px;
+  width: 1440px;
+  height: 660px;
+  background: var(--color-black);
+}
+
+.footer__drips {
+  position: absolute;
+  left: 0;
+  top: 2105px;
+  width: 1440px;
+  height: 660px;
+  display: block;
+  pointer-events: none;
+}
+
+.footer__statement {
+  position: absolute;
+  left: 100px;
+  top: 2205px;
+  width: 1240px;
+}
+
+.footer__label {
+  position: absolute;
+  left: 943px;
+  top: 2272px;
+  color: var(--color-gray-213);
+}
+
+/* Above the statement, whose box reaches down over it, so it takes the pointer. */
+.footer__email {
+  position: absolute;
+  z-index: 3;
+  left: 943px;
+  top: 2292px;
+  width: 397px;
+  white-space: nowrap;
+}
+
+.footer__links {
+  position: absolute;
+  left: 943px;
+  top: 2389px;
+  display: flex;
+  gap: 24px;
+}
+
+.footer__credit {
+  position: absolute;
+  right: 100px;
+  top: 2389px;
+}
+
+.footer__copyright {
+  position: absolute;
+  left: 100px;
+  top: 2389px;
+}
+
+/* ---------- 10. Custom cursor ---------- */
+
+/* The pointer is a blue circle with a snake-like tail, drawn on a canvas
+   over the page (the native pointer is hidden while the script runs). Over
+   a link it becomes an inverted circle in blue: a white circle in difference
+   mode flips the colours beneath it (after 21st.dev's inverted cursor), then a blue circle in lighten mode on top turns what
+   became dark blue and leaves what became light (the text) white. Over a
+   case study that circle is bigger and reads VIEW PROJECT in white. The
+   circles are separate top-level fixed elements so their blending reaches
+   the page underneath; the blue one is 2px wider so it also covers the
+   white one's anti-aliased edge. */
+.has-cursor body,
+.has-cursor a {
+  cursor: none;
+}
+
+.cursor-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.cursor-invert,
+.cursor-tint,
+.cursor-label {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.cursor-invert,
+.cursor-tint {
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transition:
+    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cursor-invert {
+  z-index: 1001;
+  background: var(--color-white);
+  mix-blend-mode: difference;
+}
+
+.cursor-tint {
+  z-index: 1002;
+  background: var(--color-blue);
+  mix-blend-mode: lighten;
+}
+
+.cursor-invert.cursor--link {
+  width: 48px;
+  height: 48px;
+}
+
+.cursor-tint.cursor--link {
+  width: 50px;
+  height: 50px;
+}
+
+.cursor-invert.cursor--project {
+  width: 160px;
+  height: 160px;
+}
+
+.cursor-tint.cursor--project {
+  width: 162px;
+  height: 162px;
+}
+
+.cursor-label {
+  z-index: 1003;
+  color: var(--color-white);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.cursor-label--visible {
+  opacity: 1;
+  transition: opacity 0.3s 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-invert,
+  .cursor-tint,
+  .cursor-label {
+    transition: none;
+  }
+}
+
+/* ---------- 11. Loading screen ---------- */
+
+/* Before the hero appears the page draws its own grid (lines, then a circle
+   at each crossing) while a loading count runs in the clock's slot. Once the
+   page has loaded, the count rolls over into the time, the top bar and the
+   headline rise in and the plate opens from the centre crossing.
+   html.is-loading is set in the <head> so nothing flashes before the loader
+   script takes over; it is never set under prefers-reduced-motion. */
+.is-loading .topbar__brand,
+.is-loading .topbar__nav a,
+.is-loading .topbar__status,
+.is-loading .intro,
+.is-loading .grid-overlay {
+  opacity: 0;
+}
+
+.is-loading .topbar {
+  pointer-events: none;
+}
+
+.is-loading .hero__title,
+.is-loading .hero__time,
+.is-loading .hero__location {
+  visibility: hidden;
+}
+
+.is-loading .hero__track {
+  clip-path: inset(50%);
+}
+
+/* The drawn grid has the same geometry and position as grid-overlay.svg; the
+   image takes over again once the loader is done. */
+.loader-grid {
+  position: fixed;
+  left: max(79px, calc(50% - 641px));
+  top: 0;
+  z-index: 1;
+  overflow: visible;
+  opacity: var(--grid-line-opacity);
+  pointer-events: none;
+}
+
+.loader-grid rect,
+.loader-grid circle {
+  transform-box: fill-box;
+}
+
+.loader-grid .loader-v {
+  transform-origin: 50% 0;
+}
+
+.loader-grid .loader-h {
+  transform-origin: 0 50%;
+}
+
+.loader-grid circle {
+  transform-origin: 50% 50%;
+}
+
+.loader-count {
+  position: absolute;
+  left: 100px;
+  top: 332px;
+}
+
+/* Headline lines rise through their own masks. */
+.loader-line {
+  display: block;
+  overflow: hidden;
+}
+
+.loader-line__inner {
+  display: block;
+}

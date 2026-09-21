@@ -1,0 +1,200 @@
+/* Playground — one screen, a board of work you drag around (Figma node
+   337:25785). Shares styles.css for type, the top bar, the grid overlay and
+   the cursor; board coordinates are the Figma frame's, from the top left of
+   the centred 1440px page. */
+
+/* The page never scrolls: dragging, the trackpad and the arrow keys move the
+   board instead. */
+html.playground,
+.playground body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.playground body {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fixed layers line up with the centred 1440px page, as .page does on the
+   home page. Each is its own layer so the order stays the home page's: work
+   under the grid lines, text over them. */
+.pg-topbar,
+.pg-layer {
+  position: fixed;
+  left: max(0px, calc(50% - 720px));
+  top: 0;
+  width: 1440px;
+}
+
+.pg-topbar {
+  height: 84px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pg-topbar a {
+  pointer-events: auto;
+}
+
+/* The board moves both layers by the same transform (see the board script). */
+.pg-layer {
+  height: 0;
+  will-change: transform;
+}
+
+.pg-layer--work {
+  z-index: 0;
+}
+
+.pg-layer--text {
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Only seen without the custom cursor (touch screens), which hides this one. */
+.playground:not(.has-cursor) body {
+  cursor: grab;
+}
+
+.playground.pg-grabbing:not(.has-cursor) body {
+  cursor: grabbing;
+}
+
+/* ---------- Work ---------- */
+
+/* The mockup's pieces have 4px corners (the exports fill them in white). */
+.pg-piece {
+  position: absolute;
+  display: block;
+  border-radius: 4px;
+  -webkit-user-drag: none;
+}
+
+.pg-piece--nibble-wonders { left: 394px; top: -159px; width: 350px; height: 437.5px; }
+.pg-piece--contracts { left: 968px; top: 62px; width: 500px; height: 281.25px; }
+.pg-piece--coworker { left: -330px; top: 111px; width: 500px; height: 281.25px; }
+.pg-piece--logo-moon { left: 1591px; top: 397px; width: 230px; height: 230px; }
+.pg-piece--cinema { left: 1692px; top: -109px; width: 500px; height: 281.25px; }
+.pg-piece--nibble-color { left: -554px; top: 617px; width: 350px; height: 437.5px; }
+.pg-piece--logo-gl { left: 20px; top: 680px; width: 230px; height: 230px; }
+.pg-piece--valentines { left: 1198px; top: 725px; width: 350px; height: 350px; }
+.pg-piece--anan { left: 474px; top: 802px; width: 500px; height: 281.25px; }
+
+/* ---------- Text ---------- */
+
+.pg-title {
+  position: absolute;
+  left: 206px;
+  top: 440px;
+  width: 1029px;
+  text-align: center;
+}
+
+.pg-hint {
+  position: absolute;
+  left: 521px;
+  top: 600px;
+  width: 398px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pg-piece:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 4px;
+}
+
+/* ---------- Full-size view ---------- */
+
+/* A black screen over everything (the grid lines included) that rises in the
+   footer's 12 bars when a piece is opened and drops back when closed (see the
+   view script). Laid out on the centred 1440px page like the top bar. */
+.pg-view {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.pg-view__frame {
+  position: absolute;
+  left: max(0px, calc(50% - 720px));
+  top: 0;
+  width: 1440px;
+  height: 100%;
+}
+
+.pg-view button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+}
+
+.has-cursor .pg-view button {
+  cursor: none;
+}
+
+/* CLOSE and its X, 12px apart, at the top right of the content column. */
+.pg-view__close {
+  position: absolute;
+  right: 100px;
+  top: 76px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Sized and placed by the view script: centred in the mockup's box, 1030px
+   wide and 160px clear of the top and the bottom. */
+.pg-view__image {
+  position: absolute;
+}
+
+/* One line about the work on the left, its pixel size on the right, both
+   sitting 76px above the bottom edge as in the mockup. */
+.pg-view__note,
+.pg-view__size {
+  position: absolute;
+  bottom: 76px;
+}
+
+.pg-view__note {
+  left: 100px;
+}
+
+.pg-view__size {
+  right: 100px;
+  color: var(--color-gray-213);
+}
+
+.pg-view :focus-visible {
+  outline: 1px solid var(--color-white);
+  outline-offset: 4px;
+}
+
+/* ---------- Loading screen ---------- */
+
+/* The same screen as the home page: the work, the title and the hint wait
+   while the page draws the grid (see the loader script), then come in. */
+.is-loading .pg-layer--work {
+  opacity: 0;
+}
+
+.is-loading .pg-title,
+.is-loading .pg-hint {
+  visibility: hidden;
+}
+
+/* The count runs in the hint's slot and rolls up into it, the way the home
+   page's rolls into the clock. */
+.playground .loader-count {
+  position: fixed;
+  left: max(0px, calc(50% - 720px));
+  top: 600px;
+  width: 1440px;
+  text-align: center;
+}

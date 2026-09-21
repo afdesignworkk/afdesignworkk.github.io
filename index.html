@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1440">
+  <title>Anna Fesenko — UI/UX Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="styles.css?v=11">
+  <script>
+    /* Loading screen: hide the hero parts before the first paint (see the loader
+       script at the end of the body). Never under reduced motion. */
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('is-loading');
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      setTimeout(() => { if (!window.__loaderRunning) document.documentElement.classList.remove('is-loading'); }, 3000);
+    }
+  </script>
+</head>
+<body>
+  <div class="page">
+
+    <!-- 1. Top bar -->
+    <header class="topbar">
+      <a class="topbar__brand type-mono-16 above-grid" href="#" data-go="top">AF / DESIGN</a>
+      <nav class="topbar__nav type-mono-16 above-grid">
+        <a href="#projects" data-go="projects">PROJECTS</a>
+        <a href="#about" data-go="about">ABOUT</a>
+        <a href="#contact" data-go="contact">CONTACT</a>
+        <a href="playground.html">PLAYGROUND</a>
+      </nav>
+      <p class="topbar__status type-mono-16 above-grid">
+        <span class="topbar__dot">
+          <img src="assets/status-dot.svg" width="9" height="9" alt="">
+          <span class="topbar__dot-ring"></span>
+        </span>
+        OPEN TO WORK
+      </p>
+    </header>
+
+    <main>
+      <!-- 2–4. Hero -->
+      <section class="hero">
+        <h1 class="hero__title type-display-72 above-grid">I design what people interact with.</h1>
+        <time class="hero__time type-mono-16 above-grid">12:08:37</time>
+        <p class="hero__location type-mono-16 above-grid">BASED IN ODESA, UKRAINE</p>
+        <div class="hero__track">
+          <div class="hero__media" id="plate">
+            <canvas id="metal"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Intro -->
+      <section class="intro">
+        <div class="intro__photo"></div>
+        <p class="intro__label type-mono-12 above-grid">INTRODUCTION</p>
+        <p class="intro__lead type-body-30 above-grid">Hi! I'm Anna, a UI/UX designer creating digital products and websites. I enjoy finding the why behind every design decision and making things feel clear and easy to use.</p>
+        <p class="intro__aside type-body-30 above-grid">Outside of design, I love collecting vintage finds, browsing old photographs, and traveling slowly. Those little moments keep me curious and help me notice details that often go unnoticed.</p>
+        <a class="intro__link type-mono-16 above-grid">READ ABOUT →</a>
+      </section>
+
+      <!-- 6. Case studies (pinned horizontal row of works) -->
+      <section class="cases">
+        <div class="cases__track">
+          <div class="cases__stage cases__stage--front">
+            <div class="cases__row">
+              <p class="cases__label type-mono-12">Case Studies</p>
+              <h2 class="cases__title type-display-60 above-grid">Selected digital experiences</h2>
+              <p class="cases__more type-mono-16">SCROLL TO EXPLORE MORE →</p>
+              <article class="cases__card cases__card--1">
+                <p class="cases__name type-body-16">SPACEBRING ADMIN APP</p>
+                <p class="cases__year type-mono-16">2025</p>
+              </article>
+              <article class="cases__card cases__card--2">
+                <p class="cases__name type-body-16">COWORKING BOOKING FLOW</p>
+                <p class="cases__year type-mono-16">2025</p>
+              </article>
+              <article class="cases__card cases__card--3">
+                <p class="cases__name type-body-16">AURA DESIGN SYSTEM</p>
+                <p class="cases__year type-mono-16">2024</p>
+              </article>
+            </div>
+          </div>
+          <div class="cases__stage">
+            <div class="cases__row">
+              <div class="cases__image cases__image--1"></div>
+              <div class="cases__image cases__image--2"></div>
+              <div class="cases__image cases__image--3"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Services (pinned, revealed from the right as the works row leaves) -->
+      <section class="services">
+        <div class="end__stage end__stage--ground">
+          <div class="end__block">
+            <div class="services__band"></div>
+          </div>
+        </div>
+        <div class="end__stage end__stage--front">
+          <div class="end__block">
+            <h2 class="services__label type-mono-12">my services</h2>
+            <span class="services__index services__index--1 type-mono-12" aria-hidden="true">01</span>
+            <span class="services__index services__index--2 type-mono-12" aria-hidden="true">02</span>
+            <span class="services__index services__index--3 type-mono-12" aria-hidden="true">03</span>
+            <span class="services__index services__index--4 type-mono-12" aria-hidden="true">04</span>
+            <span class="services__index services__index--5 type-mono-12" aria-hidden="true">05</span>
+            <ul class="services__list">
+              <li><span class="services__name services__name--1 type-display-60 above-grid">UI/UX DESIGN</span></li>
+              <li><span class="services__name services__name--2 type-display-60 above-grid">WEBSITE DESIGN</span></li>
+              <li><span class="services__name services__name--3 type-display-60 above-grid">ADVISORY &amp; AUDITS</span></li>
+              <li><span class="services__name services__name--4 type-display-60 above-grid">DESIGN SYSTEMS</span></li>
+              <li><span class="services__name services__name--5 type-display-60 above-grid">Social Media Design</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 8. Footer (pinned, 660px, comes up over services from the bottom; chrome drips) -->
+    <footer class="footer">
+      <div class="end__stage end__stage--front">
+        <div class="end__block">
+          <p class="footer__statement type-display-60 above-grid">Let's build something<br>people will love using.</p>
+          <p class="footer__label type-mono-12">WRITE TO</p>
+          <a class="footer__email type-body-30" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
+          <nav class="footer__links type-mono-16">
+            <a href="https://www.linkedin.com/in/anna-fesenko-79b015271/" target="_blank" rel="noopener">LINKEDIN</a>
+            <a href="https://www.instagram.com/ai_annae21/" target="_blank" rel="noopener">INSTAGRAM</a>
+          </nav>
+          <p class="footer__credit type-mono-16">BUILT WITH LOVE</p>
+          <p class="footer__copyright type-mono-16">© 2026 ANNA FESENKO</p>
+        </div>
+      </div>
+      <div class="end__stage">
+        <div class="end__block">
+          <div class="footer__band"></div>
+          <canvas class="footer__drips" aria-hidden="true"></canvas>
+        </div>
+      </div>
+    </footer>
+
+    <!-- 9. Decorative grid overlay (exported from Figma), fixed to the viewport -->
+    <img class="grid-overlay" src="assets/grid-overlay.svg?v=4" width="1282" height="2765" alt="" aria-hidden="true">
+
+  </div>
+
+  <!-- 10. Custom cursor (mouse and trackpad only) -->
+  <canvas class="cursor-trail" aria-hidden="true"></canvas>
+  <span class="cursor-invert" aria-hidden="true"></span>
+  <span class="cursor-tint" aria-hidden="true"></span>
+  <span class="cursor-label type-body-16" aria-hidden="true">VIEW PROJECT</span>
+
+<script>
+/* Loading screen ("grid first"): the page draws its own grid — the three
+   lines, the rows, then a circle at each crossing — while a count runs in the
+   clock's slot. Once the page has loaded (at most 6s in) the count rolls over
+   into the time, the location, top bar and headline rise in, the plate opens
+   from the centre crossing and scrolling is released: 3.4s in all. It runs
+   only when the <head> script set html.is-loading. */
+(function(){
+  const root = document.documentElement;
+  if (!root.classList.contains('is-loading')) return;
+  window.__loaderRunning = true;
+
+  const clamp = x => Math.min(Math.max(x, 0), 1);
+  const seg = (t, start, dur) => clamp((t - start) / dur);
+  const outCubic = x => 1 - Math.pow(1 - x, 3);
+  const inOutCubic = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const inOutQuart = x => x < 0.5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2;
+  const outExpo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+  const outBack = x => 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2);
+  // Mostly smooth, with small steps as chunks arrive.
+  const loading = t => {
+    const x = seg(t, 0.2, 1.8);
+    return x >= 1 ? 1 : 0.8 * inOutCubic(x) + 0.2 * Math.floor(x * 6) / 6;
+  };
+  // Moves an element by y while clipping it to its own box, like a mask.
+  const slide = (el, y) => {
+    el.style.transform = y ? `translateY(${y}px)` : '';
+    el.style.clipPath = y ? `inset(${-y}px -8px ${y}px -8px)` : '';
+  };
+  const block = e => { e.preventDefault(); e.stopPropagation(); };
+  const SCROLL_KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '];
+  const blockKeys = e => { if (SCROLL_KEYS.includes(e.key)) block(e); };
+
+  const page = document.querySelector('.page');
+  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status')];
+  const title = document.querySelector('.hero__title');
+  const time = document.querySelector('.hero__time');
+  const loc = document.querySelector('.hero__location');
+  const track = document.querySelector('.hero__track');
+  const intro = document.querySelector('.intro');
+  const text = title.textContent;
+  const NS = 'http://www.w3.org/2000/svg';
+  let grid, count, lineInners, lines, rows, dots, trackH;
+
+  try {
+    scrollTo(0, 0);
+
+    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom of the screen.
+    const H = innerHeight;
+    grid = document.createElementNS(NS, 'svg');
+    const attrs = (el, list) => { for (const k in list) el.setAttribute(k, list[k]); return el; };
+    const shape = (tag, list) => grid.appendChild(attrs(document.createElementNS(NS, tag), list));
+    attrs(grid, {class: 'loader-grid', width: 1282, height: H, 'aria-hidden': 'true'});
+    const COLS = [4, 641, 1277];
+    lines = COLS.map(x => shape('rect', {class: 'loader-v', x, y: 0, width: 1, height: H, fill: '#ABABAB'}));
+    rows = [];
+    dots = [];
+    for (let k = 0; 277 + 279 * k < H; k++) {
+      rows.push(shape('rect', {class: 'loader-h', x: k ? 9 : 8, y: 277 + 279 * k, width: 1265, height: 1, fill: '#ABABAB'}));
+      COLS.forEach((x, col) => dots.push({row: k, col, el: shape('circle', {cx: x + 0.5, cy: 277.5 + 279 * k, r: 4, fill: 'none', stroke: '#ABABAB'})}));
+    }
+    page.append(grid);
+
+    // Count in the clock's slot.
+    count = document.createElement('span');
+    count.className = 'loader-count type-mono-16 above-grid';
+    count.setAttribute('aria-hidden', 'true');
+    time.after(count);
+
+    // Headline: split into its rendered lines so each one rises through a mask.
+    const words = text.split(' ').map(word => Object.assign(document.createElement('span'), {textContent: word}));
+    title.textContent = '';
+    words.forEach((word, i) => { if (i) title.append(' '); title.append(word); });
+    const groups = [];
+    for (const word of words) {
+      const line = groups[groups.length - 1];
+      if (line && line.top === word.offsetTop) line.words.push(word.textContent);
+      else groups.push({top: word.offsetTop, words: [word.textContent]});
+    }
+    title.textContent = '';
+    lineInners = groups.map(group => {
+      const line = Object.assign(document.createElement('span'), {className: 'loader-line'});
+      const inner = Object.assign(document.createElement('span'), {className: 'loader-line__inner', textContent: group.words.join(' ')});
+      line.append(inner);
+      title.append(line);
+      return inner;
+    });
+
+    trackH = track.offsetHeight;
+    render(0);
+    for (const el of [title, time, loc]) el.style.visibility = 'visible';
+  } catch (err) {
+    finish();
+    throw err;
+  }
+
+  addEventListener('wheel', block, {capture: true, passive: false});
+  addEventListener('touchmove', block, {capture: true, passive: false});
+  addEventListener('keydown', blockKeys, true);
+
+  let loaded = document.readyState === 'complete';
+  addEventListener('load', () => { loaded = true; }, {once: true});
+  const started = performance.now();
+  let t = 0, last = started;
+  requestAnimationFrame(function frame(now){
+    t += Math.min(Math.max((now - last) / 1000, 0), 0.1);  // a slow frame can't skip the animation
+    last = now;
+    if (!loaded && now - started < 6000) t = Math.min(t, 1.8);  // hold near the end of the count until the page has loaded
+    render(t);
+    if (t < 3.4) requestAnimationFrame(frame);
+    else finish();
+  });
+
+  function render(t){
+    lines.forEach((el, i) => { el.style.transform = `scaleY(${outCubic(seg(t, 0.05 + i * 0.12, 0.8))})`; });
+    rows.forEach((el, i) => { el.style.transform = `scaleX(${outCubic(seg(t, 0.35 + i * 0.14, 0.85))})`; });
+    dots.forEach(({row, col, el}) => {
+      const x = seg(t, 0.75 + row * 0.14 + col * 0.06, 0.35);
+      el.style.transform = `scale(${x ? outBack(x) : 0})`;
+    });
+
+    count.textContent = `LOADING ${String(Math.round(loading(t) * 100)).padStart(3, '0')}%`;
+    const roll = inOutCubic(seg(t, 2.1, 0.45));
+    slide(count, -20 * roll);
+    slide(time, 20 * (1 - roll));
+    slide(loc, 20 * (1 - inOutCubic(seg(t, 2.2, 0.45))));
+
+    topbar.forEach((el, i) => {
+      const x = outCubic(seg(t, 2.25 + i * 0.06, 0.5));
+      el.style.opacity = x;
+      el.style.transform = `translateY(${10 * (1 - x)}px)`;
+    });
+    intro.style.opacity = outCubic(seg(t, 2.3, 0.5));
+    lineInners.forEach((el, i) => {
+      el.style.transform = `translateY(${105 * (1 - outExpo(seg(t, 2.35 + i * 0.12, 0.9)))}%)`;
+    });
+
+    // The plate opens from the centre crossing of the grid (720, 557) to its full box.
+    const c = 1 - inOutQuart(seg(t, 2.3, 1.05));
+    track.style.clipPath = `inset(${173 * c}px ${620 * c}px ${trackH - 435 + 262 * c}px round 4px)`;
+  }
+
+  function finish(){
+    if (grid) grid.remove();
+    if (count) count.remove();
+    title.textContent = text;
+    for (const el of [...topbar, time, loc, intro]) {
+      el.style.opacity = '';
+      el.style.transform = '';
+      el.style.clipPath = '';
+    }
+    for (const el of [title, time, loc]) el.style.visibility = '';
+    track.style.clipPath = '';
+    removeEventListener('wheel', block, true);
+    removeEventListener('touchmove', block, true);
+    removeEventListener('keydown', blockKeys, true);
+    root.classList.remove('is-loading');
+  }
+})();
+</script>
+
+<script>
+/* Hero → intro transition, scrubbed by scroll: the black plate sticks under the
+   time row, then shrinks toward the top centre (the metaballs are cropped, not
+   scaled) while the introduction scrolls up beneath it. */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const plate = document.getElementById('plate');
+  const START = 300;                    // scrollY where the plate reaches top: 84px and sticks
+  const DIST = 410;                     // scroll length of the shrink (= --hero-pin)
+  const INSET_X = 316, INSET_Y = 39.5;  // 1240 × 435 → 608 × 356
+  const LIFT = 91.5;                    // visible top edge ends 32px from the viewport top
+  const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  function update(){
+    const e = ease(Math.min(Math.max((scrollY - START) / DIST, 0), 1));
+    plate.style.transform = e ? `translateY(${-LIFT * e}px)` : '';
+    plate.style.clipPath = e ? `inset(${INSET_Y * e}px ${INSET_X * e}px round 4px)` : '';
+  }
+  addEventListener('scroll', update, {passive: true});
+  update();
+})();
+</script>
+
+<script>
+/* Introduction paragraphs: scroll-revealed "magic text" (after 21st.dev's
+   magic-text component), run as one sequence so the second paragraph starts
+   only once the first is fully revealed. Progress runs from 0 when the first
+   paragraph's top is at 75% of the viewport height to 1 when the second
+   paragraph's top reaches 15%; word i of all n words fades in over progress
+   [i/n, (i+1)/n] on top of a 20% ghost of itself. Words are wrapped in spans
+   with the spaces kept as text, so line breaks don't move. */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const paragraphs = [...document.querySelectorAll('.intro__lead, .intro__aside')];
+  const spans = paragraphs.flatMap(p => {
+    const words = p.textContent.split(' ');
+    p.textContent = '';
+    return words.map((word, i) => {
+      if (i) p.append(' ');
+      const span = document.createElement('span');
+      span.textContent = word;
+      p.append(span);
+      return span;
+    });
+  });
+  function update(){
+    const vh = innerHeight;
+    const first = paragraphs[0].getBoundingClientRect().top;
+    const last = paragraphs[paragraphs.length - 1].getBoundingClientRect().top;
+    const progress = Math.min(Math.max((0.75 * vh - first) / (0.6 * vh + last - first), 0), 1);
+    spans.forEach((span, i) => {
+      const o = Math.min(Math.max(progress * spans.length - i, 0), 1);
+      span.style.opacity = 0.2 + 0.8 * o;  // 20% ghost + word fading in over it
+    });
+  }
+  addEventListener('scroll', update, {passive: true});
+  addEventListener('resize', update);
+  update();
+})();
+</script>
+
+<script>
+/* Case studies: while the track scrolls past, the pinned works row (both stage
+   layers) slides left 1:1 with the scroll. Services is pinned underneath and
+   uncovered through 12 horizontal bars — the curtain of the
+   preview prototype (each bar 0.42 long with power2.inOut, 0.035 apart), but
+   every bar opens from the right and shows the next section as it comes in.
+   The bars start in a scattered order, so the reveal runs right to left with
+   no top-to-bottom sweep. The first bar starts as the last work nears the
+   right margin, and the last one closes as the row leaves the screen. */
+(function(){
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = document.querySelector('.cases__track');
+  const rows = [...track.querySelectorAll('.cases__row')];
+  const reveal = [...document.querySelectorAll('.services .end__stage')];
+  const ROW_END = 2628;  // last work's right edge (x 2604) + the 24px gap between works
+  const BARS = 12, DUR = 0.42, EACH = 0.035;
+  const SLOT = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 8, 3];  // start order of each bar, top to bottom
+  const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  function update(){
+    const {top, height} = track.getBoundingClientRect();
+    const pin = height - innerHeight;  // scroll length the stages stay stuck (= ROW_END)
+    const x = Math.min(Math.max(-top, 0), pin) / pin * ROW_END;
+    rows.forEach(row => { row.style.transform = `translateX(${-x}px)`; });
+    // Reveal progress over the 1440px the end stages stay pinned.
+    const p = 1 - Math.min(Math.max(ROW_END - x, 0), 1440) / 1440;
+    const t = p * (DUR + EACH * (BARS - 1));
+    // One stepped polygon: the stage's right side, then each bar's left edge
+    // from the bottom bar up. Bars split the viewport; the last runs to the
+    // stage bottom.
+    const points = ['100% 0', '100% 100%'];
+    for (let i = BARS - 1; i >= 0; i--) {
+      const open = REDUCED ? p : ease(Math.min(Math.max((t - EACH * SLOT[i]) / DUR, 0), 1));
+      const edge = Math.round(1440 * (1 - open));
+      const bottom = i === BARS - 1 ? '100%' : `${Math.round(innerHeight / BARS * (i + 1))}px`;
+      points.push(`${edge}px ${bottom}`, `${edge}px ${Math.round(innerHeight / BARS * i)}px`);
+    }
+    const clip = `polygon(${points.join(', ')})`;
+    reveal.forEach(stage => { stage.style.clipPath = clip; });
+  }
+  addEventListener('scroll', update, {passive: true});
+  addEventListener('resize', update);
+  update();
+})();
+</script>
+
+<script>
+/* Services: once the last screen is revealed it stays pinned for
+   --services-pin more of scroll while the services text rises and breaks
+   apart — the "explosive list" from the preview prototype. MY SERVICES and
+   each service (together with its number) are split into letters; as a line
+   rises to where MY SERVICES sat, its letters scatter out from the line's
+   centre, drift up or down, spin, shrink to 45% and fade (power2.in, with the
+   prototype's small stagger from the centre out). Scatter distances are the
+   prototype's, measured against the full-screen blue band, and the letters
+   are clipped to the band as they were to the prototype's panel. */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const track = document.querySelector('.services');
+  const stage = track.querySelector('.end__stage');
+  const REVEAL = 1440;                         // scroll the bar reveal takes first
+  const OUTRO = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));  // and the footer reveal last
+  const band = document.querySelector('.services__band');
+  const BREAK = 124;                           // rise a line breaks apart over (prototype: 14% of the list's travel ≈ 1.63 line steps)
+  const EACH = 0.004 / 0.756;                  // prototype letter stagger, as a share of one break
+  const lines = [
+    [document.querySelector('.services__label')],
+    ...[1, 2, 3, 4, 5].map(i => [`.services__name--${i}`, `.services__index--${i}`].map(s => document.querySelector(s)))
+  ].map(els => {
+    const parts = els.map(el => {
+      const text = el.textContent;
+      if (!el.hasAttribute('aria-hidden')) (el.tagName === 'H2' ? el : el.parentElement).setAttribute('aria-label', text);
+      const spans = [...text].map(ch => {
+        const span = document.createElement('span');
+        span.className = 'services__letter';
+        span.setAttribute('aria-hidden', 'true');
+        span.textContent = ch === ' ' ? ' ' : ch;
+        return span;
+      });
+      el.replaceChildren(...spans);
+      const first = spans[0], last = spans[spans.length - 1];
+      const left = first.offsetLeft, right = last.offsetLeft + last.offsetWidth;
+      const centre = (left + right) / 2, half = Math.max(1, (right - left) / 2);
+      const letters = spans.map((span, i) => ({
+        span,
+        x: ((span.offsetLeft + span.offsetWidth / 2) - centre) / half * band.offsetWidth * 0.5 * (0.75 + Math.random() * 0.75),
+        y: (Math.random() * 2 - 1) * band.offsetHeight * 0.55 * (0.35 + Math.random() * 0.8),
+        rotate: (Math.random() * 2 - 1) * 75,
+        delay: Math.abs(i - (spans.length - 1) / 2) * EACH,
+        shown: 0
+      }));
+      // At rest the line keeps its plain text (split letters lose kerning,
+      // which moves ADVISORY & AUDITS by about a pixel); the letters swap in
+      // only while the line is breaking apart.
+      el.replaceChildren(text);
+      return {el, text, spans, letters, split: false};
+    });
+    return {parts, letters: parts.flatMap(part => part.letters), centre: els[0].offsetTop + els[0].offsetHeight / 2};
+  });
+  lines.forEach(line => { line.start = line.centre - lines[0].centre; });
+  const lastLine = lines[lines.length - 1];
+  const travel = lastLine.start + BREAK * (1 + Math.max(...lastLine.letters.map(l => l.delay)));
+  let risen = -1;
+  function update(){
+    const pin = track.offsetHeight - stage.offsetHeight - REVEAL - OUTRO;  // = --services-pin
+    const s = Math.min(Math.max(-track.getBoundingClientRect().top - REVEAL, 0), Math.max(pin, 0));
+    const rise = pin > 0 ? s / pin * travel : 0;
+    if (rise === risen) return;
+    risen = rise;
+    const bandTop = band.offsetTop, bandWidth = band.offsetWidth, bandHeight = band.offsetHeight;
+    lines.forEach(line => {
+      line.parts.forEach(part => {
+        const el = part.el;
+        const split = rise > line.start;
+        if (split !== part.split) {
+          part.split = split;
+          el.replaceChildren(...(split ? part.spans : [part.text]));
+        }
+        // The band in the line's own coordinates, moved down by the rise.
+        const x0 = -el.offsetLeft, x1 = bandWidth - el.offsetLeft;
+        const y0 = bandTop - el.offsetTop + rise, y1 = y0 + bandHeight;
+        el.style.transform = rise ? `translateY(${-rise}px)` : '';
+        el.style.clipPath = `polygon(${x0}px ${y0}px, ${x1}px ${y0}px, ${x1}px ${y1}px, ${x0}px ${y1}px)`;
+      });
+      line.letters.forEach(l => {
+        const p = Math.min(Math.max((rise - line.start) / BREAK - l.delay, 0), 1);
+        const e = p * p;  // power2.in
+        if (e === l.shown) return;
+        l.shown = e;
+        l.span.style.transform = e ? `translate(${l.x * e}px, ${l.y * e}px) rotate(${l.rotate * e}deg) scale(${1 - 0.55 * e})` : '';
+        l.span.style.opacity = e ? 1 - e : '';
+      });
+    });
+  }
+  addEventListener('scroll', update, {passive: true});
+  addEventListener('resize', () => { risen = -1; update(); });
+  update();
+})();
+</script>
+
+<script>
+/* Footer: once the services text has broken apart, the footer comes up over
+   the pinned services screen through the same bars as the reveal from the case
+   studies into services (12 bars, each 0.42 long with power2.inOut, 0.035
+   apart, starting in a scattered order), turned upright: every bar opens from
+   the bottom, as far as the footer is tall (660px), so the emptied blue of
+   services stays above it. It takes the last --footer-reveal of scroll, so the
+   page ends as the last bar closes. */
+(function(){
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = document.querySelector('.footer');
+  const stages = [...track.querySelectorAll('.end__stage')];
+  const under = document.querySelector('.services .end__stage--front .end__block');
+  const band = track.querySelector('.footer__band');
+  const REVEAL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));
+  const BARS = 12, DUR = 0.42, EACH = 0.035, WIDTH = 1440;
+  const SLOT = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 8, 3];  // start order of each bar, left to right
+  const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  function update(){
+    const {top, height} = track.getBoundingClientRect();
+    const pin = height - innerHeight;  // scroll length the stages stay stuck
+    const p = Math.min(Math.max((-top - (pin - REVEAL)) / REVEAL, 0), 1);
+    const t = p * (DUR + EACH * (BARS - 1));
+    // Each bar's top edge, from the right bar to the left.
+    const edges = [];
+    for (let i = BARS - 1; i >= 0; i--) {
+      const open = REDUCED ? p : ease(Math.min(Math.max((t - EACH * SLOT[i]) / DUR, 0), 1));
+      edges.push({left: WIDTH / BARS * i, right: WIDTH / BARS * (i + 1), y: Math.round(innerHeight - band.offsetHeight * open)});
+    }
+    const steps = dy => edges.flatMap(e => [`${e.right}px ${e.y + dy}px`, `${e.left}px ${e.y + dy}px`]).join(', ');
+    const clip = `polygon(0 100%, 100% 100%, ${steps(0)})`;
+    stages.forEach(stage => { stage.style.clipPath = clip; });
+    // The services text sits in a higher layer than the footer's black ground,
+    // so it is cut to what the bars have not covered yet.
+    under.style.clipPath = p ? `polygon(${steps(-under.offsetTop)}, 0 0, 100% 0)` : '';
+  }
+  addEventListener('scroll', update, {passive: true});
+  addEventListener('resize', update);
+  update();
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>
+/* Slow, smooth page scrolling (Lenis): wheel input eases toward its target
+   instead of jumping, and each wheel step travels a little less than native.
+   Scrolling stays native underneath, so the pinned sections work unchanged. */
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !window.Lenis) return;
+  window.lenis = new Lenis({lerp: 0.07, wheelMultiplier: 0.8, autoRaf: true});
+})();
+</script>
+
+<script>
+/* Top navigation: each item scrolls (smoothly, through Lenis when it runs) to
+   its part of the page — AF / DESIGN to the top, PROJECTS to the pinned case
+   studies, ABOUT to the introduction and CONTACT to the footer at the end
+   of the page. PLAYGROUND is a plain link to the playground page. OPEN TO
+   WORK, the time and the location stay plain text. */
+(function(){
+  const cases = document.querySelector('.cases__track');
+  const pageTop = el => el.getBoundingClientRect().top + scrollY;
+  const targets = {
+    top: () => 0,
+    projects: () => pageTop(cases),
+    about: () => pageTop(document.querySelector('.intro__label')) - innerHeight * 0.2,
+    contact: () => document.documentElement.scrollHeight - innerHeight
+  };
+  document.querySelectorAll('[data-go]').forEach(link => link.addEventListener('click', e => {
+    e.preventDefault();
+    const top = targets[link.dataset.go]();
+    if (window.lenis) window.lenis.scrollTo(top, {duration: 1.6});
+    else scrollTo({top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }));
+})();
+</script>
+
+<script>
+/* Custom cursor (mouse and trackpad only). A 12px blue circle eases after
+   the pointer with a snake-like tail: each of its points chases the one
+   ahead and never falls more than a few pixels behind, so the tail curls
+   after the circle while the mouse moves and slides back into it when the
+   mouse stops. Over the blue services screen the snake is white. Over a link
+   it turns into the inverted circle, in blue: a white circle in difference
+   mode (after 21st.dev's inverted cursor) with a blue circle in lighten mode
+   on top, so the page under it turns blue and its dark text turns white; on
+   the black footer only the blue circle is used, which gives its white links
+   the same look. Over a case study that circle is bigger and reads VIEW
+   PROJECT. What sits under the pointer is re-checked whenever the
+   mouse moves or the page scrolls, because the works row also slides under a
+   still pointer. */
+(function(){
+  if (!matchMedia('(pointer: fine)').matches) return;
+  const canvas = document.querySelector('.cursor-trail');
+  const ctx = canvas.getContext('2d');
+  const invert = document.querySelector('.cursor-invert');
+  const tint = document.querySelector('.cursor-tint');
+  const label = document.querySelector('.cursor-label');
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const LAG = REDUCED ? 0 : 0.045;                         // head follow, seconds
+  const POINTS = REDUCED ? 0 : 20, GAP = 6, CHASE = 0.028; // tail points, max px apart, follow seconds
+  const HEAD = 6, TIP = 1.5;                               // radius at the head and at the tail's tip
+  const tail = [];
+  let x = 0, y = 0, tx = 0, ty = 0, shown = false, check = false, onBlue = false;
+  let fade = 1, fadeTo = 1, dirty = true, dpr = 1, last = performance.now();
+  document.documentElement.classList.add('has-cursor');
+
+  function resize(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    dirty = true;
+  }
+  resize();
+  addEventListener('resize', resize);
+  addEventListener('mousemove', e => {
+    tx = e.clientX; ty = e.clientY; check = true;
+    if (!shown) {
+      x = tx; y = ty; shown = true;
+      tail.length = 0;
+      for (let i = 0; i < POINTS; i++) tail.push({x, y});
+    }
+  }, {passive: true});
+  addEventListener('scroll', () => { check = true; }, {passive: true});
+  document.documentElement.addEventListener('mouseleave', () => {
+    shown = false; dirty = true;
+    invert.className = 'cursor-invert';
+    tint.className = 'cursor-tint';
+    label.classList.remove('cursor-label--visible');
+  });
+
+  function draw(){
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    if (!shown || fade < 0.01) return;
+    ctx.globalAlpha = fade;
+    ctx.lineCap = 'round';
+    const pass = (colour, extra) => {
+      ctx.strokeStyle = ctx.fillStyle = colour;
+      let px = x, py = y;
+      tail.forEach((p, i) => {
+        ctx.lineWidth = 2 * (HEAD + (TIP - HEAD) * (i + 1) / POINTS + extra);
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(p.x, p.y); ctx.stroke();
+        px = p.x; py = p.y;
+      });
+      ctx.beginPath(); ctx.arc(x, y, HEAD + extra, 0, Math.PI * 2); ctx.fill();
+    };
+    pass(onBlue ? '#ffffff' : '#2030d4', 0);
+  }
+
+  function frame(now){
+    const dt = Math.min(now - last, 100) / 1000;
+    last = now;
+    if (shown) {
+      const k = LAG ? 1 - Math.exp(-dt / LAG) : 1;
+      const moving = Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05;
+      x += (tx - x) * k; y += (ty - y) * k;
+      const chase = 1 - Math.exp(-dt / CHASE);
+      let px = x, py = y, spread = 0;
+      tail.forEach(p => {
+        p.x += (px - p.x) * chase; p.y += (py - p.y) * chase;
+        const dx = p.x - px, dy = p.y - py, d = Math.hypot(dx, dy);
+        if (d > GAP) { p.x = px + dx / d * GAP; p.y = py + dy / d * GAP; }
+        spread = Math.max(spread, d);
+        px = p.x; py = p.y;
+      });
+      const at = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      if (moving || check) { invert.style.transform = tint.style.transform = label.style.transform = at; }
+      if (check) {
+        check = false;
+        const el = document.elementFromPoint(tx, ty);
+        const project = !!(el && el.closest('.cases__card'));
+        const link = !project && !!(el && el.closest('a[href]'));
+        const size = project ? ' cursor--project' : link ? ' cursor--link' : '';
+        // Lightening black with the blue gives blue and keeps white text white,
+        // so on the black footer the white difference circle is left out.
+        const dark = !!(el && el.closest('.footer'));
+        invert.className = 'cursor-invert' + (dark ? '' : size);
+        tint.className = 'cursor-tint' + size;
+        label.classList.toggle('cursor-label--visible', project);
+        onBlue = !!(el && el.closest('.services'));
+        fadeTo = project || link ? 0 : 1;
+      }
+      const fk = REDUCED ? 1 : 1 - Math.exp(-dt / 0.08);
+      fade += (fadeTo - fade) * fk;
+      dirty = dirty || moving || spread > 0.1 || Math.abs(fadeTo - fade) > 0.005;
+    }
+    if (dirty) { draw(); dirty = false; }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<script id="metalFrag" type="x-shader/x-fragment">#version 300 es
+precision mediump float;
+uniform vec2  u_resolution;
+uniform float u_time;
+uniform vec4  u_colorTint;
+uniform float u_softness, u_repetition, u_shiftRed, u_shiftBlue;
+uniform float u_distortion, u_contour, u_angle, u_scale;
+uniform vec2  u_offset, u_pointer, u_pointer2;
+uniform float u_pointerAmp, u_pointerAmp2, u_pointerRadius;
+uniform float u_radial, u_grain;
+uniform vec3  u_hole;
+out vec4 fragColor;
+#define PI 3.14159265358979323846
+
+vec2 rotate(vec2 uv,float th){return mat2(cos(th),-sin(th),sin(th),cos(th))*uv;}
+float hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+float snoise(vec2 v){
+  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+  vec2 i=floor(v+dot(v,C.yy)); vec2 x0=v-i+dot(i,C.xx);
+  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+  vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1; i=mod289(i);
+  vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+  m=m*m; m=m*m;
+  vec3 x=2.0*fract(p*C.www)-1.0; vec3 h=abs(x)-0.5; vec3 ox=floor(x+0.5); vec3 a0=x-ox;
+  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+  vec3 g; g.x=a0.x*x0.x+h.x*x0.y; g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+  return 130.0*dot(m,g);
+}
+float getColorChanges(float c1,float c2,float sp,vec3 w,float blur,float bump,float tint){
+  float ch=mix(c2,c1,smoothstep(0.0,2.0*blur,sp));
+  float b=w[0];                                   ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.4*(1.0-bump)*w[1];                     ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.5*(1.0-bump)*w[1];                     ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+w[1];                                    ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  float gt=(sp-w[0]-w[1])/w[2];
+  float grad=mix(c1,c2,smoothstep(0.0,1.0,gt));   ch=mix(ch,grad,smoothstep(b,b+0.5*blur,sp));
+  ch=mix(ch,1.0-min(1.0,(1.0-ch)/max(tint,0.0001)),u_colorTint.a);
+  return ch;
+}
+void main(){
+  float t=0.3*(u_time+2.8);
+  vec2 objectUV=(gl_FragCoord.xy-0.5*u_resolution)/(u_resolution.y*u_scale)-u_offset;
+  vec2 uv=objectUV+0.5; uv.y=1.0-uv.y;
+  float cycleWidth=u_repetition;
+  vec2 rotatedUV=uv-vec2(0.5);
+  float rot=(-u_angle+70.0)*PI/180.0;
+  rotatedUV=vec2(rotatedUV.x*cos(rot)-rotatedUV.y*sin(rot),rotatedUV.x*sin(rot)+rotatedUV.y*cos(rot))+vec2(0.5);
+
+  /* metaballs mask. Twelve balls drift across the whole plate on slow
+     wandering paths (two sines per axis, so they spread evenly instead of
+     piling up at the edges); each adds a bounded bump (1 − d²/r²)³, so
+     neighbours melt together and fill the plate. p is measured in plate
+     heights from the top-left corner. The press hole scales the field down
+     around its centre, so it bites deeper where the blobs are thin. */
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_resolution.y;
+  float aspect=u_resolution.x/u_resolution.y, bt=20.0+0.2*u_time;
+  float edge=0.0;
+  for(int i=0;i<12;i++){
+    float fi=float(i);
+    vec2 c=vec2(aspect*(0.5+0.32*sin(bt*(0.23+0.041*fi)+fi*1.71)+0.24*sin(bt*(0.37-0.023*fi)+fi*0.83)),
+                0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1));
+    float r=0.52+0.08*sin(fi*4.13);
+    float s=min(dot(p-c,p-c)/(r*r),1.0);
+    edge+=(1.0-s)*(1.0-s)*(1.0-s);
+  }
+  // a small hole is also a weak one, so it fades out instead of closing to a dot
+  if(u_hole.z>0.001) edge*=mix(1.0,smoothstep(0.4*u_hole.z,u_hole.z,length(p-u_hole.xy)),smoothstep(0.0,0.15,u_hole.z));
+  edge*=2.4;
+  edge=1.0-smoothstep(0.65,0.9,edge);
+  edge=pow(edge,4.0);
+  edge=mix(smoothstep(0.9-2.0*fwidth(edge),0.9,edge),edge,smoothstep(0.0,0.4,u_contour));
+  float opacity=1.0-smoothstep(0.9-2.0*fwidth(edge),0.9,edge);
+  edge=1.8*pow(edge,1.5);
+
+  /* pointer: vortex + lens on the material UV only */
+  if(u_pointerAmp>0.001){
+    vec2 toP=uv-u_pointer;
+    float rr=max(u_pointerRadius*u_pointerRadius,1e-5);
+    float infl=u_pointerAmp*exp(-dot(toP,toP)/rr);
+    vec2 q=rotate(toP,infl*2.6); q*=(1.0-0.55*infl); uv=u_pointer+q;
+  }
+  if(u_pointerAmp2>0.001){
+    vec2 toP=uv-u_pointer2;
+    float rr=max(u_pointerRadius*u_pointerRadius*2.2,1e-5);
+    float infl=u_pointerAmp2*exp(-dot(toP,toP)/rr);
+    vec2 q=rotate(toP,-infl*1.4); q*=(1.0-0.26*infl); uv=u_pointer2+q;
+  }
+
+  float diagBLtoTR=rotatedUV.x-rotatedUV.y;
+  float diagTLtoBR=rotatedUV.x+rotatedUV.y;
+  vec3 color1=vec3(0.98,0.98,1.0);
+  vec3 color2=vec3(0.1,0.1,0.1+0.1*smoothstep(0.7,1.3,diagTLtoBR));
+
+  vec2 grad_uv=uv-0.5;
+  float dist=length(grad_uv+vec2(0.0,0.2*diagBLtoTR));
+  grad_uv=rotate(grad_uv,(0.25-0.2*diagBLtoTR)*PI);
+
+  float radial=length(uv-0.5)*2.0;
+  float direction=mix(grad_uv.x,radial,u_radial);
+
+  float bump=pow(1.8*dist,1.2); bump=1.0-bump; bump*=pow(max(uv.y,0.0),0.3);
+  float t1r=0.12/cycleWidth*(1.0-0.4*bump);
+  float t2r=0.07/cycleWidth*(1.0+0.4*bump);
+  float wide=(1.0-t1r-t2r);
+  float t1w=cycleWidth*t1r, t2w=cycleWidth*t2r;
+
+  float noise=snoise(uv-t);
+  edge+=(1.0-edge)*u_distortion*noise;
+  direction+=diagBLtoTR;
+  direction-=2.0*noise*diagBLtoTR*(smoothstep(0.0,1.0,edge)*(1.0-smoothstep(0.0,1.0,edge)));
+  direction*=mix(1.0,1.0-edge,smoothstep(0.5,1.0,u_contour));
+  direction-=1.7*edge*smoothstep(0.5,1.0,u_contour);
+  direction+=0.2*pow(u_contour,4.0)*(1.0-smoothstep(0.0,1.0,edge));
+  bump*=clamp(pow(max(uv.y,0.0),0.1),0.3,1.0);
+  direction*=(0.1+(1.1-edge)*bump);
+  direction*=(0.4+0.6*(1.0-smoothstep(0.5,1.0,edge)));
+  direction+=0.18*(smoothstep(0.1,0.2,uv.y)*(1.0-smoothstep(0.2,0.4,uv.y)));
+  direction+=0.03*(smoothstep(0.1,0.2,1.0-uv.y)*(1.0-smoothstep(0.2,0.4,1.0-uv.y)));
+  direction*=(0.5+0.5*pow(uv.y,2.0));
+  direction*=cycleWidth; direction-=t;
+
+  float cd=clamp(1.0-bump,0.0,1.0);
+  float dR=cd; dR+=0.03*bump*noise;
+  dR+=5.0*(smoothstep(-0.1,0.2,uv.y)*(1.0-smoothstep(0.1,0.5,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,1.0,bump)));
+  dR-=diagBLtoTR;
+  float dB=cd*1.3;
+  dB+=(smoothstep(0.0,0.4,uv.y)*(1.0-smoothstep(0.1,0.8,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,0.8,bump)));
+  dB-=0.2*edge;
+  dR*=(u_shiftRed/20.0); dB*=(u_shiftBlue/20.0);
+
+  float blur=u_softness/15.0;
+  vec3 w=vec3(t1w,t2w,wide);
+  w[1]-=0.02*smoothstep(0.0,1.0,edge+bump);
+
+  float gs=floor(u_time*9.0);
+  float g1=hash21(gl_FragCoord.xy+gs)-0.5;
+  float g2=hash21(gl_FragCoord.xy+gs+17.3)-0.5;
+  float g3=hash21(gl_FragCoord.xy+gs+41.7)-0.5;
+  float ga=u_grain*0.6;
+
+  float sr=fract(direction+dR+ga*g1);
+  float r=getColorChanges(color1.r,color2.r,sr,w,blur+fwidth(sr),bump,u_colorTint.r);
+  float sg=fract(direction+ga*g2);
+  float g=getColorChanges(color1.g,color2.g,sg,w,blur+fwidth(sg),bump,u_colorTint.g);
+  float sb=fract(direction-dB+ga*g3);
+  float b=getColorChanges(color1.b,color2.b,sb,w,blur+fwidth(sb),bump,u_colorTint.b);
+
+  vec3 color=vec3(r,g,b)*opacity;
+  color+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)/255.0;
+  fragColor=vec4(color,opacity);
+}
+</script>
+
+<script>
+/* ==================================================================
+   1. METAL — vanilla WebGL2 port of the metaballs shader, with the
+   pointer magnet. The metaballs fill the whole black plate and drift
+   across it; pressing the plate opens a hole under the pointer that
+   closes again on its own.
+   ================================================================== */
+const METAL = (function(){
+  const canvas = document.getElementById('metal');
+  const plate  = document.getElementById('plate');
+  const gl = canvas.getContext('webgl2',{antialias:false,premultipliedAlpha:true});
+  const P = {
+    colorTint:'#ffffff', repetition:5, softness:0.15, shiftRed:0.3, shiftBlue:0.3,
+    distortion:0.05, contour:0.55, angle:70, offsetX:0, offsetY:-0.14,
+    scale:1.7, magnet:1.35, magnetRadius:0.4, radial:1, grain:0.6
+  };
+  if(!gl){ plate.style.background='radial-gradient(circle at 50% 55%,#f4f6fa 0%,#8d94a2 34%,#000 74%)'; return {P, lock(){}}; }
+
+  const VERT='#version 300 es\nin vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const FRAG=document.getElementById('metalFrag').textContent;
+  const sh=(t,s)=>{const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);
+    if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(x));return x;};
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS))console.error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  const a=gl.getAttribLocation(prog,'a');
+  gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  const U=n=>gl.getUniformLocation(prog,n);
+  const u={res:U('u_resolution'),time:U('u_time'),tint:U('u_colorTint'),soft:U('u_softness'),
+    rep:U('u_repetition'),red:U('u_shiftRed'),blue:U('u_shiftBlue'),dist:U('u_distortion'),
+    cont:U('u_contour'),ang:U('u_angle'),scale:U('u_scale'),off:U('u_offset'),
+    ptr:U('u_pointer'),ptr2:U('u_pointer2'),amp:U('u_pointerAmp'),amp2:U('u_pointerAmp2'),
+    prad:U('u_pointerRadius'),radial:U('u_radial'),grain:U('u_grain'),
+    hole:U('u_hole')};
+
+  const hex=h=>{h=h.replace('#','');return [parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255,1];};
+  const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const st={pointer:null,amp:0,pu:null,pl:null,unit:1};
+  /* Press hole, in plate heights from the plate's top-left corner: it grows
+     to HOLE.r, then closes again. */
+  const HOLE={r:0.5,open:0.4,close:1.2};
+  const hole={x:0,y:0,r:0,from:0,age:Infinity};
+  const easeOut=x=>1-Math.pow(1-x,3);
+  const easeInOut=x=>x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  /* While the plate morphs, its height changes every frame and the cluster's
+     on-screen size is scale*height — so holding scale constant would zoom it.
+     Locking captures scale*height once and re-derives scale each frame, which
+     keeps the artwork pixel-identical while the frame around it reshapes. */
+  const LOCK={on:false,k:null};
+  const local=e=>{const r=canvas.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);
+    return {x:(e.clientX-r.left)*d,y:(e.clientY-r.top)*d,inside:e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom};};
+
+  if(!REDUCED){
+    addEventListener('pointermove',e=>{st.pointer=local(e);},{passive:true});
+    addEventListener('pointerleave',()=>{st.pointer=null;},{passive:true});
+    addEventListener('pointerdown',e=>{
+      if(e.target.closest&&e.target.closest('a,button'))return;
+      // only where the plate shows (the hero transition clips it)
+      if(!document.elementsFromPoint(e.clientX,e.clientY).includes(canvas))return;
+      const r=canvas.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.height, y=(e.clientY-r.top)/r.height;
+      // a press inside a hole that is still open grows it again from its current size
+      hole.from=Math.hypot(x-hole.x,y-hole.y)<hole.r?hole.r:0;
+      hole.x=x; hole.y=y; hole.age=0;
+    },{passive:true});
+  }
+
+  let clock=0,last=performance.now(),lw=-1,lh=-1;
+  function frame(now){
+    let dt=Math.min((now-last)/1000,1/30); last=now;
+    const d=Math.min(devicePixelRatio||1,2);
+    const nw=Math.max(1,Math.floor(canvas.clientWidth*d)), nh=Math.max(1,Math.floor(canvas.clientHeight*d));
+    // only reallocate the buffer past a 24px drift while the plate is morphing
+    const settled=(nw===lw&&nh===lh);
+    const drift=Math.abs(nw-canvas.width)>24||Math.abs(nh-canvas.height)>24;
+    if(drift||(settled&&(canvas.width!==nw||canvas.height!==nh))){
+      canvas.width=nw;canvas.height=nh;gl.viewport(0,0,nw,nh);
+    }
+    lw=nw;lh=nh;
+    const W=canvas.width,H=canvas.height;
+    if(!REDUCED) clock+=dt;
+
+    if(LOCK.on){ if(LOCK.k===null) LOCK.k=P.scale*H; P.scale=LOCK.k/H; }
+    st.unit=H*P.scale;
+
+    const over=!REDUCED&&st.pointer&&st.pointer.inside;
+    const target=over?P.magnet:0;
+    st.amp+=(target-st.amp)*(1-Math.exp(-dt/(target>st.amp?0.09:0.3)));
+    if(st.pointer){
+      const uvx=(st.pointer.x-W/2)/st.unit-P.offsetX+0.5;
+      const uvy=0.5-((H/2-st.pointer.y)/st.unit-P.offsetY);
+      st.pu=[uvx,uvy]; if(!st.pl)st.pl=[uvx,uvy];
+      const k=1-Math.exp(-dt/0.13);
+      st.pl[0]+=(uvx-st.pl[0])*k; st.pl[1]+=(uvy-st.pl[1])*k;
+    }
+
+    hole.age+=dt;
+    hole.r=hole.age<HOLE.open
+      ? hole.from+(HOLE.r-hole.from)*easeOut(hole.age/HOLE.open)
+      : HOLE.r*(1-easeInOut(Math.min((hole.age-HOLE.open)/HOLE.close,1)));
+
+    gl.uniform2f(u.res,W,H); gl.uniform1f(u.time,clock);
+    gl.uniform4fv(u.tint,hex(P.colorTint));
+    gl.uniform1f(u.soft,P.softness); gl.uniform1f(u.rep,P.repetition);
+    gl.uniform1f(u.red,P.shiftRed); gl.uniform1f(u.blue,P.shiftBlue);
+    gl.uniform1f(u.dist,P.distortion); gl.uniform1f(u.cont,P.contour);
+    gl.uniform1f(u.ang,P.angle); gl.uniform1f(u.scale,P.scale);
+    gl.uniform2f(u.off,P.offsetX,P.offsetY);
+    gl.uniform2f(u.ptr,st.pu?st.pu[0]:-9,st.pu?st.pu[1]:-9);
+    gl.uniform2f(u.ptr2,st.pl?st.pl[0]:-9,st.pl?st.pl[1]:-9);
+    gl.uniform1f(u.amp,st.amp); gl.uniform1f(u.amp2,st.amp*0.65);
+    gl.uniform1f(u.prad,P.magnetRadius);
+    gl.uniform1f(u.radial,P.radial); gl.uniform1f(u.grain,P.grain);
+    gl.uniform3f(u.hole,hole.x,hole.y,hole.r);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  return {P, lock(on){LOCK.on=on; if(!on)LOCK.k=null;}};
+})();
+</script>
+
+<script id="dripFrag" type="x-shader/x-fragment">#version 300 es
+/* Footer drips: the hero's chrome material (metalFrag) with its settings
+   fixed, and a different mask — a pool hanging under the footer text plus the
+   drip balls, in page pixels from the footer's top-left corner. The pool's top
+   (u_line) sits on a grid line. The bevel range is wider than the hero's (1.9
+   instead of 0.9) so the small drops look round. The hero's pointer magnet
+   swirls the material here too; there is no press hole. */
+precision highp float;
+uniform vec2  u_resolution;
+uniform float u_time;
+uniform vec3  u_balls[24];
+uniform int   u_count;
+uniform float u_line;
+uniform vec2  u_pointer, u_pointer2;
+uniform float u_pointerAmp;
+out vec4 fragColor;
+#define PI 3.14159265358979323846
+// the hero's magnet radius (0.4 of its 740px material unit), in this 1000px unit
+#define MAGNET_RADIUS 0.296
+const float softness=0.15, repetition=5.0, shiftRed=0.3, shiftBlue=0.3;
+const float distortion=0.05, contour=0.55, radial=1.0, grain=0.6;
+
+vec2 rotate(vec2 uv,float th){return mat2(cos(th),-sin(th),sin(th),cos(th))*uv;}
+float hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+float snoise(vec2 v){
+  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+  vec2 i=floor(v+dot(v,C.yy)); vec2 x0=v-i+dot(i,C.xx);
+  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+  vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1; i=mod289(i);
+  vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+  m=m*m; m=m*m;
+  vec3 x=2.0*fract(p*C.www)-1.0; vec3 h=abs(x)-0.5; vec3 ox=floor(x+0.5); vec3 a0=x-ox;
+  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+  vec3 g; g.x=a0.x*x0.x+h.x*x0.y; g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+  return 130.0*dot(m,g);
+}
+float getColorChanges(float c1,float c2,float sp,vec3 w,float blur,float bump){
+  float ch=mix(c2,c1,smoothstep(0.0,2.0*blur,sp));
+  float b=w[0];                                   ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.4*(1.0-bump)*w[1];                     ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.5*(1.0-bump)*w[1];                     ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+w[1];                                    ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  float gt=(sp-w[0]-w[1])/w[2];
+  float grad=mix(c1,c2,smoothstep(0.0,1.0,gt));   ch=mix(ch,grad,smoothstep(b,b+0.5*blur,sp));
+  return ch;
+}
+void main(){
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)*(1440.0/u_resolution.x);
+  if(p.y<u_line){fragColor=vec4(0.0);return;}
+
+  // the pool: a band under the text with rounded ends and a flat top
+  vec2 d=vec2(max(abs(p.x-720.0)-590.0,0.0),p.y-u_line);
+  float s=min(dot(d,d)/6400.0,1.0);
+  float edge=(1.0-s)*(1.0-s)*(1.0-s);
+  for(int i=0;i<24;i++){
+    if(i>=u_count) break;
+    vec3 b=u_balls[i];
+    if(b.z<=0.0) continue;
+    vec2 q=p-b.xy;
+    float r=1.79*b.z;  // b.z is the radius a lone ball shows at
+    float k=dot(q,q)/(r*r);
+    if(k<1.0) edge+=(1.0-k)*(1.0-k)*(1.0-k);
+  }
+  if(edge<0.2){fragColor=vec4(0.0);return;}
+
+  float t=0.3*(u_time+2.8);
+  vec2 centre=vec2(720.0,u_line+133.0);
+  vec2 uv=(p-centre)/1000.0+0.5;
+  float cycleWidth=repetition;
+  vec2 rotatedUV=uv;  // the hero's angle (70) means no rotation
+
+  edge*=2.4;
+  edge=1.0-smoothstep(0.65,1.9,edge);
+  edge=pow(edge,4.0);
+  edge=mix(smoothstep(0.9-2.0*fwidth(edge),0.9,edge),edge,smoothstep(0.0,0.4,contour));
+  float opacity=1.0-smoothstep(0.9-2.0*fwidth(edge),0.9,edge);
+  edge=1.8*pow(edge,1.5);
+
+  /* pointer magnet, as on the hero: vortex + lens on the material UV only */
+  if(u_pointerAmp>0.001){
+    vec2 c=(u_pointer-centre)/1000.0+0.5, toP=uv-c;
+    float infl=u_pointerAmp*exp(-dot(toP,toP)/(MAGNET_RADIUS*MAGNET_RADIUS));
+    vec2 q=rotate(toP,infl*2.6); q*=(1.0-0.55*infl); uv=c+q;
+    c=(u_pointer2-centre)/1000.0+0.5; toP=uv-c;
+    infl=0.65*u_pointerAmp*exp(-dot(toP,toP)/(MAGNET_RADIUS*MAGNET_RADIUS*2.2));
+    q=rotate(toP,-infl*1.4); q*=(1.0-0.26*infl); uv=c+q;
+  }
+
+  float diagBLtoTR=rotatedUV.x-rotatedUV.y;
+  float diagTLtoBR=rotatedUV.x+rotatedUV.y;
+  vec3 color1=vec3(0.98,0.98,1.0);
+  vec3 color2=vec3(0.1,0.1,0.1+0.1*smoothstep(0.7,1.3,diagTLtoBR));
+
+  vec2 grad_uv=uv-0.5;
+  float dist=length(grad_uv+vec2(0.0,0.2*diagBLtoTR));
+  grad_uv=rotate(grad_uv,(0.25-0.2*diagBLtoTR)*PI);
+
+  float rad=length(uv-0.5)*2.0;
+  float direction=mix(grad_uv.x,rad,radial);
+
+  float bump=pow(1.8*dist,1.2); bump=1.0-bump; bump*=pow(max(uv.y,0.0),0.3);
+  float t1r=0.12/cycleWidth*(1.0-0.4*bump);
+  float t2r=0.07/cycleWidth*(1.0+0.4*bump);
+  float wide=(1.0-t1r-t2r);
+  float t1w=cycleWidth*t1r, t2w=cycleWidth*t2r;
+
+  float noise=snoise(uv-t);
+  edge+=(1.0-edge)*distortion*noise;
+  direction+=diagBLtoTR;
+  direction-=2.0*noise*diagBLtoTR*(smoothstep(0.0,1.0,edge)*(1.0-smoothstep(0.0,1.0,edge)));
+  direction*=mix(1.0,1.0-edge,smoothstep(0.5,1.0,contour));
+  direction-=1.7*edge*smoothstep(0.5,1.0,contour);
+  direction+=0.2*pow(contour,4.0)*(1.0-smoothstep(0.0,1.0,edge));
+  bump*=clamp(pow(max(uv.y,0.0),0.1),0.3,1.0);
+  direction*=(0.1+(1.1-edge)*bump);
+  direction*=(0.4+0.6*(1.0-smoothstep(0.5,1.0,edge)));
+  direction+=0.18*(smoothstep(0.1,0.2,uv.y)*(1.0-smoothstep(0.2,0.4,uv.y)));
+  direction+=0.03*(smoothstep(0.1,0.2,1.0-uv.y)*(1.0-smoothstep(0.2,0.4,1.0-uv.y)));
+  direction*=(0.5+0.5*pow(uv.y,2.0));
+  direction*=cycleWidth; direction-=t;
+
+  float cd=clamp(1.0-bump,0.0,1.0);
+  float dR=cd; dR+=0.03*bump*noise;
+  dR+=5.0*(smoothstep(-0.1,0.2,uv.y)*(1.0-smoothstep(0.1,0.5,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,1.0,bump)));
+  dR-=diagBLtoTR;
+  float dB=cd*1.3;
+  dB+=(smoothstep(0.0,0.4,uv.y)*(1.0-smoothstep(0.1,0.8,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,0.8,bump)));
+  dB-=0.2*edge;
+  dR*=(shiftRed/20.0); dB*=(shiftBlue/20.0);
+
+  float blur=softness/15.0;
+  vec3 w=vec3(t1w,t2w,wide);
+  w[1]-=0.02*smoothstep(0.0,1.0,edge+bump);
+
+  float gs=floor(u_time*9.0);
+  float g1=hash21(gl_FragCoord.xy+gs)-0.5;
+  float g2=hash21(gl_FragCoord.xy+gs+17.3)-0.5;
+  float g3=hash21(gl_FragCoord.xy+gs+41.7)-0.5;
+  float ga=grain*0.6;
+
+  float sr=fract(direction+dR+ga*g1);
+  float r=getColorChanges(color1.r,color2.r,sr,w,blur+fwidth(sr),bump);
+  float sg=fract(direction+ga*g2);
+  float g=getColorChanges(color1.g,color2.g,sg,w,blur+fwidth(sg),bump);
+  float sb=fract(direction-dB+ga*g3);
+  float b=getColorChanges(color1.b,color2.b,sb,w,blur+fwidth(sb),bump);
+
+  vec3 color=vec3(r,g,b)*opacity;
+  color+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)/255.0;
+  fragColor=vec4(color,opacity);
+}
+</script>
+
+<script>
+/* Footer drips: the hero's chrome hangs as a pool under the footer text (drawn
+   by dripFrag), and drips gather in it and fall off the bottom of the footer.
+   Six drips at a time. Each waits up to 0.8s, then gathers for 1.5–2.6s: a
+   drop grows and sinks while a neck ball between it and the pool stretches
+   the drip. Then it lets go — the neck snaps back into the pool and the drop
+   falls with gravity, trailing a smaller ball that turns it into a teardrop at
+   speed — and once it is out of the footer it starts again somewhere else
+   along the pool. The pool's top sits on a grid line, and the pointer swirls
+   the chrome like the hero's magnet. It runs only while the footer is showing,
+   and stands still (with no magnet) under reduced motion. */
+(function(){
+  const canvas = document.querySelector('.footer__drips');
+  const gl = canvas.getContext('webgl2', {antialias: false, premultipliedAlpha: true});
+  if (!gl) return;
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const track = document.querySelector('.footer');
+  const REVEAL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));
+  const H = 660, MAX = 24, DRIPS = 6, GRAVITY = 900;
+  const clamp = x => Math.min(Math.max(x, 0), 1);
+
+  /* The pool's top sits on a grid line. The grid is fixed to the screen (rows
+     at 277 + 279k, as in grid-overlay.svg) and the footer to its bottom, so the
+     row depends on the window height: the one nearest the designed 394px that
+     clears the footer links (356) and leaves room to drip (520), or 394 itself
+     when no row falls in between. */
+  const ROW = 277, ROW_GAP = 279, LINE = 394, LINE_MIN = 356, LINE_MAX = 520;
+  let line = LINE;
+  function placeLine(footerTop) {
+    let best = null;
+    for (let y = ROW - footerTop; y <= LINE_MAX; y += ROW_GAP) {
+      if (y >= LINE_MIN && (best === null || Math.abs(y - LINE) < Math.abs(best - LINE))) best = y;
+    }
+    line = best === null ? LINE : best;
+  }
+  placeLine(innerHeight - H);
+
+  /* Pointer magnet, as on the hero plate: while the pointer is over the footer
+     the chrome's reflections swirl around it, with a second, lagging swirl
+     behind; the strength eases in over 0.09s and out over 0.3s. */
+  const MAGNET = 1.35;
+  const pointer = {x: 0, y: 0, on: false}, lag = {x: 0, y: 0, set: false};
+  let amp = 0;
+  if (!REDUCED) {
+    addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.on = true; }, {passive: true});
+    addEventListener('pointerleave', () => { pointer.on = false; }, {passive: true});
+  }
+
+  const drips = [];
+  function restart(drip, now) {
+    let x = 0;
+    for (let tries = 0; tries < 30; tries++) {
+      x = 150 + Math.random() * 1140;
+      if (drips.every(o => o === drip || Math.abs(o.x - x) > 150)) break;
+    }
+    Object.assign(drip, {
+      x, R: 26 + 16 * Math.random(), start: now + 0.1 + 0.7 * Math.random(), gather: 1.5 + 1.1 * Math.random(),
+      falling: false, y: line, v: 0, size: 0, neck: 0, neckY: line
+    });
+  }
+  // first starts 0.5s apart, so the drips never gather and fall in step
+  for (let i = 0; i < DRIPS; i++) { drips.push({x: -999}); restart(drips[i], i * 0.5); }
+
+  const balls = new Float32Array(MAX * 3);
+  let count = 0;
+  const ball = (x, y, r) => { if (count < MAX) balls.set([x, y, Math.max(r, 0)], 3 * count++); };
+
+  function step(now, dt) {
+    count = 0;
+    // three wide swells keep the pool's lower edge moving slowly
+    for (let i = 0; i < 3; i++) {
+      ball(720 + 470 * Math.sin(now * (0.07 + 0.02 * i) + i * 2.1), line + 8, 36 + 8 * Math.sin(now * 0.3 + i * 1.7));
+    }
+    drips.forEach(d => {
+      if (now < d.start) return;
+      if (!d.falling) {
+        const u = clamp((now - d.start) / d.gather), e = u * u * (3 - 2 * u);
+        d.size = d.R * (0.3 + 0.7 * e);
+        d.y = line + 10 + 58 * Math.pow(e, 1.3);
+        d.neck = 0.6 * d.R * e;
+        d.neckY = line + 0.45 * (d.y - line);
+        if (u >= 1) { d.falling = true; d.v = 40; }
+      } else {
+        d.v += GRAVITY * dt;
+        d.y += d.v * dt;
+        const snap = 1 - Math.exp(-dt / 0.1);
+        d.neck -= d.neck * snap;
+        d.neckY += (line + 6 - d.neckY) * snap;
+        if (d.y > H + 2 * d.R) { restart(d, now); return; }
+      }
+      ball(d.x, d.y, d.size);
+      if (d.neck > 0.5) ball(d.x, d.neckY, d.neck);
+      if (d.falling) ball(d.x, d.y - Math.min(d.v * 0.03, 0.9 * d.R), 0.55 * d.size);
+    });
+  }
+
+  // Settle into a running state first, so drips are already mid-way when the footer shows.
+  let clock = 0;
+  for (; clock < 9; clock += 1 / 60) step(clock, 1 / 60);
+
+  const compile = (type, source) => {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(shader));
+    return shader;
+  };
+  const program = gl.createProgram();
+  gl.attachShader(program, compile(gl.VERTEX_SHADER, '#version 300 es\nin vec2 a;void main(){gl_Position=vec4(a,0.,1.);}'));
+  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, document.getElementById('dripFrag').textContent));
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(program));
+  gl.useProgram(program);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const attr = gl.getAttribLocation(program, 'a');
+  gl.enableVertexAttribArray(attr);
+  gl.vertexAttribPointer(attr, 2, gl.FLOAT, false, 0, 0);
+  const loc = {
+    res: 'u_resolution', time: 'u_time', balls: 'u_balls', count: 'u_count', line: 'u_line',
+    ptr: 'u_pointer', ptr2: 'u_pointer2', amp: 'u_pointerAmp'
+  };
+  Object.keys(loc).forEach(key => { loc[key] = gl.getUniformLocation(program, loc[key]); });
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(Math.max((now - last) / 1000, 0), 1 / 20);
+    last = now;
+    // Only once the footer's bars have started to rise.
+    const {top, height} = track.getBoundingClientRect();
+    if (top < innerHeight && -top > height - innerHeight - REVEAL) {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w; canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+      // The footer is pinned while it shows, so its box is where it sits on screen.
+      const box = canvas.getBoundingClientRect();
+      placeLine(box.top);
+      if (!REDUCED) { clock += dt; step(clock, dt); }
+
+      // Pointer in footer pixels; the lagging swirl chases it.
+      const px = (pointer.x - box.left) * 1440 / box.width, py = (pointer.y - box.top) * 1440 / box.width;
+      const target = pointer.on && px >= 0 && px <= 1440 && py >= 0 && py <= H ? MAGNET : 0;
+      amp += (target - amp) * (1 - Math.exp(-dt / (target > amp ? 0.09 : 0.3)));
+      if (pointer.on && !lag.set) { lag.x = px; lag.y = py; lag.set = true; }
+      const follow = 1 - Math.exp(-dt / 0.13);
+      lag.x += (px - lag.x) * follow;
+      lag.y += (py - lag.y) * follow;
+
+      gl.uniform2f(loc.res, w, h);
+      gl.uniform1f(loc.time, clock);
+      gl.uniform3fv(loc.balls, balls);
+      gl.uniform1i(loc.count, count);
+      gl.uniform1f(loc.line, line);
+      gl.uniform2f(loc.ptr, px, py);
+      gl.uniform2f(loc.ptr2, lag.x, lag.y);
+      gl.uniform1f(loc.amp, amp);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+/* Live clock: current time in Ukraine (Europe/Kyiv), updated on each second. */
+(function(){
+  const clockEl = document.querySelector('.hero__time');
+  const fmt = new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/Kyiv', hour:'2-digit', minute:'2-digit', second:'2-digit', hourCycle:'h23'});
+  (function tick(){ clockEl.textContent = fmt.format(new Date()); setTimeout(tick, 1000 - (Date.now() % 1000)); })();
+})();
+</script>
+</body>
+</html>
