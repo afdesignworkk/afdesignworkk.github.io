@@ -1,0 +1,464 @@
+/* About page — fixed 1440px wide like the home page, sharing its styles.css
+   (type, colours, top bar, grid overlay, cursor). Built from the Figma frame
+   "about-page" (node 385:241): a headline with the metaballs inside its
+   letters, the photograph, the story in three sections, two rows of
+   photographs and the home page's footer. As on the home page, text sits
+   above the fixed grid lines and images and the footer's black beneath them. */
+
+.about {
+  position: relative;
+  width: 1440px;
+  margin: 0 auto;
+  overflow: clip;
+  background: var(--color-white);
+}
+
+/* ---------- Image boxes ---------- */
+
+.ab-image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  border-radius: 4px;
+  background: var(--color-gray-216);
+}
+
+/* ---------- Footer (the home page's, at the end of the page) ---------- */
+
+/* 660px of black with the home footer's text offsets and its chrome drips on
+   a canvas beneath the grid lines. */
+.ab-footer {
+  position: relative;
+  height: 660px;
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.ab-footer__drips {
+  position: absolute;
+  inset: 0;
+  width: 1440px;
+  height: 660px;
+  display: block;
+  pointer-events: none;
+}
+
+.ab-footer__statement {
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  z-index: 2;
+  width: 1240px;
+}
+
+.ab-footer__label {
+  position: absolute;
+  left: 943px;
+  top: 167px;
+  z-index: 2;
+  color: var(--color-gray-213);
+}
+
+/* Above the statement, whose box reaches down over it, so it takes the pointer. */
+.ab-footer__email {
+  position: absolute;
+  left: 943px;
+  top: 187px;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.ab-footer__links {
+  position: absolute;
+  left: 943px;
+  top: 284px;
+  z-index: 2;
+  display: flex;
+  gap: 24px;
+}
+
+.ab-footer__credit {
+  position: absolute;
+  right: 100px;
+  top: 284px;
+  z-index: 2;
+}
+
+.ab-footer__copyright {
+  position: absolute;
+  left: 100px;
+  top: 284px;
+  z-index: 2;
+}
+
+:root {
+  /* How much scroll the footer's bars take to come up, as on the home page. */
+  --ap-reveal: 800px;
+}
+
+/* =====================================================================
+   Hero — the metal is inside the headline: the chrome is clipped to the
+   letterforms, so the letters read as black type with the material moving
+   in them and the grid lines running on behind. The box below holds the
+   photograph.
+   ===================================================================== */
+
+.ap-hero {
+  position: relative;
+  height: calc(826px + var(--hero-shift));
+}
+
+/* The chrome, clipped to the letterforms in the hero's <clipPath>. It sits on
+   the headline's box exactly, so nothing of it shows outside the letters. */
+.ap-hero__chrome {
+  position: absolute;
+  left: 100px;
+  top: 132px;
+  z-index: 0;
+  width: 1240px;
+  height: 144px;
+  overflow: hidden;
+  background: var(--color-black);
+  clip-path: url(#knockout);
+  opacity: 0;
+}
+
+/* It fades up rather than wiping, so the letters arrive whole. */
+.is-ready .ap-hero__chrome {
+  opacity: 1;
+  transition: opacity 1.1s ease 0.15s;
+}
+
+.ap-hero__chrome canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* The letters the chrome is cut to: 72px, on the browser's own baselines for
+   a 72/72 line, so they land where the Figma headline does. */
+#knockout text {
+  font-family: var(--font-display);
+  font-size: 72px;
+}
+
+/* The same headline in plain black, shown only if the browser will not clip an
+   element to SVG text. */
+.ap-hero__fallback {
+  position: absolute;
+  left: 100px;
+  top: 132px;
+  z-index: 2;
+  width: 713px;
+  margin: 0;
+  display: none;
+}
+
+.no-knockout .ap-hero__chrome { display: none; }
+.no-knockout .ap-hero__fallback { display: block; }
+
+/* The real heading, behind a headline that is drawn as a shape. */
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The deck, in the space the headline's short second line leaves open. */
+.ap-hero__deck {
+  position: absolute;
+  left: 837px;
+  top: 132px;
+  z-index: 2;
+  width: 515px;
+  margin: 0;
+  white-space: normal;
+}
+
+/* The one fact and the way down, both on the grid row at 277. */
+.ap-hero__since {
+  position: absolute;
+  left: 837px;
+  top: 260px;
+  z-index: 2;
+  margin: 0;
+}
+
+.ap-hero__cue {
+  position: absolute;
+  left: 1282px;
+  top: 260px;
+  z-index: 2;
+  margin: 0;
+}
+
+/* The photograph, in the box the plate used to fill, handed over to the story
+   the way the home page's plate is: the track is the scroll the plate stays
+   stuck for, 84px from the top of the window (32 under the top bar, as the
+   mono row is 32 above it), while about.js shrinks it toward its top
+   centre. It sits under the grid lines, the way every image on the site does. */
+.ap-hero__track {
+  position: absolute;
+  left: 100px;
+  top: 308px;
+  z-index: 0;
+  width: 1240px;
+  height: calc(435px + var(--hero-pin));
+}
+
+.ap-hero__plate {
+  position: sticky;
+  top: 84px;
+  width: 1240px;
+  height: 435px;
+}
+
+/* The picture itself (.ab-image above gives it the 4px corner and,
+   until there is a picture, the grey and the note). */
+.ap-hero__photo {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+  /* Opens from the grid crossing at (720, 557), which is 620 in from each side
+     of the box and 249 down from its top. */
+  clip-path: inset(249px 620px 186px round 4px);
+}
+
+.is-ready .ap-hero__photo {
+  clip-path: inset(0 0 0 0 round 4px);
+  transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+/* When a real picture goes in, it fills the box. */
+.ap-hero__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The quiet parts arrive once the page has had its first paint. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.is-ready .reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.8s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal--2 { transition-delay: 0.14s; }
+.reveal--3 { transition-delay: 0.23s; }
+.reveal--4 { transition-delay: 0.32s; }
+
+/* =====================================================================
+   The story — three sections. The heading holds its place beside the
+   text until that text ends, and the words of the text fade up as it goes
+   past, the way the home page's introduction reads (about.js).
+   ===================================================================== */
+
+/* Heading in the left 503, story in the right 713 (714 in Figma, one pixel
+   given back so the row lands on the page's 1240 exactly). */
+.ap-section {
+  display: grid;
+  grid-template-columns: 503px 1fr;
+  column-gap: 24px;
+  padding: 0 100px;
+  margin-bottom: 140px;
+}
+
+/* The heading stays with its own text: it sticks under the fixed grid line at
+   277 and lets go at the end of the section it belongs to. */
+.ap-section__head {
+  position: sticky;
+  top: 278px;
+  align-self: start;
+  z-index: 2;
+  margin: 0;
+}
+
+.ap-section__body {
+  position: relative;
+  z-index: 2;
+}
+
+.ap-section__body p {
+  margin: 0;
+  white-space: normal;
+}
+
+/* A blank line between paragraphs, as in the design. */
+.ap-section__body p + p {
+  margin-top: 32px;
+}
+
+.ap-section--last {
+  margin-bottom: 0;
+}
+
+/* =====================================================================
+   The end — the pictures hold on one screen and the footer comes up over
+   them in twelve vertical bars, the way it does on the home page. The
+   track is a screen tall plus the scroll the bars take; the screen and both
+   stages are stuck to the top of it while the black rises.
+   ===================================================================== */
+
+.ap-end {
+  position: relative;
+  display: grid;
+  height: calc(100vh + var(--ap-reveal));
+}
+
+.ap-end__screen,
+.ap-end__stage {
+  grid-area: 1 / 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+/* Closed until the bars start; about.js sets the same polygon on both. */
+.ap-end__stage {
+  clip-path: inset(100% 0 0 0);
+}
+
+/* The page's layering, kept through the rise: the black ground and its drips
+   go under the grid lines and the words over them, so the grid runs across the
+   footer as it does on the home page. Two stages is also how the home page
+   does it; they are clipped together, so they rise as one. */
+.ap-end__screen,
+.ap-end__stage--ground {
+  z-index: 0;
+}
+
+.ap-end__stage--front {
+  z-index: 2;
+}
+
+/* 660px of footer at the foot of the screen, as on the home page — which is
+   also where about.js's drips expect it, so their pool lands on a grid row. */
+.ap-end__stage .ab-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1440px;
+}
+
+/* The words' copy carries no ground of its own; the black is the layer below. */
+.ab-footer--front {
+  background: none;
+}
+
+/* =====================================================================
+   The pictures — two rows wider than the page, offset from each other and
+   hanging off both edges, sliding sideways at their own pace the whole way
+   down, through the footer's rise too; as the screen comes to hold they ease
+   into place rather than stopping dead (about.js). They sit 72 into the
+   held screen, the mockup's gap under the story.
+   ===================================================================== */
+
+.ap-strips {
+  position: absolute;
+  left: 0;
+  top: 72px;
+  width: 1440px;
+}
+
+/* Both move every frame near the end, so each gets its own layer and the
+   pictures are never redrawn while they slide. */
+.ap-strips,
+.ap-strip {
+  will-change: transform;
+}
+
+.ap-strip {
+  display: flex;
+  gap: 24px;
+}
+
+.ap-strip + .ap-strip {
+  margin-top: 24px;
+}
+
+.ap-strip .ab-image {
+  flex: none;
+  width: 503px;
+  height: 300px;
+  overflow: hidden;
+}
+
+/* Each photo is already cut to its frame, so it simply fills it. */
+.ap-strip .ab-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ap-strip--one { margin-left: -322px; }
+.ap-strip--two { margin-left: 100px; }
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .is-ready .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ap-hero__photo,
+  .is-ready .ap-hero__photo {
+    clip-path: inset(0 0 0 0 round 4px);
+    transition: none;
+  }
+
+  .ap-hero__chrome,
+  .is-ready .ap-hero__chrome {
+    opacity: 1;
+    transition: none;
+  }
+
+  /* Nothing is pinned and nothing rises: the pictures and the footer simply
+     follow one another down the page, the footer's words on its ground. */
+  .ap-end {
+    height: auto;
+  }
+
+  .ap-end__screen {
+    grid-area: 1 / 1;
+  }
+
+  .ap-end__stage {
+    grid-area: 2 / 1;
+  }
+
+  .ap-end__screen,
+  .ap-end__stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .ap-strips {
+    position: static;
+    margin: 72px 0;
+  }
+
+  .ap-end__stage .ab-footer {
+    position: relative;
+  }
+}

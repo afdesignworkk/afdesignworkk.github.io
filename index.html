@@ -25,7 +25,7 @@
     <header class="topbar">
       <a class="topbar__brand type-mono-16 above-grid" href="#" data-go="top">AF / DESIGN</a>
       <nav class="topbar__nav type-mono-16 above-grid">
-        <a href="#about" data-go="about">ABOUT</a>
+        <a href="about.html">ABOUT</a>
         <a href="#projects" data-go="projects">PROJECTS</a>
         <a href="#contact" data-go="contact">CONTACT</a>
         <a href="playground.html">PLAYGROUND</a>
@@ -58,7 +58,7 @@
         <p class="intro__label type-mono-12 above-grid">INTRODUCTION</p>
         <p class="intro__lead type-body-30 above-grid">Hi! I'm Anna, a UI/UX designer creating digital products and websites. I enjoy finding the why behind every design decision and making things feel clear and easy to use.</p>
         <p class="intro__aside type-body-30 above-grid">Outside of design, I love collecting vintage finds, browsing old photographs, and traveling slowly. Those little moments keep me curious and help me notice details that often go unnoticed.</p>
-        <a class="intro__link type-mono-16 above-grid">READ ABOUT →</a>
+        <a class="intro__link type-mono-16 above-grid" href="about.html">READ ABOUT →</a>
       </section>
 
       <!-- 6. Case studies (pinned horizontal row of works) -->
@@ -570,16 +570,15 @@
 <script>
 /* Top navigation: each item scrolls (smoothly, through Lenis when it runs) to
    its part of the page — AF / DESIGN to the top, PROJECTS to the pinned case
-   studies, ABOUT to the introduction and CONTACT to the footer at the end
-   of the page. PLAYGROUND is a plain link to the playground page. OPEN TO
-   WORK, the time and the location stay plain text. */
+   studies and CONTACT to the footer at the end of the page. ABOUT and
+   PLAYGROUND are plain links to their own pages. OPEN TO WORK, the time and
+   the location stay plain text. */
 (function(){
   const cases = document.querySelector('.cases__track');
   const pageTop = el => el.getBoundingClientRect().top + scrollY;
   const targets = {
     top: () => 0,
     projects: () => pageTop(cases),
-    about: () => pageTop(document.querySelector('.intro__label')) - innerHeight * 0.2,
     contact: () => document.documentElement.scrollHeight - innerHeight
   };
   document.querySelectorAll('[data-go]').forEach(link => link.addEventListener('click', e => {

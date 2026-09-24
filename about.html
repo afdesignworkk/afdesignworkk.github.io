@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1440">
+  <title>About — Anna Fesenko</title>
+  <!-- Built from the Figma frame "about-page" (node 385:241). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="about.css?v=1">
+</head>
+<body>
+  <div class="about">
+
+    <!-- Top bar (the home page's, in the new order) -->
+    <header class="topbar">
+      <a class="topbar__brand type-mono-16 above-grid" href="index.html">AF / DESIGN</a>
+      <nav class="topbar__nav type-mono-16 above-grid">
+        <a href="#about" aria-current="page">ABOUT</a>
+        <a href="index.html#projects">PROJECTS</a>
+        <a href="#contact">CONTACT</a>
+        <a href="playground.html">PLAYGROUND</a>
+      </nav>
+      <p class="topbar__status type-mono-16 above-grid">
+        <span class="topbar__dot">
+          <img src="assets/status-dot.svg" width="9" height="9" alt="">
+          <span class="topbar__dot-ring"></span>
+        </span>
+        OPEN TO WORK
+      </p>
+    </header>
+
+    <main>
+      <!-- Hero: the metal is inside the headline; her photograph is below it -->
+      <section class="ap-hero" id="about">
+        <h1 class="vh">THE STORY BEHIND THE SCREENS.</h1>
+
+        <!-- The headline as a shape: the chrome below is cut to these letters. -->
+        <svg width="0" height="0" aria-hidden="true" focusable="false">
+          <defs>
+            <clipPath id="knockout" clipPathUnits="userSpaceOnUse">
+              <text x="0" y="63">THE STORY BEHIND</text>
+              <text x="0" y="135">THE SCREENS.</text>
+            </clipPath>
+          </defs>
+        </svg>
+
+        <div class="ap-hero__chrome" id="plate" aria-hidden="true">
+          <canvas id="metal"></canvas>
+        </div>
+
+        <p class="ap-hero__fallback type-display-72" aria-hidden="true">THE STORY BEHIND<br>THE SCREENS.</p>
+
+        <p class="ap-hero__deck type-body-16 reveal reveal--2">Not just the projects you see here, but the journey, lessons, and little things that shaped me as a designer.</p>
+
+        <p class="ap-hero__since type-mono-12 reveal reveal--3">Designing since 2022</p>
+
+        <p class="ap-hero__cue type-mono-12 reveal reveal--4">SCROLL ↓</p>
+
+        <!-- The box for the photograph, where the plate used to be. It opens
+             from the grid crossing at (720, 557) and the grid lines run over it.
+             The track is the scroll it stays stuck for while it shrinks, as the
+             home page's plate does. -->
+        <div class="ap-hero__track">
+          <div class="ap-hero__plate">
+            <figure class="ab-image ap-hero__photo" aria-hidden="true"></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="ap-section" id="beginning">
+        <h2 class="ap-section__head type-display-60">The beginning.</h2>
+        <div class="ap-section__body">
+          <p class="type-body-30">There'll be no story about how I was super creative as a kid and that's why I became a designer.</p>
+          <p class="type-body-30">After school, I chose to study Computer Science at university. At the time, it felt like the right direction because I genuinely enjoyed taking apart my PC and figuring out how things worked. But during my first year, I realized I didn't actually enjoy writing code as much as I thought I would.</p>
+          <p class="type-body-30">So in 2022, I signed up for my first online course - Web Design Basics. I was juggling university and design classes at the same time... crazy as fuck, honestly. Somehow I finished both: the course and my first year at university.</p>
+          <p class="type-body-30">After that, I joined a more advanced course, UI/UX Design Pro. That's when it clicked. I realized design was something I genuinely loved doing - a place where I could solve problems, be creative, and express myself at the same time.</p>
+        </div>
+      </section>
+
+      <section class="ap-section" id="first-experience">
+        <h2 class="ap-section__head type-display-60">First experience.</h2>
+        <div class="ap-section__body">
+          <p class="type-body-30">My first job happened in 2023, while I was still at university. I joined the Spacebring team after a friend recommended me for a designer role.</p>
+          <p class="type-body-30">It was a really interesting journey because I genuinely thought I knew a lot about design. Turns out... not even close. I think real knowledge comes from practice. At Spacebring, I worked on things I'd never touched in any of the courses I'd taken.</p>
+          <p class="type-body-30">Spacebring gave me the opportunity to keep learning, and during those three years I also completed Web Design Junior and Marketing Design courses.</p>
+          <p class="type-body-30">In 2026, my story with Spacebring came to an end.</p>
+        </div>
+      </section>
+
+      <section class="ap-section ap-section--last" id="outside">
+        <h2 class="ap-section__head type-display-60">Outside of work.</h2>
+        <div class="ap-section__body">
+          <p class="type-body-30">I'm such a traveler. It's what makes me feel the most alive. I love exploring different cultures, trying food I've never had before, and meeting people from completely different parts of the world. So far I've been to Romania, Greece, Thailand, Malaysia, Indonesia, Poland, and Egypt.</p>
+          <p class="type-body-30">I also take my little old Samsung digital camera everywhere I go. I love the grainy, imperfect photos it creates - they always feel a bit more real than pictures from my phone.</p>
+          <p class="type-body-30">Music is a huge part of my life too. I'm literally listening to music while writing this. It follows me through almost everything: workouts, cooking, walking, working... pretty much life. My playlist is all over the place - Guns N' Roses, Michael Jackson, Justin Timberlake, A$AP Rocky, Lana Del Rey, Rihanna, and many more lol.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- The end: the pictures settle on one screen and the footer comes up
+         over them in twelve vertical bars, as it does on the home page, while
+         the rows keep sliding under it. -->
+    <div class="ap-end">
+      <div class="ap-end__screen">
+        <!-- Two rows of pictures that run off both edges and slide sideways the
+             whole way down, the first to the right and the second to the left -->
+        <div class="ap-strips">
+          <div class="ap-strip ap-strip--one" data-pace="0.26">
+          <figure class="ab-image"><img src="assets/about/petronas-towers.jpg" alt="The Petronas Towers at night, Kuala Lumpur" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          <figure class="ab-image"><img src="assets/about/temple-columns.jpg" alt="Carved columns of an Egyptian temple against a blue sky" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          <figure class="ab-image"><img src="assets/about/batu-caves.jpg" alt="The golden statue at Batu Caves, Malaysia" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          <figure class="ab-image"><img src="assets/about/cactus-wall.jpg" alt="A cactus in a pot against an orange wall" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          </div>
+          <div class="ap-strip ap-strip--two" data-pace="-0.2">
+          <figure class="ab-image"><img src="assets/about/jellyfish.jpg" alt="Jellyfish drifting in blue water" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          <figure class="ab-image"><img src="assets/about/waves-on-rocks.jpg" alt="Waves breaking over dark rocks" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          <figure class="ab-image"><img src="assets/about/desert-coast.jpg" alt="A desert coastline seen across the sea" width="1006" height="600" loading="lazy" decoding="async"></figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer: the site's own — the 660px black band with its chrome drips.
+           Its ground rises under the grid lines and its words over them, so the
+           grid runs across the footer; the two are clipped together. -->
+      <div class="ap-end__stage ap-end__stage--ground">
+        <div class="ab-footer" aria-hidden="true">
+          <canvas class="ab-footer__drips"></canvas>
+        </div>
+      </div>
+
+      <div class="ap-end__stage ap-end__stage--front">
+        <footer class="ab-footer ab-footer--front" id="contact">
+          <p class="ab-footer__statement type-display-60">Let's build something<br>people will love using.</p>
+          <p class="ab-footer__label type-mono-12">WRITE TO</p>
+          <a class="ab-footer__email type-body-30" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
+          <nav class="ab-footer__links type-mono-16">
+            <a href="https://www.linkedin.com/in/anna-fesenko-79b015271/" target="_blank" rel="noopener">LINKEDIN</a>
+            <a href="https://www.instagram.com/ai_annae21/" target="_blank" rel="noopener">INSTAGRAM</a>
+          </nav>
+          <p class="ab-footer__credit type-mono-16">BUILT WITH LOVE</p>
+          <p class="ab-footer__copyright type-mono-16">© 2026 ANNA FESENKO</p>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Grid overlay, fixed to the viewport — the site's, unchanged -->
+  <img class="grid-overlay" src="assets/grid-overlay.svg?v=5" width="1440" height="2765" alt="" aria-hidden="true">
+
+  <!-- Custom cursor (mouse and trackpad only) -->
+  <canvas class="cursor-trail" aria-hidden="true"></canvas>
+  <span class="cursor-invert" aria-hidden="true"></span>
+  <span class="cursor-tint" aria-hidden="true"></span>
+  <span class="cursor-label type-body-16" aria-hidden="true">VIEW PROJECT</span>
+
+  <script>
+  /* Lets the hero in, after the first paint so the closed state is what the
+     page opens on. */
+  requestAnimationFrame(() => requestAnimationFrame(
+    () => document.documentElement.classList.add('is-ready')));
+  setTimeout(() => document.documentElement.classList.add('is-ready'), 1200);
+
+  /* If the browser will not clip an element to SVG text, fall back to the
+     headline in plain black rather than showing nothing. */
+  if (!CSS.supports('clip-path', 'url(#knockout)')) {
+    document.documentElement.classList.add('no-knockout');
+  }
+  </script>
+
+<script id="metalFrag" type="x-shader/x-fragment">#version 300 es
+precision mediump float;
+uniform vec2  u_resolution;
+uniform float u_time;
+uniform vec4  u_colorTint;
+uniform float u_softness, u_repetition, u_shiftRed, u_shiftBlue;
+uniform float u_distortion, u_contour, u_angle, u_scale;
+uniform vec2  u_offset, u_pointer, u_pointer2;
+uniform float u_pointerAmp, u_pointerAmp2, u_pointerRadius;
+uniform float u_radial, u_grain;
+uniform vec3  u_hole;
+out vec4 fragColor;
+#define PI 3.14159265358979323846
+
+vec2 rotate(vec2 uv,float th){return mat2(cos(th),-sin(th),sin(th),cos(th))*uv;}
+float hash21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+float snoise(vec2 v){
+  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+  vec2 i=floor(v+dot(v,C.yy)); vec2 x0=v-i+dot(i,C.xx);
+  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+  vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1; i=mod289(i);
+  vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+  m=m*m; m=m*m;
+  vec3 x=2.0*fract(p*C.www)-1.0; vec3 h=abs(x)-0.5; vec3 ox=floor(x+0.5); vec3 a0=x-ox;
+  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+  vec3 g; g.x=a0.x*x0.x+h.x*x0.y; g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+  return 130.0*dot(m,g);
+}
+float getColorChanges(float c1,float c2,float sp,vec3 w,float blur,float bump,float tint){
+  float ch=mix(c2,c1,smoothstep(0.0,2.0*blur,sp));
+  float b=w[0];                                   ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.4*(1.0-bump)*w[1];                     ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+0.5*(1.0-bump)*w[1];                     ch=mix(ch,c2,smoothstep(b,b+2.0*blur,sp));
+  b=w[0]+w[1];                                    ch=mix(ch,c1,smoothstep(b,b+2.0*blur,sp));
+  float gt=(sp-w[0]-w[1])/w[2];
+  float grad=mix(c1,c2,smoothstep(0.0,1.0,gt));   ch=mix(ch,grad,smoothstep(b,b+0.5*blur,sp));
+  ch=mix(ch,1.0-min(1.0,(1.0-ch)/max(tint,0.0001)),u_colorTint.a);
+  return ch;
+}
+void main(){
+  float t=0.3*(u_time+2.8);
+  vec2 objectUV=(gl_FragCoord.xy-0.5*u_resolution)/(u_resolution.y*u_scale)-u_offset;
+  vec2 uv=objectUV+0.5; uv.y=1.0-uv.y;
+  float cycleWidth=u_repetition;
+  vec2 rotatedUV=uv-vec2(0.5);
+  float rot=(-u_angle+70.0)*PI/180.0;
+  rotatedUV=vec2(rotatedUV.x*cos(rot)-rotatedUV.y*sin(rot),rotatedUV.x*sin(rot)+rotatedUV.y*cos(rot))+vec2(0.5);
+
+  /* metaballs mask. Twelve balls drift across the whole plate on slow
+     wandering paths (two sines per axis, so they spread evenly instead of
+     piling up at the edges); each adds a bounded bump (1 − d²/r²)³, so
+     neighbours melt together and fill the plate. p is measured in plate
+     heights from the top-left corner. The press hole scales the field down
+     around its centre, so it bites deeper where the blobs are thin. */
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_resolution.y;
+  float aspect=u_resolution.x/u_resolution.y, bt=20.0+0.2*u_time;
+  float edge=0.0;
+  for(int i=0;i<12;i++){
+    float fi=float(i);
+    vec2 c=vec2(aspect*(0.5+0.32*sin(bt*(0.23+0.041*fi)+fi*1.71)+0.24*sin(bt*(0.37-0.023*fi)+fi*0.83)),
+                0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1));
+    float r=0.52+0.08*sin(fi*4.13);
+    float s=min(dot(p-c,p-c)/(r*r),1.0);
+    edge+=(1.0-s)*(1.0-s)*(1.0-s);
+  }
+  // a small hole is also a weak one, so it fades out instead of closing to a dot
+  if(u_hole.z>0.001) edge*=mix(1.0,smoothstep(0.4*u_hole.z,u_hole.z,length(p-u_hole.xy)),smoothstep(0.0,0.15,u_hole.z));
+  edge*=2.4;
+  edge=1.0-smoothstep(0.65,0.9,edge);
+  edge=pow(edge,4.0);
+  edge=mix(smoothstep(0.9-2.0*fwidth(edge),0.9,edge),edge,smoothstep(0.0,0.4,u_contour));
+  float opacity=1.0-smoothstep(0.9-2.0*fwidth(edge),0.9,edge);
+  edge=1.8*pow(edge,1.5);
+
+  /* pointer: vortex + lens on the material UV only */
+  if(u_pointerAmp>0.001){
+    vec2 toP=uv-u_pointer;
+    float rr=max(u_pointerRadius*u_pointerRadius,1e-5);
+    float infl=u_pointerAmp*exp(-dot(toP,toP)/rr);
+    vec2 q=rotate(toP,infl*2.6); q*=(1.0-0.55*infl); uv=u_pointer+q;
+  }
+  if(u_pointerAmp2>0.001){
+    vec2 toP=uv-u_pointer2;
+    float rr=max(u_pointerRadius*u_pointerRadius*2.2,1e-5);
+    float infl=u_pointerAmp2*exp(-dot(toP,toP)/rr);
+    vec2 q=rotate(toP,-infl*1.4); q*=(1.0-0.26*infl); uv=u_pointer2+q;
+  }
+
+  float diagBLtoTR=rotatedUV.x-rotatedUV.y;
+  float diagTLtoBR=rotatedUV.x+rotatedUV.y;
+  vec3 color1=vec3(0.98,0.98,1.0);
+  vec3 color2=vec3(0.1,0.1,0.1+0.1*smoothstep(0.7,1.3,diagTLtoBR));
+
+  vec2 grad_uv=uv-0.5;
+  float dist=length(grad_uv+vec2(0.0,0.2*diagBLtoTR));
+  grad_uv=rotate(grad_uv,(0.25-0.2*diagBLtoTR)*PI);
+
+  float radial=length(uv-0.5)*2.0;
+  float direction=mix(grad_uv.x,radial,u_radial);
+
+  float bump=pow(1.8*dist,1.2); bump=1.0-bump; bump*=pow(max(uv.y,0.0),0.3);
+  float t1r=0.12/cycleWidth*(1.0-0.4*bump);
+  float t2r=0.07/cycleWidth*(1.0+0.4*bump);
+  float wide=(1.0-t1r-t2r);
+  float t1w=cycleWidth*t1r, t2w=cycleWidth*t2r;
+
+  float noise=snoise(uv-t);
+  edge+=(1.0-edge)*u_distortion*noise;
+  direction+=diagBLtoTR;
+  direction-=2.0*noise*diagBLtoTR*(smoothstep(0.0,1.0,edge)*(1.0-smoothstep(0.0,1.0,edge)));
+  direction*=mix(1.0,1.0-edge,smoothstep(0.5,1.0,u_contour));
+  direction-=1.7*edge*smoothstep(0.5,1.0,u_contour);
+  direction+=0.2*pow(u_contour,4.0)*(1.0-smoothstep(0.0,1.0,edge));
+  bump*=clamp(pow(max(uv.y,0.0),0.1),0.3,1.0);
+  direction*=(0.1+(1.1-edge)*bump);
+  direction*=(0.4+0.6*(1.0-smoothstep(0.5,1.0,edge)));
+  direction+=0.18*(smoothstep(0.1,0.2,uv.y)*(1.0-smoothstep(0.2,0.4,uv.y)));
+  direction+=0.03*(smoothstep(0.1,0.2,1.0-uv.y)*(1.0-smoothstep(0.2,0.4,1.0-uv.y)));
+  direction*=(0.5+0.5*pow(uv.y,2.0));
+  direction*=cycleWidth; direction-=t;
+
+  float cd=clamp(1.0-bump,0.0,1.0);
+  float dR=cd; dR+=0.03*bump*noise;
+  dR+=5.0*(smoothstep(-0.1,0.2,uv.y)*(1.0-smoothstep(0.1,0.5,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,1.0,bump)));
+  dR-=diagBLtoTR;
+  float dB=cd*1.3;
+  dB+=(smoothstep(0.0,0.4,uv.y)*(1.0-smoothstep(0.1,0.8,uv.y)))*(smoothstep(0.4,0.6,bump)*(1.0-smoothstep(0.4,0.8,bump)));
+  dB-=0.2*edge;
+  dR*=(u_shiftRed/20.0); dB*=(u_shiftBlue/20.0);
+
+  float blur=u_softness/15.0;
+  vec3 w=vec3(t1w,t2w,wide);
+  w[1]-=0.02*smoothstep(0.0,1.0,edge+bump);
+
+  float gs=floor(u_time*9.0);
+  float g1=hash21(gl_FragCoord.xy+gs)-0.5;
+  float g2=hash21(gl_FragCoord.xy+gs+17.3)-0.5;
+  float g3=hash21(gl_FragCoord.xy+gs+41.7)-0.5;
+  float ga=u_grain*0.6;
+
+  float sr=fract(direction+dR+ga*g1);
+  float r=getColorChanges(color1.r,color2.r,sr,w,blur+fwidth(sr),bump,u_colorTint.r);
+  float sg=fract(direction+ga*g2);
+  float g=getColorChanges(color1.g,color2.g,sg,w,blur+fwidth(sg),bump,u_colorTint.g);
+  float sb=fract(direction-dB+ga*g3);
+  float b=getColorChanges(color1.b,color2.b,sb,w,blur+fwidth(sb),bump,u_colorTint.b);
+
+  vec3 color=vec3(r,g,b)*opacity;
+  color+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)/255.0;
+  fragColor=vec4(color,opacity);
+}
+</script>
+
+<script>
+/* ==================================================================
+   1. METAL — vanilla WebGL2 port of the metaballs shader, with the
+   pointer magnet. The metaballs fill the whole black plate and drift
+   across it; pressing the plate opens a hole under the pointer that
+   closes again on its own.
+   ================================================================== */
+const METAL = (function(){
+  const canvas = document.getElementById('metal');
+  const plate  = document.getElementById('plate');
+  const gl = canvas.getContext('webgl2',{antialias:false,premultipliedAlpha:true});
+  const P = {
+    colorTint:'#ffffff', repetition:5, softness:0.15, shiftRed:0.3, shiftBlue:0.3,
+    distortion:0.05, contour:0.55, angle:70, offsetX:0, offsetY:-0.14,
+    scale:1.7, magnet:1.35, magnetRadius:0.4, radial:1, grain:0.6
+  };
+  if(!gl){ plate.style.background='radial-gradient(circle at 50% 55%,#f4f6fa 0%,#8d94a2 34%,#000 74%)'; return {P, lock(){}}; }
+
+  const VERT='#version 300 es\nin vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const FRAG=document.getElementById('metalFrag').textContent;
+  const sh=(t,s)=>{const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);
+    if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(x));return x;};
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,VERT));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FRAG));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS))console.error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  const a=gl.getAttribLocation(prog,'a');
+  gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  const U=n=>gl.getUniformLocation(prog,n);
+  const u={res:U('u_resolution'),time:U('u_time'),tint:U('u_colorTint'),soft:U('u_softness'),
+    rep:U('u_repetition'),red:U('u_shiftRed'),blue:U('u_shiftBlue'),dist:U('u_distortion'),
+    cont:U('u_contour'),ang:U('u_angle'),scale:U('u_scale'),off:U('u_offset'),
+    ptr:U('u_pointer'),ptr2:U('u_pointer2'),amp:U('u_pointerAmp'),amp2:U('u_pointerAmp2'),
+    prad:U('u_pointerRadius'),radial:U('u_radial'),grain:U('u_grain'),
+    hole:U('u_hole')};
+
+  const hex=h=>{h=h.replace('#','');return [parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255,1];};
+  const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const st={pointer:null,amp:0,pu:null,pl:null,unit:1};
+  /* Press hole, in plate heights from the plate's top-left corner: it grows
+     to HOLE.r, then closes again. */
+  const HOLE={r:0.5,open:0.4,close:1.2};
+  const hole={x:0,y:0,r:0,from:0,age:Infinity};
+  const easeOut=x=>1-Math.pow(1-x,3);
+  const easeInOut=x=>x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  /* While the plate morphs, its height changes every frame and the cluster's
+     on-screen size is scale*height — so holding scale constant would zoom it.
+     Locking captures scale*height once and re-derives scale each frame, which
+     keeps the artwork pixel-identical while the frame around it reshapes. */
+  const LOCK={on:false,k:null};
+  const local=e=>{const r=canvas.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);
+    return {x:(e.clientX-r.left)*d,y:(e.clientY-r.top)*d,inside:e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom};};
+
+  if(!REDUCED){
+    addEventListener('pointermove',e=>{st.pointer=local(e);},{passive:true});
+    addEventListener('pointerleave',()=>{st.pointer=null;},{passive:true});
+    addEventListener('pointerdown',e=>{
+      if(e.target.closest&&e.target.closest('a,button'))return;
+      // only where the plate shows (the hero transition clips it)
+      if(!document.elementsFromPoint(e.clientX,e.clientY).includes(canvas))return;
+      const r=canvas.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.height, y=(e.clientY-r.top)/r.height;
+      // a press inside a hole that is still open grows it again from its current size
+      hole.from=Math.hypot(x-hole.x,y-hole.y)<hole.r?hole.r:0;
+      hole.x=x; hole.y=y; hole.age=0;
+    },{passive:true});
+  }
+
+  let clock=0,last=performance.now(),lw=-1,lh=-1;
+  function frame(now){
+    let dt=Math.min((now-last)/1000,1/30); last=now;
+    const d=Math.min(devicePixelRatio||1,2);
+    const nw=Math.max(1,Math.floor(canvas.clientWidth*d)), nh=Math.max(1,Math.floor(canvas.clientHeight*d));
+    // only reallocate the buffer past a 24px drift while the plate is morphing
+    const settled=(nw===lw&&nh===lh);
+    const drift=Math.abs(nw-canvas.width)>24||Math.abs(nh-canvas.height)>24;
+    if(drift||(settled&&(canvas.width!==nw||canvas.height!==nh))){
+      canvas.width=nw;canvas.height=nh;gl.viewport(0,0,nw,nh);
+    }
+    lw=nw;lh=nh;
+    const W=canvas.width,H=canvas.height;
+    if(!REDUCED) clock+=dt;
+
+    if(LOCK.on){ if(LOCK.k===null) LOCK.k=P.scale*H; P.scale=LOCK.k/H; }
+    st.unit=H*P.scale;
+
+    const over=!REDUCED&&st.pointer&&st.pointer.inside;
+    const target=over?P.magnet:0;
+    st.amp+=(target-st.amp)*(1-Math.exp(-dt/(target>st.amp?0.09:0.3)));
+    if(st.pointer){
+      const uvx=(st.pointer.x-W/2)/st.unit-P.offsetX+0.5;
+      const uvy=0.5-((H/2-st.pointer.y)/st.unit-P.offsetY);
+      st.pu=[uvx,uvy]; if(!st.pl)st.pl=[uvx,uvy];
+      const k=1-Math.exp(-dt/0.13);
+      st.pl[0]+=(uvx-st.pl[0])*k; st.pl[1]+=(uvy-st.pl[1])*k;
+    }
+
+    hole.age+=dt;
+    hole.r=hole.age<HOLE.open
+      ? hole.from+(HOLE.r-hole.from)*easeOut(hole.age/HOLE.open)
+      : HOLE.r*(1-easeInOut(Math.min((hole.age-HOLE.open)/HOLE.close,1)));
+
+    gl.uniform2f(u.res,W,H); gl.uniform1f(u.time,clock);
+    gl.uniform4fv(u.tint,hex(P.colorTint));
+    gl.uniform1f(u.soft,P.softness); gl.uniform1f(u.rep,P.repetition);
+    gl.uniform1f(u.red,P.shiftRed); gl.uniform1f(u.blue,P.shiftBlue);
+    gl.uniform1f(u.dist,P.distortion); gl.uniform1f(u.cont,P.contour);
+    gl.uniform1f(u.ang,P.angle); gl.uniform1f(u.scale,P.scale);
+    gl.uniform2f(u.off,P.offsetX,P.offsetY);
+    gl.uniform2f(u.ptr,st.pu?st.pu[0]:-9,st.pu?st.pu[1]:-9);
+    gl.uniform2f(u.ptr2,st.pl?st.pl[0]:-9,st.pl?st.pl[1]:-9);
+    gl.uniform1f(u.amp,st.amp); gl.uniform1f(u.amp2,st.amp*0.65);
+    gl.uniform1f(u.prad,P.magnetRadius);
+    gl.uniform1f(u.radial,P.radial); gl.uniform1f(u.grain,P.grain);
+    gl.uniform3f(u.hole,hole.x,hole.y,hole.r);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  return {P, lock(on){LOCK.on=on; if(!on)LOCK.k=null;}};
+})();
+</script>
+
+  <script>
+  /* The cluster is sized against the canvas height (unit = H * scale), and
+     this band is only 144 tall — the height of two lines of 72 — instead of
+     the home page's 435. Blown up to 1400 the cluster spans the whole
+     headline instead of pooling in the middle of it, and dropped 0.3 of a
+     unit the letters sit just off its bright core: black at rest, with the
+     light gathering wherever the cursor goes (the magnet is still on). */
+  if (typeof METAL !== 'undefined' && METAL.P) {
+    METAL.P.scale = 1400 / 144;
+    METAL.P.offsetY = 0.3;
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script src="about.js?v=1"></script>
+</body>
+</html>
