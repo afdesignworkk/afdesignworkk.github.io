@@ -57,7 +57,7 @@
   left: 943px;
   top: 167px;
   z-index: 2;
-  color: var(--color-gray-213);
+  color: var(--color-gray-151);
 }
 
 /* Above the statement, whose box reaches down over it, so it takes the pointer. */
@@ -90,6 +90,26 @@
   left: 100px;
   top: 284px;
   z-index: 2;
+}
+
+/* The small print is grey, as in the home mockup: WRITE TO (above), the social
+   links, BUILT WITH LOVE and the copyright. The statement and the email stay
+   white. */
+.ab-footer__links,
+.ab-footer__credit,
+.ab-footer__copyright {
+  color: var(--color-gray-151);
+}
+
+/* The email and the social links underline while the pointer is on them or
+   they have keyboard focus, like the top bar's menu (styles.css). */
+.ab-footer__email:hover,
+.ab-footer__email:focus-visible,
+.ab-footer__links a:hover,
+.ab-footer__links a:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-position: from-font;
 }
 
 :root {

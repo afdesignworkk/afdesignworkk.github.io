@@ -9,6 +9,7 @@
   --color-gray-216: #d9d9d9;
   --color-gray-213: #d5d5d5;
   --color-gray-160: #a0a0a0;
+  --color-gray-151: #979797;
 
   --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -184,6 +185,23 @@ img {
   top: 32px;
   display: flex;
   gap: 24px;
+}
+
+/* The menu's links, READ ABOUT in the introduction, and the footer's email and
+   social links underline while the pointer is on them or they have keyboard
+   focus: the font's own line, at its own depth and thickness, as the mockup
+   draws it under ABOUT. */
+.topbar__nav a:hover,
+.topbar__nav a:focus-visible,
+.intro__link:hover,
+.intro__link:focus-visible,
+.footer__email:hover,
+.footer__email:focus-visible,
+.footer__links a:hover,
+.footer__links a:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-position: from-font;
 }
 
 .topbar__status {
@@ -591,7 +609,7 @@ img {
   position: absolute;
   left: 943px;
   top: 2272px;
-  color: var(--color-gray-213);
+  color: var(--color-gray-151);
 }
 
 /* Above the statement, whose box reaches down over it, so it takes the pointer. */
@@ -622,6 +640,15 @@ img {
   position: absolute;
   left: 100px;
   top: 2389px;
+}
+
+/* The small print is grey, as in the mockup: WRITE TO (above), the social
+   links, BUILT WITH LOVE and the copyright. The statement and the email stay
+   white. */
+.footer__links,
+.footer__credit,
+.footer__copyright {
+  color: var(--color-gray-151);
 }
 
 /* ---------- 10. Custom cursor ---------- */
