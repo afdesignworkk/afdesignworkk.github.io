@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="styles.css?v=12">
-  <link rel="stylesheet" href="about.css?v=2">
+  <link rel="stylesheet" href="about.css?v=3">
 </head>
 <body>
   <div class="about">
@@ -462,15 +462,11 @@ const METAL = (function(){
 </script>
 
   <script>
-  /* The cluster is sized against the canvas height (unit = H * scale), and
-     this band is only 144 tall — the height of two lines of 72 — instead of
-     the home page's 435. Blown up to 1400 the cluster spans the whole
-     headline instead of pooling in the middle of it, and dropped 0.3 of a
-     unit the letters sit just off its bright core: black at rest, with the
-     light gathering wherever the cursor goes (the magnet is still on). */
+  /* The home page's metal, with a gentler pointer: through the thin strokes of
+     the letters the home page's full magnet (1.35) churns the material too
+     hard, so here it pulls at a little under half of that. */
   if (typeof METAL !== 'undefined' && METAL.P) {
-    METAL.P.scale = 1400 / 144;
-    METAL.P.offsetY = 0.3;
+    METAL.P.magnet = 0.6;
   }
   </script>
 

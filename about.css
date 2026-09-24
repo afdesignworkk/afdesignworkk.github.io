@@ -150,11 +150,17 @@
   transition: opacity 1.1s ease 0.15s;
 }
 
+/* The metal is the home page's plate exactly: a 1240 x 435 canvas with the
+   home page's settings, so the balls, the material and its highlights are the
+   same size as there (everything in the shader is measured in canvas
+   heights). The letters show its middle band — the canvas is centred on the
+   headline and the clip cuts the rest away. */
 .ap-hero__chrome canvas {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  top: calc((144px - 435px) / 2);
+  width: 1240px;
+  height: 435px;
   display: block;
 }
 
