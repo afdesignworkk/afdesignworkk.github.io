@@ -148,6 +148,37 @@ html.playground,
   gap: 12px;
 }
 
+/* CLOSE underlines on hover and keyboard focus like the site's links
+   (styles.css): the line draws itself under the word, not the X. */
+.pg-view__close span:first-child {
+  position: relative;
+}
+
+.pg-view__close span:first-child::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(1px, 0.04em);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.pg-view__close:hover span:first-child::after,
+.pg-view__close:focus-visible span:first-child::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-view__close span:first-child::after {
+    transition: none;
+  }
+}
+
 /* Sized and placed by the view script: centred in the mockup's box, 1030px
    wide and 160px clear of the top and the bottom. */
 .pg-view__image {

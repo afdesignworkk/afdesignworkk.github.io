@@ -102,14 +102,43 @@
 }
 
 /* The email and the social links underline while the pointer is on them or
-   they have keyboard focus, like the top bar's menu (styles.css). */
-.ab-footer__email:hover,
-.ab-footer__email:focus-visible,
-.ab-footer__links a:hover,
-.ab-footer__links a:focus-visible {
-  text-decoration-line: underline;
-  text-decoration-thickness: from-font;
-  text-underline-position: from-font;
+   they have keyboard focus, drawn from the left like the top bar's menu
+   (styles.css). */
+.ab-footer__links a {
+  position: relative;
+}
+
+.ab-footer__email::after,
+.ab-footer__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(1px, 0.04em);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.ab-footer__email:hover::after,
+.ab-footer__email:focus-visible::after,
+.ab-footer__links a:hover::after,
+.ab-footer__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.ab-footer__email::after {
+  bottom: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-footer__email::after,
+  .ab-footer__links a::after {
+    transition: none;
+  }
 }
 
 :root {

@@ -187,21 +187,61 @@ img {
   gap: 24px;
 }
 
-/* The menu's links, READ ABOUT in the introduction, and the footer's email and
-   social links underline while the pointer is on them or they have keyboard
-   focus: the font's own line, at its own depth and thickness, as the mockup
-   draws it under ABOUT. */
-.topbar__nav a:hover,
-.topbar__nav a:focus-visible,
-.intro__link:hover,
-.intro__link:focus-visible,
-.footer__email:hover,
-.footer__email:focus-visible,
-.footer__links a:hover,
-.footer__links a:focus-visible {
-  text-decoration-line: underline;
-  text-decoration-thickness: from-font;
-  text-underline-position: from-font;
+/* Links underline while the pointer is on them or they have keyboard focus:
+   AF / DESIGN, the menu, READ ABOUT in the introduction, and the footer's
+   email and social links. The underline is a line of its own in the text's
+   colour, so that it can be drawn: it grows from the left edge over 0.5s,
+   easing out, and runs back to the left when the pointer leaves. It sits
+   about a quarter of the type size under the baseline (4px under the 16px
+   labels, 8px under the email, clear of its g and @). */
+.topbar__nav a,
+.footer__links a {
+  position: relative;
+}
+
+.topbar__brand::after,
+.topbar__nav a::after,
+.intro__link::after,
+.footer__email::after,
+.footer__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(1px, 0.04em);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.topbar__brand:hover::after,
+.topbar__brand:focus-visible::after,
+.topbar__nav a:hover::after,
+.topbar__nav a:focus-visible::after,
+.intro__link:hover::after,
+.intro__link:focus-visible::after,
+.footer__email:hover::after,
+.footer__email:focus-visible::after,
+.footer__links a:hover::after,
+.footer__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.footer__email::after {
+  bottom: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar__brand::after,
+  .topbar__nav a::after,
+  .intro__link::after,
+  .footer__email::after,
+  .footer__links a::after {
+    transition: none;
+  }
 }
 
 .topbar__status {
@@ -626,7 +666,6 @@ img {
   z-index: 3;
   left: 943px;
   top: 2292px;
-  width: 397px;
   white-space: nowrap;
 }
 
