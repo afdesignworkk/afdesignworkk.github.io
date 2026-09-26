@@ -1,0 +1,136 @@
+/* Case study — Spacebring admin app, from the Figma frame "case-study" (node
+   436:259). Fixed 1440px wide like the other pages; styles.css gives the type,
+   colours, top bar, grid overlay and cursor, and about.css the image box and
+   the footer that comes up at the end of the page (with about.js). */
+
+.case {
+  position: relative;
+  width: 1440px;
+  margin: 0 auto;
+  overflow: clip;
+  background: var(--color-paper);
+}
+
+/* Text sits over the fixed grid lines; the image boxes stay beneath them. */
+.cs-title,
+.cs-facts,
+.cs-section {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Hero ---------- */
+
+.cs-hero {
+  padding-top: 132px;
+}
+
+.cs-title {
+  margin-left: 100px;
+  width: 1240px;
+}
+
+/* CLIENT / ROLE / SCOPE / YEAR: four 292px columns, 24px apart. */
+.cs-facts {
+  display: grid;
+  grid-template-columns: repeat(4, 292px);
+  column-gap: 24px;
+  margin: 36px 0 0 100px;
+}
+
+.cs-facts dt {
+  color: var(--color-gray-151);
+}
+
+.cs-facts dd {
+  margin: 4px 0 0;
+}
+
+/* ---------- Image boxes ---------- */
+
+/* .ab-image (about.css) gives the 4px corners and the paper shade. */
+.cs-shot {
+  flex: none;
+  height: 424px;
+}
+
+.cs-shot--hero {
+  width: 1240px;
+  height: 500px;
+  margin: 36px 0 0 100px;
+}
+
+.cs-shot--full { width: 1240px; }
+.cs-shot--half { width: 608px; }
+.cs-shot--wide { width: 819px; }
+.cs-shot--narrow { width: 397px; }
+
+.cs-row {
+  display: flex;
+  gap: 24px;
+  width: 1240px;
+  margin: 96px 0 0 100px;
+}
+
+/* ---------- Sections ---------- */
+
+/* The heading in a 503px column, the text in 713px from x 627; 96px between
+   every section and picture row, as in the mockup. */
+.cs-section {
+  display: grid;
+  grid-template-columns: 503px 713px;
+  column-gap: 24px;
+  align-items: start;
+  margin: 96px 0 0 100px;
+}
+
+.cs-section__body p {
+  margin: 0;
+}
+
+/* A blank line between paragraphs. */
+.cs-section__body p + p {
+  margin-top: 32px;
+}
+
+/* ---------- The end ---------- */
+
+/* The last pictures hold on the final screen and the footer comes up over them
+   in twelve bars, as the About page's pictures do (about.css .ap-end,
+   about.js). They hold --cs-hold from the top of the window: the mockup's 96px
+   under the outcome where the window has room for both rows, less on shorter
+   windows so the second row still fits; the track starts that much higher, so
+   the gap in the page stays 96px. */
+:root {
+  --cs-hold: clamp(24px, calc(100vh - 896px), 96px);
+}
+
+.case .ap-end {
+  margin-top: calc(96px - var(--cs-hold));
+}
+
+.cs-end__shots {
+  position: absolute;
+  left: 100px;
+  top: var(--cs-hold);
+  display: grid;
+  grid-template-columns: 608px 608px;
+  gap: 24px;
+}
+
+.cs-end__shots .cs-shot--full {
+  grid-column: 1 / -1;
+}
+
+/* Nothing is pinned under reduced motion (about.css): the pictures and the
+   footer follow one another down the page. */
+@media (prefers-reduced-motion: reduce) {
+  .case .ap-end {
+    margin-top: 0;
+  }
+
+  .cs-end__shots {
+    position: static;
+    margin: 96px 0 96px 100px;
+  }
+}
