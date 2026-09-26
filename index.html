@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=15">
   <script>
     /* Loading screen: hide the hero parts before the first paint (see the loader
        script at the end of the body). Never under reduced motion, and not when
@@ -298,7 +298,7 @@
 
     // The plate opens from the centre crossing of the grid (720, 557) to its full box.
     const c = 1 - inOutQuart(seg(t, 2.3, 1.05));
-    track.style.clipPath = `inset(${173 * c}px ${620 * c}px ${trackH - 435 + 262 * c}px round 4px)`;
+    track.style.clipPath = `inset(${189 * c}px ${620 * c}px ${trackH - 500 + 311 * c}px round 4px)`;
   }
 
   function finish(){
@@ -327,10 +327,10 @@
 (function(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const plate = document.getElementById('plate');
-  const START = 300;                    // scrollY where the plate reaches top: 84px and sticks
+  const START = 280;                    // scrollY where the plate reaches top: 88px and sticks
   const DIST = 410;                     // scroll length of the shrink (= --hero-pin)
-  const INSET_X = 316, INSET_Y = 39.5;  // 1240 × 435 → 608 × 356
-  const LIFT = 91.5;                    // visible top edge ends 32px from the viewport top
+  const INSET_X = 316, INSET_Y = 38;    // 1240 × 500 → 608 × 424, the case study cards' size
+  const LIFT = 94;                      // visible top edge ends 32px from the viewport top
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
   function update(){
     const e = ease(Math.min(Math.max((scrollY - START) / DIST, 0), 1));

@@ -1,4 +1,4 @@
-/* Portfolio home — fixed 1440 × 2765 desktop mockup.
+/* Portfolio home — fixed 1440 × 2988 desktop mockup.
    Every element is absolutely positioned against .page using the
    Figma frame coordinates (node 127:1369). */
 
@@ -94,7 +94,7 @@ img {
 .page {
   position: relative;
   width: 1440px;
-  height: calc(var(--hero-shift) + 4219px + 50vh + var(--services-pin) + var(--footer-reveal));
+  height: calc(var(--hero-shift) + 4302px + 50vh + var(--services-pin) + var(--footer-reveal));
   margin: 0 auto;
   overflow: clip;
   background: var(--color-white);
@@ -300,30 +300,31 @@ img {
 .hero__time {
   position: absolute;
   left: 100px;
-  top: 332px;
+  top: 312px;
 }
 
 .hero__location {
   position: absolute;
   right: 100px;
-  top: 332px;
+  top: 312px;
 }
 
 /* The track is the scroll distance the plate stays pinned for. The plate
-   sticks 84px from the viewport top (its time row sits at 32px above it). */
+   sticks 88px from the viewport top, where its time row, 56px above it, is
+   32px from the top. */
 .hero__track {
   position: absolute;
   left: 100px;
-  top: 384px;
+  top: 368px;
   width: 1240px;
-  height: calc(435px + var(--hero-pin));
+  height: calc(500px + var(--hero-pin));
 }
 
 .hero__media {
   position: sticky;
-  top: 84px;
+  top: 88px;
   width: 1240px;
-  height: 435px;
+  height: 500px;
   overflow: hidden;
   border-radius: 4px;
   background: var(--color-black);
@@ -354,7 +355,7 @@ img {
 .intro__photo {
   position: absolute;
   left: 100px;
-  top: 959px;
+  top: 1008px;
   width: 211px;
   height: 296px;
   border-radius: 4px;
@@ -372,28 +373,28 @@ img {
 .intro__label {
   position: absolute;
   left: 416px;
-  top: 959px;
+  top: 1008px;
   color: var(--color-blue);
 }
 
 .intro__lead {
   position: absolute;
   left: 416px;
-  top: 979px;
+  top: 1028px;
   width: 924px;
 }
 
 .intro__aside {
   position: absolute;
   left: 521px;
-  top: 1091px;
+  top: 1140px;
   width: 819px;
 }
 
 .intro__link {
   position: absolute;
   left: 521px;
-  top: 1235px;
+  top: 1284px;
 }
 
 /* ---------- 6. Case studies ---------- */
@@ -405,7 +406,7 @@ img {
 .cases__track {
   position: absolute;
   left: 0;
-  top: calc(1591px - 50vh);
+  top: calc(1674px - 50vh);
   width: 1440px;
   height: calc(100vh + 2628px);
   display: grid;
@@ -427,33 +428,33 @@ img {
   pointer-events: none;
 }
 
-/* Row coordinates are the Figma ones measured from the case image top (y 1315). */
+/* Row coordinates are the Figma ones measured from the case image top (y 1444). */
 .cases__row {
   position: absolute;
   left: 0;
-  top: calc(50vh - 196px);
+  top: calc(50vh - 230px);
   width: 1440px;
-  height: 392px;
+  height: 460px;
 }
 
 .cases__label {
   position: absolute;
   left: 100px;
-  top: 90px;
+  top: 124px;
   color: var(--color-blue);
 }
 
 .cases__title {
   position: absolute;
   left: 100px;
-  top: 110px;
+  top: 144px;
   width: 608px;
 }
 
 .cases__more {
   position: absolute;
   left: 100px;
-  top: 246px;
+  top: 280px;
 }
 
 /* Works are 608px wide, 24px apart — the gap the design leaves between the
@@ -462,7 +463,7 @@ img {
   position: absolute;
   top: 0;
   width: 608px;
-  height: 392px;
+  height: 460px;
 }
 
 .cases__card--1 { left: 732px; }
@@ -474,7 +475,7 @@ img {
   left: 0;
   top: 0;
   width: 608px;
-  height: 356px;
+  height: 424px;
   border-radius: 4px;
   background: var(--color-gray-213);
 }
@@ -486,13 +487,13 @@ img {
 .cases__name {
   position: absolute;
   left: 0;
-  top: 372px;
+  top: 440px;
 }
 
 .cases__year {
   position: absolute;
   right: 0;
-  top: 372px;
+  top: 440px;
 }
 
 /* ---------- 7–8. Services + footer ---------- */
@@ -509,7 +510,7 @@ img {
 .footer {
   position: absolute;
   left: 0;
-  top: calc(var(--hero-shift) + 2779px - 50vh);
+  top: calc(var(--hero-shift) + 2862px - 50vh);
   width: 1440px;
   height: calc(100vh + 1440px + var(--services-pin) + var(--footer-reveal));
   display: grid;
@@ -857,7 +858,7 @@ img {
 .loader-count {
   position: absolute;
   left: 100px;
-  top: 332px;
+  top: 312px;
 }
 
 /* Headline lines rise through their own masks. */
