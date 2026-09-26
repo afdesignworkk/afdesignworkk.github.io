@@ -10,7 +10,7 @@
   width: 1440px;
   margin: 0 auto;
   overflow: clip;
-  background: var(--color-white);
+  background: var(--color-paper);
 }
 
 /* ---------- Image boxes ---------- */
@@ -21,7 +21,7 @@
   place-items: center;
   margin: 0;
   border-radius: 4px;
-  background: var(--color-gray-216);
+  background: var(--color-paper-shade);
 }
 
 /* ---------- Footer (the home page's, at the end of the page) ---------- */

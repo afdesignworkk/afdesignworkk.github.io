@@ -10,6 +10,8 @@
   --color-gray-213: #d5d5d5;
   --color-gray-160: #a0a0a0;
   --color-gray-151: #979797;
+  --color-paper: #f2f0ea;        /* the ground of every page */
+  --color-paper-shade: #dddad1;  /* empty image boxes on it */
 
   --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -54,7 +56,7 @@
 html,
 body {
   margin: 0;
-  background: var(--color-white);
+  background: var(--color-paper);
 }
 
 body {
@@ -97,7 +99,7 @@ img {
   height: calc(var(--hero-shift) + 4302px + 50vh + var(--services-pin) + var(--footer-reveal));
   margin: 0 auto;
   overflow: clip;
-  background: var(--color-white);
+  background: var(--color-paper);
 }
 
 /* ---------- Type styles ---------- */
@@ -477,7 +479,7 @@ img {
   width: 608px;
   height: 424px;
   border-radius: 4px;
-  background: var(--color-gray-213);
+  background: var(--color-paper-shade);
 }
 
 .cases__image--1 { left: 732px; }
@@ -530,7 +532,7 @@ img {
 
 /* Covers the case studies underneath wherever the reveal has passed. */
 .end__stage--ground {
-  background: var(--color-white);
+  background: var(--color-paper);
 }
 
 /* Text sits in the front layers so it stays above the grid overlay; the
