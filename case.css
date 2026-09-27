@@ -12,7 +12,6 @@
 }
 
 /* Text sits over the fixed grid lines; the image boxes stay beneath them. */
-.cs-title,
 .cs-facts,
 .cs-section {
   position: relative;
@@ -25,8 +24,29 @@
   padding-top: 132px;
 }
 
+/* The title is the About page's headline: the chrome metaballs clipped to the
+   letters, fading up after the first paint (about.css .ap-hero__chrome, the
+   metal from about.html). Like there it sits under the grid lines, which run
+   across the letters. Here it keeps its place in the flow, so the box is the
+   headline's two lines, and the chrome and its plain fallback fill it. */
 .cs-title {
+  position: relative;
   margin-left: 100px;
+  width: 1240px;
+  height: 144px;
+}
+
+.cs-title svg {
+  position: absolute;
+}
+
+.cs-title .ap-hero__chrome,
+.cs-title .ap-hero__fallback {
+  left: 0;
+  top: 0;
+}
+
+.cs-title .ap-hero__fallback {
   width: 1240px;
 }
 
@@ -82,6 +102,13 @@
   column-gap: 24px;
   align-items: start;
   margin: 96px 0 0 100px;
+}
+
+/* The heading stays with its own text, as on About: it sticks under the fixed
+   grid line at 277 and lets go where the text ends. */
+.cs-section h2 {
+  position: sticky;
+  top: 278px;
 }
 
 .cs-section__body p {
