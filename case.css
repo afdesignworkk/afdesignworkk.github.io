@@ -8,7 +8,7 @@
   width: 1440px;
   margin: 0 auto;
   overflow: clip;
-  background: var(--color-paper);
+  background: var(--color-white);
 }
 
 /* Text sits over the fixed grid lines; the image boxes stay beneath them. */
@@ -68,7 +68,7 @@
 
 /* ---------- Image boxes ---------- */
 
-/* .ab-image (about.css) gives the 4px corners and the paper shade. */
+/* .ab-image (about.css) gives the 4px corners and the grey. */
 .cs-shot {
   flex: none;
   height: 424px;
