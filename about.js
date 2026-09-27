@@ -135,6 +135,7 @@ uniform float u_time;
 uniform vec3  u_balls[24];
 uniform int   u_count;
 uniform float u_line;
+uniform float u_width, u_pool;  // the footer across, in these units; the pool's straight half-length
 uniform vec2  u_pointer, u_pointer2;
 uniform float u_pointerAmp;
 out vec4 fragColor;
@@ -173,11 +174,11 @@ float getColorChanges(float c1,float c2,float sp,vec3 w,float blur,float bump){
   return ch;
 }
 void main(){
-  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)*(1440.0/u_resolution.x);
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)*(u_width/u_resolution.x);
   if(p.y<u_line){fragColor=vec4(0.0);return;}
 
   // the pool: a band under the text with rounded ends and a flat top
-  vec2 d=vec2(max(abs(p.x-720.0)-590.0,0.0),p.y-u_line);
+  vec2 d=vec2(max(abs(p.x-0.5*u_width)-u_pool,0.0),p.y-u_line);
   float s=min(dot(d,d)/6400.0,1.0);
   float edge=(1.0-s)*(1.0-s)*(1.0-s);
   for(int i=0;i<24;i++){
@@ -192,7 +193,7 @@ void main(){
   if(edge<0.2){fragColor=vec4(0.0);return;}
 
   float t=0.3*(u_time+2.8);
-  vec2 centre=vec2(720.0,u_line+133.0);
+  vec2 centre=vec2(0.5*u_width,u_line+133.0);
   vec2 uv=(p-centre)/1000.0+0.5;
   float cycleWidth=repetition;
   vec2 rotatedUV=uv;  // the hero's angle (70) means no rotation
@@ -295,7 +296,25 @@ void main(){
   const gl = canvas.getContext('webgl2', {antialias: false, premultipliedAlpha: true});
   if (!gl) return;
   const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const H = 660, MAX = 24, DRIPS = 6, GRAVITY = 900;
+  const MAX = 24, GRAVITY = 900;
+
+  /* The footer in drip units: 1440 across on the design (a design pixel
+     each, whatever the page's scale) and 660 down. In the compact layout the
+     footer is as tall as its text needs, at 1.4 units to the pixel so the
+     drops keep a size a phone can see: fewer of them, nearer the edges, and
+     the pool 32px under the last line of text. */
+  let W = 1440, H = 660, DRIPS = 6, EDGE = 150, GAP = 150, POOL = 590, SWELL = 470;
+  function measure() {
+    if (!RS.compact) return;
+    const k = 1.4, box = canvas.getBoundingClientRect();
+    W = box.width * k;
+    H = box.height * k;
+    DRIPS = Math.min(6, Math.max(3, Math.floor(W / 170)));
+    EDGE = 70; GAP = 90; POOL = W / 2 - 60; SWELL = W / 2 - 120;
+    const text = document.querySelectorAll('.footer__copyright, .footer__credit, .ab-footer__copyright, .ab-footer__credit');
+    const bottom = Math.max(...[...text].map(el => el.getBoundingClientRect().bottom));
+    if (isFinite(bottom)) line = (bottom - box.top + 32) * k;
+  }
   const clamp = x => Math.min(Math.max(x, 0), 1);
 
   /* The pool's top sits on a grid line. The grid is fixed to the screen (rows
@@ -312,7 +331,12 @@ void main(){
     }
     line = best === null ? LINE : best;
   }
-  placeLine(innerHeight - H);
+  measure();
+  if (!RS.compact) placeLine(innerHeight / RS.s - H);
+  addEventListener('resize', () => {
+    measure();
+    drips.forEach(d => { if (d.x > W - EDGE) d.x = EDGE + Math.random() * (W - 2 * EDGE); });
+  });
 
   /* Pointer magnet, as on the hero plate: while the pointer is over the footer
      the chrome's reflections swirl around it, with a second, lagging swirl
@@ -329,8 +353,8 @@ void main(){
   function restart(drip, now) {
     let x = 0;
     for (let tries = 0; tries < 30; tries++) {
-      x = 150 + Math.random() * 1140;
-      if (drips.every(o => o === drip || Math.abs(o.x - x) > 150)) break;
+      x = EDGE + Math.random() * (W - 2 * EDGE);
+      if (drips.every(o => o === drip || Math.abs(o.x - x) > GAP)) break;
     }
     Object.assign(drip, {
       x, R: 26 + 16 * Math.random(), start: now + 0.1 + 0.7 * Math.random(), gather: 1.5 + 1.1 * Math.random(),
@@ -348,7 +372,7 @@ void main(){
     count = 0;
     // three wide swells keep the pool's lower edge moving slowly
     for (let i = 0; i < 3; i++) {
-      ball(720 + 470 * Math.sin(now * (0.07 + 0.02 * i) + i * 2.1), line + 8, 36 + 8 * Math.sin(now * 0.3 + i * 1.7));
+      ball(W / 2 + SWELL * Math.sin(now * (0.07 + 0.02 * i) + i * 2.1), line + 8, 36 + 8 * Math.sin(now * 0.3 + i * 1.7));
     }
     drips.forEach(d => {
       if (now < d.start) return;
@@ -396,7 +420,7 @@ void main(){
   gl.enableVertexAttribArray(attr);
   gl.vertexAttribPointer(attr, 2, gl.FLOAT, false, 0, 0);
   const loc = {
-    res: 'u_resolution', time: 'u_time', balls: 'u_balls', count: 'u_count', line: 'u_line',
+    res: 'u_resolution', time: 'u_time', balls: 'u_balls', count: 'u_count', line: 'u_line', width: 'u_width', pool: 'u_pool',
     ptr: 'u_pointer', ptr2: 'u_pointer2', amp: 'u_pointerAmp'
   };
   Object.keys(loc).forEach(key => { loc[key] = gl.getUniformLocation(program, loc[key]); });
@@ -417,12 +441,13 @@ void main(){
       // The pool lines up with a grid row once the footer reaches the bottom of
       // the screen, at the end of the page, and stays put while it scrolls in.
       const box = canvas.getBoundingClientRect();
-      placeLine(innerHeight - H);
+      if (RS.compact) measure();
+      else placeLine(innerHeight / RS.s - H);
       if (!REDUCED) { clock += dt; step(clock, dt); }
 
       // Pointer in footer pixels; the lagging swirl chases it.
-      const px = (pointer.x - box.left) * 1440 / box.width, py = (pointer.y - box.top) * 1440 / box.width;
-      const target = pointer.on && px >= 0 && px <= 1440 && py >= 0 && py <= H ? MAGNET : 0;
+      const px = (pointer.x - box.left) * W / box.width, py = (pointer.y - box.top) * W / box.width;
+      const target = pointer.on && px >= 0 && px <= W && py >= 0 && py <= H ? MAGNET : 0;
       amp += (target - amp) * (1 - Math.exp(-dt / (target > amp ? 0.09 : 0.3)));
       if (pointer.on && !lag.set) { lag.x = px; lag.y = py; lag.set = true; }
       const follow = 1 - Math.exp(-dt / 0.13);
@@ -434,6 +459,8 @@ void main(){
       gl.uniform3fv(loc.balls, balls);
       gl.uniform1i(loc.count, count);
       gl.uniform1f(loc.line, line);
+      gl.uniform1f(loc.width, W);
+      gl.uniform1f(loc.pool, POOL);
       gl.uniform2f(loc.ptr, px, py);
       gl.uniform2f(loc.ptr2, lag.x, lag.y);
       gl.uniform1f(loc.amp, amp);
@@ -461,7 +488,7 @@ void main(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const root = document.documentElement;
-  const cssPx = name => parseFloat(getComputedStyle(root).getPropertyValue(name)) || 0;
+  const cssPx = name => RS.len(name);   // lengths are calc()s of --px (responsive.js)
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const inOut = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;   // power2.inOut
   const pageTop = el => el.getBoundingClientRect().top + scrollY;
@@ -490,8 +517,9 @@ void main(){
   function drawHero(y){
     if (!plate) return;
     const e = hero.dist ? inOut(clamp((y - hero.start) / hero.dist, 0, 1)) : 0;
-    set(plate, 'transform', e ? `translateY(${(-LIFT * e).toFixed(2)}px)` : '');
-    set(plate, 'clipPath', e ? `inset(${(INSET_Y * e).toFixed(2)}px ${(INSET_X * e).toFixed(2)}px round 4px)` : '');
+    const s = RS.s;   // the page's scale (design pixels)
+    set(plate, 'transform', e ? `translateY(${(-LIFT * s * e).toFixed(2)}px)` : '');
+    set(plate, 'clipPath', e ? `inset(${(INSET_Y * s * e).toFixed(2)}px ${(INSET_X * s * e).toFixed(2)}px round ${4 * s}px)` : '');
   }
 
 
@@ -579,6 +607,25 @@ void main(){
   const bars = {top: 0, height: 0, reveal: 0, footer: 0, width: 1440};
 
   function drawFooter(y, vh){
+    /* Compact layout: the footer is in the flow at the end of the page and
+       comes up through the bars as it comes into the window: 0 as its top
+       comes in, 1 once it is all on screen (the end of the page). */
+    if (RS.compact) {
+      if (!stages.length || !bars.footer) return;
+      const top = bars.footerTop - y, H = bars.footer;
+      const p = clamp((vh - top) / Math.min(H, 0.9 * vh), 0, 1);
+      if (p >= 1) { stages.forEach(stage => set(stage, 'clipPath', 'none')); return; }
+      const t = p * (DUR + EACH * (BARS - 1));
+      const steps = [];
+      for (let i = BARS - 1; i >= 0; i--) {
+        const open = inOut(clamp((t - EACH * SLOT[i]) / DUR, 0, 1));
+        const edge = (H * (1 - open)).toFixed(1);
+        steps.push(`${bars.width / BARS * (i + 1)}px ${edge}px`, `${bars.width / BARS * i}px ${edge}px`);
+      }
+      const clip = `polygon(0 100%, 100% 100%, ${steps.join(', ')})`;
+      stages.forEach(stage => set(stage, 'clipPath', clip));
+      return;
+    }
     if (!end || !footer || !bars.reveal) return;
     const pin = bars.height - vh;                // scroll the stages stay stuck for
     const p = clamp((y - bars.top - (pin - bars.reveal)) / bars.reveal, 0, 1);
@@ -612,6 +659,10 @@ void main(){
       bars.width = end.offsetWidth;
     }
     if (footer) bars.footer = footer.offsetHeight;
+    if (RS.compact && stages.length) {
+      bars.footerTop = pageTop(stages[0]);
+      bars.footer = stages[0].offsetHeight;
+    }
     const width = strips ? strips.offsetWidth : 1440;
     for (const row of rows) {
       const figures = row.el.children;

@@ -5,7 +5,7 @@
 
 .case {
   position: relative;
-  width: 1440px;
+  width: calc(1440 * var(--px));
   margin: 0 auto;
   overflow: clip;
   background: var(--color-white);
@@ -21,7 +21,7 @@
 /* ---------- Hero ---------- */
 
 .cs-hero {
-  padding-top: 132px;
+  padding-top: calc(132 * var(--px));
 }
 
 /* The title is the About page's headline: the chrome metaballs clipped to the
@@ -31,9 +31,9 @@
    headline's two lines, and the chrome and its plain fallback fill it. */
 .cs-title {
   position: relative;
-  margin-left: 100px;
-  width: 1240px;
-  height: 144px;
+  margin-left: calc(100 * var(--px));
+  width: calc(1240 * var(--px));
+  height: calc(144 * var(--px));
 }
 
 .cs-title svg {
@@ -47,15 +47,15 @@
 }
 
 .cs-title .ap-hero__fallback {
-  width: 1240px;
+  width: calc(1240 * var(--px));
 }
 
 /* CLIENT / ROLE / SCOPE / YEAR: four 292px columns, 24px apart. */
 .cs-facts {
   display: grid;
-  grid-template-columns: repeat(4, 292px);
-  column-gap: 24px;
-  margin: 36px 0 0 100px;
+  grid-template-columns: repeat(4, calc(292 * var(--px)));
+  column-gap: calc(24 * var(--px));
+  margin: calc(36 * var(--px)) 0 0 calc(100 * var(--px));
 }
 
 .cs-facts dt {
@@ -63,7 +63,7 @@
 }
 
 .cs-facts dd {
-  margin: 4px 0 0;
+  margin: calc(4 * var(--px)) 0 0;
 }
 
 /* ---------- Image boxes ---------- */
@@ -71,25 +71,25 @@
 /* .ab-image (about.css) gives the 4px corners and the grey. */
 .cs-shot {
   flex: none;
-  height: 424px;
+  height: calc(424 * var(--px));
 }
 
 .cs-shot--hero {
-  width: 1240px;
-  height: 500px;
-  margin: 36px 0 0 100px;
+  width: calc(1240 * var(--px));
+  height: calc(500 * var(--px));
+  margin: calc(36 * var(--px)) 0 0 calc(100 * var(--px));
 }
 
-.cs-shot--full { width: 1240px; }
-.cs-shot--half { width: 608px; }
-.cs-shot--wide { width: 819px; }
-.cs-shot--narrow { width: 397px; }
+.cs-shot--full { width: calc(1240 * var(--px)); }
+.cs-shot--half { width: calc(608 * var(--px)); }
+.cs-shot--wide { width: calc(819 * var(--px)); }
+.cs-shot--narrow { width: calc(397 * var(--px)); }
 
 .cs-row {
   display: flex;
-  gap: 24px;
-  width: 1240px;
-  margin: 96px 0 0 100px;
+  gap: calc(24 * var(--px));
+  width: calc(1240 * var(--px));
+  margin: calc(96 * var(--px)) 0 0 calc(100 * var(--px));
 }
 
 /* ---------- Sections ---------- */
@@ -98,17 +98,17 @@
    every section and picture row, as in the mockup. */
 .cs-section {
   display: grid;
-  grid-template-columns: 503px 713px;
-  column-gap: 24px;
+  grid-template-columns: calc(503 * var(--px)) calc(713 * var(--px));
+  column-gap: calc(24 * var(--px));
   align-items: start;
-  margin: 96px 0 0 100px;
+  margin: calc(96 * var(--px)) 0 0 calc(100 * var(--px));
 }
 
 /* The heading stays with its own text, as on About: it sticks under the fixed
    grid line at 277 and lets go where the text ends. */
 .cs-section h2 {
   position: sticky;
-  top: 278px;
+  top: calc(278 * var(--px));
 }
 
 .cs-section__body p {
@@ -117,15 +117,15 @@
 
 /* A blank line between paragraphs. */
 .cs-section__body p + p {
-  margin-top: 32px;
+  margin-top: calc(32 * var(--px));
 }
 
 /* The links under the outcome: grey labels 30px under the text, 24px apart.
    They underline on hover and focus like the site's other links (styles.css). */
 .cs-links {
   display: flex;
-  gap: 24px;
-  margin-top: 30px;
+  gap: calc(24 * var(--px));
+  margin-top: calc(30 * var(--px));
   color: var(--color-gray-151);
 }
 
@@ -169,11 +169,11 @@
    window has room for both rows, less on shorter windows; the track starts
    that much higher, so the gap in the page stays 96px. */
 :root {
-  --cs-hold: clamp(24px, calc(100vh - 896px), 96px);
+  --cs-hold: clamp(calc(24 * var(--px)), calc(100vh - calc(896 * var(--px))), calc(96 * var(--px)));
 }
 
 .case .ap-end {
-  margin-top: calc(96px - var(--cs-hold));
+  margin-top: calc(calc(96 * var(--px)) - var(--cs-hold));
 }
 
 .case .ap-end__screen {
@@ -183,11 +183,11 @@
 
 .cs-end__shots {
   position: absolute;
-  left: 100px;
+  left: calc(100 * var(--px));
   top: var(--cs-hold);
   display: grid;
-  grid-template-columns: 608px 608px;
-  gap: 24px;
+  grid-template-columns: calc(608 * var(--px)) calc(608 * var(--px));
+  gap: calc(24 * var(--px));
 }
 
 .cs-end__shots .cs-shot--full {
@@ -203,6 +203,6 @@
 
   .cs-end__shots {
     position: static;
-    margin: 96px 0 96px 100px;
+    margin: calc(96 * var(--px)) 0 calc(96 * var(--px)) calc(100 * var(--px));
   }
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1440">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About — Anna Fesenko</title>
   <!-- Built from the Figma frame "about-page" (node 385:241). -->
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -10,8 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=17">
-  <link rel="stylesheet" href="about.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="about.css?v=8">
+  <link rel="stylesheet" href="responsive.css?v=1">
+  <script src="responsive.js?v=1"></script>
 </head>
 <body>
   <div class="about">
@@ -25,6 +27,7 @@
         <a href="#contact">CONTACT</a>
         <a href="playground.html">PLAYGROUND</a>
       </nav>
+      <button class="topbar__menu type-mono-16 above-grid" type="button" aria-expanded="false">MENU</button>
       <p class="topbar__status type-mono-16 above-grid">
         <span class="topbar__dot">
           <img src="assets/status-dot.svg" width="9" height="9" alt="">
@@ -53,7 +56,7 @@
           <canvas id="metal"></canvas>
         </div>
 
-        <p class="ap-hero__fallback type-display-72" aria-hidden="true">THE STORY BEHIND<br>THE SCREENS.</p>
+        <p class="ap-hero__fallback type-display-72" aria-hidden="true">THE STORY BEHIND <br>THE SCREENS.</p>
 
         <p class="ap-hero__deck type-body-16 reveal reveal--2">Not just the projects you see here, but the journey, lessons, and little things that shaped me as a designer.</p>
 
@@ -189,6 +192,7 @@ uniform vec2  u_offset, u_pointer, u_pointer2;
 uniform float u_pointerAmp, u_pointerAmp2, u_pointerRadius;
 uniform float u_radial, u_grain;
 uniform vec3  u_hole;
+uniform float u_unit;
 out vec4 fragColor;
 #define PI 3.14159265358979323846
 
@@ -234,15 +238,16 @@ void main(){
      wandering paths (two sines per axis, so they spread evenly instead of
      piling up at the edges); each adds a bounded bump (1 − d²/r²)³, so
      neighbours melt together and fill the plate. p is measured in plate
-     heights from the top-left corner. The press hole scales the field down
+     heights from the top-left corner (u_unit: on a narrower plate, a unit
+     that keeps the design's density). The press hole scales the field down
      around its centre, so it bites deeper where the blobs are thin. */
-  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_resolution.y;
-  float aspect=u_resolution.x/u_resolution.y, bt=20.0+0.2*u_time;
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_unit;
+  float aspect=u_resolution.x/u_unit, tall=u_resolution.y/u_unit, bt=20.0+0.2*u_time;
   float edge=0.0;
   for(int i=0;i<12;i++){
     float fi=float(i);
     vec2 c=vec2(aspect*(0.5+0.32*sin(bt*(0.23+0.041*fi)+fi*1.71)+0.24*sin(bt*(0.37-0.023*fi)+fi*0.83)),
-                0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1));
+                tall*(0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1)));
     float r=0.52+0.08*sin(fi*4.13);
     float s=min(dot(p-c,p-c)/(r*r),1.0);
     edge+=(1.0-s)*(1.0-s)*(1.0-s);
@@ -374,7 +379,10 @@ const METAL = (function(){
     cont:U('u_contour'),ang:U('u_angle'),scale:U('u_scale'),off:U('u_offset'),
     ptr:U('u_pointer'),ptr2:U('u_pointer2'),amp:U('u_pointerAmp'),amp2:U('u_pointerAmp2'),
     prad:U('u_pointerRadius'),radial:U('u_radial'),grain:U('u_grain'),
-    hole:U('u_hole')};
+    hole:U('u_hole'),unit:U('u_unit')};
+  /* The balls' unit (see the shader): the plate's height, or on a plate
+     narrower than the design's 2.48:1, the size that keeps its density. */
+  const unitOf=(w,h)=>w/h<2.48?Math.sqrt(w*h/2.48):h;
 
   const hex=h=>{h=h.replace('#','');return [parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255,1];};
   const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -401,7 +409,7 @@ const METAL = (function(){
       // only where the plate shows (the hero transition clips it)
       if(!document.elementsFromPoint(e.clientX,e.clientY).includes(canvas))return;
       const r=canvas.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.height, y=(e.clientY-r.top)/r.height;
+      const n=unitOf(r.width,r.height), x=(e.clientX-r.left)/n, y=(e.clientY-r.top)/n;
       // a press inside a hole that is still open grows it again from its current size
       hole.from=Math.hypot(x-hole.x,y-hole.y)<hole.r?hole.r:0;
       hole.x=x; hole.y=y; hole.age=0;
@@ -455,6 +463,7 @@ const METAL = (function(){
     gl.uniform1f(u.prad,P.magnetRadius);
     gl.uniform1f(u.radial,P.radial); gl.uniform1f(u.grain,P.grain);
     gl.uniform3f(u.hole,hole.x,hole.y,hole.r);
+    gl.uniform1f(u.unit,unitOf(W,H));
     gl.drawArrays(gl.TRIANGLES,0,3);
     requestAnimationFrame(frame);
   }
@@ -473,6 +482,6 @@ const METAL = (function(){
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script src="about.js?v=3"></script>
+  <script src="about.js?v=4"></script>
 </body>
 </html>

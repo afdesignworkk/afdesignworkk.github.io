@@ -24,13 +24,13 @@ html.playground,
 .pg-topbar,
 .pg-layer {
   position: fixed;
-  left: max(0px, calc(50% - 720px));
+  left: max(0px, calc(50% - calc(720 * var(--px))));
   top: 0;
-  width: 1440px;
+  width: calc(1440 * var(--px));
 }
 
 .pg-topbar {
-  height: 84px;
+  height: calc(84 * var(--px));
   z-index: 3;
   pointer-events: none;
 }
@@ -69,42 +69,42 @@ html.playground,
 .pg-piece {
   position: absolute;
   display: block;
-  border-radius: 4px;
+  border-radius: calc(4 * var(--px));
   -webkit-user-drag: none;
 }
 
-.pg-piece--nibble-wonders { left: 394px; top: -159px; width: 350px; height: 437.5px; }
-.pg-piece--contracts { left: 968px; top: 62px; width: 500px; height: 281.25px; }
-.pg-piece--coworker { left: -330px; top: 111px; width: 500px; height: 281.25px; }
-.pg-piece--logo-moon { left: 1591px; top: 397px; width: 230px; height: 230px; }
-.pg-piece--cinema { left: 1692px; top: -109px; width: 500px; height: 281.25px; }
-.pg-piece--nibble-color { left: -554px; top: 617px; width: 350px; height: 437.5px; }
-.pg-piece--logo-gl { left: 20px; top: 680px; width: 230px; height: 230px; }
-.pg-piece--valentines { left: 1198px; top: 725px; width: 350px; height: 350px; }
-.pg-piece--anan { left: 474px; top: 802px; width: 500px; height: 281.25px; }
+.pg-piece--nibble-wonders { left: calc(394 * var(--px)); top: calc(-159 * var(--px)); width: calc(350 * var(--px)); height: calc(437.5 * var(--px)); }
+.pg-piece--contracts { left: calc(968 * var(--px)); top: calc(62 * var(--px)); width: calc(500 * var(--px)); height: calc(281.25 * var(--px)); }
+.pg-piece--coworker { left: calc(-330 * var(--px)); top: calc(111 * var(--px)); width: calc(500 * var(--px)); height: calc(281.25 * var(--px)); }
+.pg-piece--logo-moon { left: calc(1591 * var(--px)); top: calc(397 * var(--px)); width: calc(230 * var(--px)); height: calc(230 * var(--px)); }
+.pg-piece--cinema { left: calc(1692 * var(--px)); top: calc(-109 * var(--px)); width: calc(500 * var(--px)); height: calc(281.25 * var(--px)); }
+.pg-piece--nibble-color { left: calc(-554 * var(--px)); top: calc(617 * var(--px)); width: calc(350 * var(--px)); height: calc(437.5 * var(--px)); }
+.pg-piece--logo-gl { left: calc(20 * var(--px)); top: calc(680 * var(--px)); width: calc(230 * var(--px)); height: calc(230 * var(--px)); }
+.pg-piece--valentines { left: calc(1198 * var(--px)); top: calc(725 * var(--px)); width: calc(350 * var(--px)); height: calc(350 * var(--px)); }
+.pg-piece--anan { left: calc(474 * var(--px)); top: calc(802 * var(--px)); width: calc(500 * var(--px)); height: calc(281.25 * var(--px)); }
 
 /* ---------- Text ---------- */
 
 .pg-title {
   position: absolute;
-  left: 206px;
-  top: 440px;
-  width: 1029px;
+  left: calc(206 * var(--px));
+  top: calc(440 * var(--px));
+  width: calc(1029 * var(--px));
   text-align: center;
 }
 
 .pg-hint {
   position: absolute;
-  left: 521px;
-  top: 600px;
-  width: 398px;
+  left: calc(521 * var(--px));
+  top: calc(600 * var(--px));
+  width: calc(398 * var(--px));
   text-align: center;
   text-transform: uppercase;
 }
 
 .pg-piece:focus-visible {
-  outline: 2px solid var(--color-blue);
-  outline-offset: 4px;
+  outline: calc(2 * var(--px)) solid var(--color-blue);
+  outline-offset: calc(4 * var(--px));
 }
 
 /* ---------- Full-size view ---------- */
@@ -122,9 +122,9 @@ html.playground,
 
 .pg-view__frame {
   position: absolute;
-  left: max(0px, calc(50% - 720px));
+  left: max(0px, calc(50% - calc(720 * var(--px))));
   top: 0;
-  width: 1440px;
+  width: calc(1440 * var(--px));
   height: 100%;
 }
 
@@ -142,10 +142,10 @@ html.playground,
 /* CLOSE and its X, 12px apart, at the top right of the content column. */
 .pg-view__close {
   position: absolute;
-  right: 100px;
-  top: 76px;
+  right: calc(100 * var(--px));
+  top: calc(76 * var(--px));
   display: flex;
-  gap: 12px;
+  gap: calc(12 * var(--px));
 }
 
 /* CLOSE underlines on hover and keyboard focus like the site's links
@@ -190,21 +190,21 @@ html.playground,
 .pg-view__note,
 .pg-view__size {
   position: absolute;
-  bottom: 76px;
+  bottom: calc(76 * var(--px));
 }
 
 .pg-view__note {
-  left: 100px;
+  left: calc(100 * var(--px));
 }
 
 .pg-view__size {
-  right: 100px;
+  right: calc(100 * var(--px));
   color: var(--color-gray-213);
 }
 
 .pg-view :focus-visible {
   outline: 1px solid var(--color-white);
-  outline-offset: 4px;
+  outline-offset: calc(4 * var(--px));
 }
 
 /* ---------- Loading screen ---------- */
@@ -224,8 +224,8 @@ html.playground,
    page's rolls into the clock. */
 .playground .loader-count {
   position: fixed;
-  left: max(0px, calc(50% - 720px));
-  top: 600px;
-  width: 1440px;
+  left: max(0px, calc(50% - calc(720 * var(--px))));
+  top: calc(600 * var(--px));
+  width: calc(1440 * var(--px));
   text-align: center;
 }

@@ -2,15 +2,17 @@
 <html lang="en" class="playground">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1440">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playground — Anna Fesenko</title>
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=17">
-  <link rel="stylesheet" href="playground.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="playground.css?v=9">
+  <link rel="stylesheet" href="responsive.css?v=1">
+  <script src="responsive.js?v=1"></script>
   <script>
     /* Loading screen: hide the work and the title before the first paint (see
        the loader script at the end of the body). Never under reduced motion. */
@@ -31,6 +33,7 @@
       <a href="index.html#contact">CONTACT</a>
       <a href="playground.html" aria-current="page">PLAYGROUND</a>
     </nav>
+    <button class="topbar__menu type-mono-16 above-grid" type="button" aria-expanded="false">MENU</button>
     <p class="topbar__status type-mono-16 above-grid">
       <span class="topbar__dot">
         <img src="assets/status-dot.svg" width="9" height="9" alt="">
@@ -66,7 +69,7 @@
     </div>
 
     <div class="pg-layer pg-layer--text">
-      <h1 class="pg-title type-display-72">Concepts, visuals, and<br>everything in between.</h1>
+      <h1 class="pg-title type-display-72">Concepts, visuals, and <br>everything in between.</h1>
       <p class="pg-hint type-mono-16">Drag anywhere to look around</p>
     </div>
   </main>
@@ -122,7 +125,7 @@
   const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' '];
   const blockKeys = e => { if (KEYS.includes(e.key)) block(e); };
 
-  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status')];
+  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status'), document.querySelector('.topbar__menu')];
   const work = document.querySelector('.pg-layer--work');
   const title = document.querySelector('.pg-title');
   const hint = document.querySelector('.pg-hint');
@@ -131,18 +134,21 @@
   let grid, count, lineInners, lines, rows, dots;
 
   try {
-    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom of the screen.
-    const H = innerHeight;
+    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom
+    // of the screen: in design pixels on the 1440 page (scaled with it), or,
+    // in the compact layout, the window's own grid (responsive.css).
+    const S = RS.compact ? 1 : RS.s;
+    const W = RS.compact ? document.documentElement.clientWidth : 1440, H = innerHeight / S;
     grid = document.createElementNS(NS, 'svg');
     const attrs = (el, list) => { for (const k in list) el.setAttribute(k, list[k]); return el; };
     const shape = (tag, list) => grid.appendChild(attrs(document.createElementNS(NS, tag), list));
-    attrs(grid, {class: 'loader-grid', width: 1440, height: H, 'aria-hidden': 'true'});
-    const COLS = [83, 720, 1356];
+    attrs(grid, {class: 'loader-grid', width: W * S, height: innerHeight, viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true'});
+    const COLS = RS.compact ? RS.gridColumns(W) : [83, 720, 1356];
     lines = COLS.map(x => shape('rect', {class: 'loader-v', x, y: 0, width: 1, height: H, fill: '#ABABAB'}));
     rows = [];
     dots = [];
     for (let k = 0; 277 + 279 * k < H; k++) {
-      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: 1440, height: 1, fill: '#ABABAB'}));
+      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: W, height: 1, fill: '#ABABAB'}));
       COLS.forEach((x, col) => dots.push({row: k, col, el: shape('circle', {cx: x + 0.5, cy: 277.5 + 279 * k, r: 4, fill: 'none', stroke: '#ABABAB'})}));
     }
     document.body.append(grid);
@@ -152,10 +158,31 @@
     count.className = 'loader-count type-mono-16 above-grid';
     count.setAttribute('aria-hidden', 'true');
     document.body.append(count);
+    // In the compact layout the hint is elsewhere: the count takes its place.
+    if (RS.compact) {
+      const r = hint.getBoundingClientRect();
+      Object.assign(count.style, {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px'});
+    }
 
-    // Title: one mask per line, so each rises on its own.
+    // Title: one mask per line, so each rises on its own — the lines as the
+    // title is written, or in the compact layout, where they run on, the
+    // lines as they fall.
     title.textContent = '';
-    lineInners = text.split(/<br\s*\/?>/i).map(part => {
+    let parts = text.split(/<br\s*\/?>/i);
+    if (RS.compact) {
+      const words = text.replace(/<br\s*\/?>/gi, ' ').split(/\s+/).filter(Boolean)
+        .map(word => Object.assign(document.createElement('span'), {textContent: word}));
+      words.forEach((word, i) => { if (i) title.append(' '); title.append(word); });
+      parts = [];
+      let top = null;
+      for (const word of words) {
+        if (word.offsetTop !== top) { parts.push([]); top = word.offsetTop; }
+        parts[parts.length - 1].push(word.textContent);
+      }
+      parts = parts.map(line => line.join(' '));
+      title.textContent = '';
+    }
+    lineInners = parts.map(part => {
       const line = Object.assign(document.createElement('span'), {className: 'loader-line'});
       const inner = Object.assign(document.createElement('span'), {className: 'loader-line__inner', innerHTML: part});
       line.append(inner);
@@ -286,11 +313,16 @@
   function place(){
     const box = pieces[index].getBoundingClientRect();   // fractional, so the ratio is exact
     const ratio = box.width / box.height;
-    const maxW = 1030, maxH = Math.max(innerHeight - 320, 120);
+    // (In the compact layout: the window less its gutters, 72 clear of the
+    // top for CLOSE and 128 of the bottom for the note and the size.)
+    const s = RS.s, g = RS.gutter(innerWidth);
+    const [left, top, maxW, maxH] = RS.compact
+      ? [g, 72, innerWidth - 2 * g, Math.max(innerHeight - 200, 120)]
+      : [205 * s, 160 * s, 1030 * s, Math.max(innerHeight - 320 * s, 120)];
     const w = Math.min(maxW, maxH * ratio), h = w / ratio;
     Object.assign(image.style, {
       width: w + 'px', height: h + 'px',
-      left: 205 + (maxW - w) / 2 + 'px', top: 160 + (maxH - h) / 2 + 'px',
+      left: left + (maxW - w) / 2 + 'px', top: top + (maxH - h) / 2 + 'px',
       borderRadius: 4 * w / box.width + 'px'
     });
   }
@@ -340,6 +372,14 @@
     if (e.key === 'ArrowLeft') show(index - 1);
   });
 
+  let swipe = null;
+  view.addEventListener('pointerdown', e => { swipe = {x: e.clientX, y: e.clientY}; });
+  view.addEventListener('pointerup', e => {
+    if (!swipe || !root.classList.contains('pg-view-open')) return;
+    const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y;
+    swipe = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+  });
   window.__view = {open, shut, show, get index(){ return index; }};
 })();
 </script>
@@ -365,21 +405,24 @@
   const view = document.querySelector('.pg-view');
   const viewOpen = () => !view.hidden;   // open, or still closing
 
-  // The work's extent in page coordinates (the layers sit at the page's top left).
-  const box = {
-    x0: Math.min(...pieces.map(p => p.offsetLeft)),
-    x1: Math.max(...pieces.map(p => p.offsetLeft + p.offsetWidth)),
-    y0: Math.min(...pieces.map(p => p.offsetTop)),
-    y1: Math.max(...pieces.map(p => p.offsetTop + p.offsetHeight))
-  };
-  let lim;
+  let lim, box;
   function limits(){
+    // The work's extent in page coordinates (the layers sit at the page's top
+    // left), and the room kept around it, at the page's scale.
+    box = {
+      x0: Math.min(...pieces.map(p => p.offsetLeft)),
+      x1: Math.max(...pieces.map(p => p.offsetLeft + p.offsetWidth)),
+      y0: Math.min(...pieces.map(p => p.offsetTop)),
+      y1: Math.max(...pieces.map(p => p.offsetTop + p.offsetHeight))
+    };
+    const s = RS.s, edge = EDGE * s;
     const left = layers[0].getBoundingClientRect().left + px;   // page's left edge on screen
+    const top = layers[0].getBoundingClientRect().top + py;     // and its top (0 but in the compact layout)
     lim = {
-      x0: Math.min(0, left + box.x0 - EDGE),
-      x1: Math.max(0, left + box.x1 + EDGE - innerWidth),
-      y0: Math.min(0, box.y0 - TOP),
-      y1: Math.max(0, box.y1 + EDGE - innerHeight)
+      x0: Math.min(0, left + box.x0 - edge),
+      x1: Math.max(0, left + box.x1 + edge - innerWidth),
+      y0: Math.min(0, top + box.y0 - TOP * s),
+      y1: Math.max(0, top + box.y1 + edge - innerHeight)
     };
   }
 
@@ -482,7 +525,7 @@
     requestAnimationFrame(frame);
   });
 
-  window.__board = {get pos(){ return {px, py, vx, vy}; }, get lim(){ return lim; }, box};
+  window.__board = {get pos(){ return {px, py, vx, vy}; }, get lim(){ return lim; }, get box(){ return box; }};
 })();
 </script>
 

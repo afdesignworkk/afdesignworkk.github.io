@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1440">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anna Fesenko — UI/UX Designer</title>
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="responsive.css?v=1">
+  <script src="responsive.js?v=1"></script>
   <script>
     /* Loading screen: hide the hero parts before the first paint (see the loader
        script at the end of the body). Never under reduced motion, and not when
@@ -35,6 +37,7 @@
         <a href="#contact" data-go="contact">CONTACT</a>
         <a href="playground.html">PLAYGROUND</a>
       </nav>
+      <button class="topbar__menu type-mono-16 above-grid" type="button" aria-expanded="false">MENU</button>
       <p class="topbar__status type-mono-16 above-grid">
         <span class="topbar__dot">
           <img src="assets/status-dot.svg" width="9" height="9" alt="">
@@ -195,7 +198,7 @@
   const blockKeys = e => { if (SCROLL_KEYS.includes(e.key)) block(e); };
 
   const page = document.querySelector('.page');
-  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status')];
+  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status'), document.querySelector('.topbar__menu')];
   const title = document.querySelector('.hero__title');
   const time = document.querySelector('.hero__time');
   const loc = document.querySelector('.hero__location');
@@ -203,23 +206,26 @@
   const intro = document.querySelector('.intro');
   const text = title.textContent;
   const NS = 'http://www.w3.org/2000/svg';
-  let grid, count, lineInners, lines, rows, dots, trackH;
+  let grid, count, lineInners, lines, rows, dots, trackH, open;
 
   try {
     scrollTo(0, 0);
 
-    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom of the screen.
-    const H = innerHeight;
+    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom
+    // of the screen: in design pixels on the 1440 page (scaled with it), or,
+    // in the compact layout, the window's own grid (responsive.css).
+    const S = RS.compact ? 1 : RS.s;
+    const W = RS.compact ? document.documentElement.clientWidth : 1440, H = innerHeight / S;
     grid = document.createElementNS(NS, 'svg');
     const attrs = (el, list) => { for (const k in list) el.setAttribute(k, list[k]); return el; };
     const shape = (tag, list) => grid.appendChild(attrs(document.createElementNS(NS, tag), list));
-    attrs(grid, {class: 'loader-grid', width: 1440, height: H, 'aria-hidden': 'true'});
-    const COLS = [83, 720, 1356];
+    attrs(grid, {class: 'loader-grid', width: W * S, height: innerHeight, viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true'});
+    const COLS = RS.compact ? RS.gridColumns(W) : [83, 720, 1356];
     lines = COLS.map(x => shape('rect', {class: 'loader-v', x, y: 0, width: 1, height: H, fill: '#ABABAB'}));
     rows = [];
     dots = [];
     for (let k = 0; 277 + 279 * k < H; k++) {
-      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: 1440, height: 1, fill: '#ABABAB'}));
+      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: W, height: 1, fill: '#ABABAB'}));
       COLS.forEach((x, col) => dots.push({row: k, col, el: shape('circle', {cx: x + 0.5, cy: 277.5 + 279 * k, r: 4, fill: 'none', stroke: '#ABABAB'})}));
     }
     page.append(grid);
@@ -229,6 +235,8 @@
     count.className = 'loader-count type-mono-16 above-grid';
     count.setAttribute('aria-hidden', 'true');
     time.after(count);
+    // In the compact layout the clock is in the flow: the count takes its place.
+    if (RS.compact) Object.assign(count.style, {left: time.offsetLeft + 'px', top: time.offsetTop + 'px'});
 
     // Headline: split into its rendered lines so each one rises through a mask.
     const words = text.split(' ').map(word => Object.assign(document.createElement('span'), {textContent: word}));
@@ -250,6 +258,19 @@
     });
 
     trackH = track.offsetHeight;
+    // Where the plate opens from: on the design, the grid's centre crossing
+    // (720, 557) — 620 in from each side of the plate and 189 down; in the
+    // compact layout the crossing nearest the plate's middle.
+    if (RS.compact) {
+      const r = track.getBoundingClientRect(), mid = r.left + r.width / 2;
+      const cx = RS.gridColumns(document.documentElement.clientWidth).reduce((a, b) => Math.abs(b - mid) < Math.abs(a - mid) ? b : a);
+      const row = Math.max(0, Math.round((r.top + r.height / 2 - 277) / 279));
+      const cy = Math.min(Math.max(278 + 279 * row, r.top), r.bottom);
+      open = {top: cy - r.top, left: cx - r.left, right: r.right - cx, bottom: r.bottom - cy, extra: 0, round: 4};
+    } else {
+      const s = RS.s;
+      open = {top: 189 * s, left: 620 * s, right: 620 * s, bottom: 311 * s, extra: trackH - 500 * s, round: 4 * s};
+    }
     render(0);
     for (const el of [title, time, loc]) el.style.visibility = 'visible';
   } catch (err) {
@@ -300,7 +321,7 @@
 
     // The plate opens from the centre crossing of the grid (720, 557) to its full box.
     const c = 1 - inOutQuart(seg(t, 2.3, 1.05));
-    track.style.clipPath = `inset(${189 * c}px ${620 * c}px ${trackH - 500 + 311 * c}px round 4px)`;
+    track.style.clipPath = `inset(${open.top * c}px ${open.right * c}px ${open.extra + open.bottom * c}px ${open.left * c}px round ${open.round}px)`;
   }
 
   function finish(){
@@ -327,7 +348,7 @@
    time row, then shrinks toward the top centre (the metaballs are cropped, not
    scaled) while the introduction scrolls up beneath it. */
 (function(){
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || RS.compact) return;
   const plate = document.getElementById('plate');
   const START = 280;                    // scrollY where the plate reaches top: 88px and sticks
   const DIST = 410;                     // scroll length of the shrink (= --hero-pin)
@@ -335,9 +356,10 @@
   const LIFT = 94;                      // visible top edge ends 32px from the viewport top
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
   function update(){
-    const e = ease(Math.min(Math.max((scrollY - START) / DIST, 0), 1));
-    plate.style.transform = e ? `translateY(${-LIFT * e}px)` : '';
-    plate.style.clipPath = e ? `inset(${INSET_Y * e}px ${INSET_X * e}px round 4px)` : '';
+    const s = RS.s;                     // the page's scale (design pixels)
+    const e = ease(Math.min(Math.max((scrollY - START * s) / (DIST * s), 0), 1));
+    plate.style.transform = e ? `translateY(${-LIFT * s * e}px)` : '';
+    plate.style.clipPath = e ? `inset(${INSET_Y * s * e}px ${INSET_X * s * e}px round ${4 * s}px)` : '';
   }
   addEventListener('scroll', update, {passive: true});
   update();
@@ -400,13 +422,49 @@
   const BARS = 12, DUR = 0.42, EACH = 0.035;
   const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];  // start order of each bar, top to bottom
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+
+  /* Compact layout: the works are a column in the page and services a blue
+     screen after them, uncovered through the same bars (from the top down,
+     each opening from the right) as it comes up the window: 0 as its top
+     comes in at the bottom, 1 once it is 85% of the way up. */
+  if (RS.compact) {
+    const services = document.querySelector('.services');
+    // Each service's number goes beside its name, on the left and the right
+    // in turn (on the design they are placed apart from the names).
+    document.querySelectorAll('.services__index').forEach((index, i) => {
+      const name = document.querySelector(`.services__name--${i + 1}`);
+      if (name) name.parentElement.insertBefore(index, i % 2 ? name.nextSibling : name);
+    });
+    function uncover(){
+      const vh = innerHeight, {top} = services.getBoundingClientRect();
+      const p = Math.min(Math.max((vh - top) / (0.85 * vh), 0), 1);
+      if (p >= 1) { reveal.forEach(stage => { stage.style.clipPath = 'none'; }); return; }
+      const t = p * (DUR + EACH * (BARS - 1));
+      const W = services.offsetWidth, H = services.offsetHeight;
+      const points = ['100% 0', '100% 100%'];
+      for (let i = BARS - 1; i >= 0; i--) {
+        const open = REDUCED ? p : ease(Math.min(Math.max((t - EACH * SLOT[i]) / DUR, 0), 1));
+        const edge = Math.round(W * (1 - open));
+        const bottom = i === BARS - 1 ? '100%' : `${Math.round(H / BARS * (i + 1))}px`;
+        points.push(`${edge}px ${bottom}`, `${edge}px ${Math.round(H / BARS * i)}px`);
+      }
+      const clip = `polygon(${points.join(', ')})`;
+      reveal.forEach(stage => { stage.style.clipPath = clip; });
+    }
+    addEventListener('scroll', uncover, {passive: true});
+    addEventListener('resize', uncover);
+    uncover();
+    return;
+  }
+
   function update(){
+    const s = RS.s;                    // the page's scale (design pixels)
     const {top, height} = track.getBoundingClientRect();
     const pin = height - innerHeight;  // scroll length the stages stay stuck (= ROW_END)
-    const x = Math.min(Math.max(-top, 0), pin) / pin * ROW_END;
+    const x = Math.min(Math.max(-top, 0), pin) / pin * ROW_END * s;
     rows.forEach(row => { row.style.transform = `translateX(${-x}px)`; });
     // Reveal progress over the 1440px the end stages stay pinned.
-    const p = 1 - Math.min(Math.max(ROW_END - x, 0), 1440) / 1440;
+    const p = 1 - Math.min(Math.max(ROW_END * s - x, 0), 1440 * s) / (1440 * s);
     const t = p * (DUR + EACH * (BARS - 1));
     // One stepped polygon: the stage's right side, then each bar's left edge
     // from the bottom bar up. Bars split the viewport; the last runs to the
@@ -414,7 +472,7 @@
     const points = ['100% 0', '100% 100%'];
     for (let i = BARS - 1; i >= 0; i--) {
       const open = REDUCED ? p : ease(Math.min(Math.max((t - EACH * SLOT[i]) / DUR, 0), 1));
-      const edge = Math.round(1440 * (1 - open));
+      const edge = Math.round(1440 * s * (1 - open));
       const bottom = i === BARS - 1 ? '100%' : `${Math.round(innerHeight / BARS * (i + 1))}px`;
       points.push(`${edge}px ${bottom}`, `${edge}px ${Math.round(innerHeight / BARS * i)}px`);
     }
@@ -438,13 +496,13 @@
    prototype's, measured against the full-screen blue band, and the letters
    are clipped to the band as they were to the prototype's panel. */
 (function(){
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || RS.compact) return;
   const track = document.querySelector('.services');
   const stage = track.querySelector('.end__stage');
   const REVEAL = 1440;                         // scroll the bar reveal takes first
-  const OUTRO = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));  // and the footer reveal last
+  let OUTRO = RS.len('--footer-reveal');       // and the footer reveal last
   const band = document.querySelector('.services__band');
-  const BREAK = 124;                           // rise a line breaks apart over (prototype: 14% of the list's travel ≈ 1.63 line steps)
+  const BREAK = 124 * RS.s;                    // rise a line breaks apart over (prototype: 14% of the list's travel ≈ 1.63 line steps)
   const EACH = 0.004 / 0.756;                  // prototype letter stagger, as a share of one break
   const lines = [
     [document.querySelector('.services__label')],
@@ -484,9 +542,12 @@
   const lastLine = lines[lines.length - 1];
   const travel = lastLine.start + BREAK * (1 + Math.max(...lastLine.letters.map(l => l.delay)));
   let risen = -1;
+  // The lines were measured at the page's scale then; k takes it to now's.
+  const S0 = RS.s;
   function update(){
-    const pin = track.offsetHeight - stage.offsetHeight - REVEAL - OUTRO;  // = --services-pin
-    const s = Math.min(Math.max(-track.getBoundingClientRect().top - REVEAL, 0), Math.max(pin, 0));
+    const k = RS.s / S0, reveal = REVEAL * RS.s;
+    const pin = track.offsetHeight - stage.offsetHeight - reveal - OUTRO;  // = --services-pin
+    const s = Math.min(Math.max(-track.getBoundingClientRect().top - reveal, 0), Math.max(pin, 0));
     const rise = pin > 0 ? s / pin * travel : 0;
     if (rise === risen) return;
     risen = rise;
@@ -501,8 +562,8 @@
         }
         // The band in the line's own coordinates, moved down by the rise.
         const x0 = -el.offsetLeft, x1 = bandWidth - el.offsetLeft;
-        const y0 = bandTop - el.offsetTop + rise, y1 = y0 + bandHeight;
-        el.style.transform = rise ? `translateY(${-rise}px)` : '';
+        const y0 = bandTop - el.offsetTop + rise * k, y1 = y0 + bandHeight;
+        el.style.transform = rise ? `translateY(${-rise * k}px)` : '';
         el.style.clipPath = `polygon(${x0}px ${y0}px, ${x1}px ${y0}px, ${x1}px ${y1}px, ${x0}px ${y1}px)`;
       });
       line.letters.forEach(l => {
@@ -510,13 +571,13 @@
         const e = p * p;  // power2.in
         if (e === l.shown) return;
         l.shown = e;
-        l.span.style.transform = e ? `translate(${l.x * e}px, ${l.y * e}px) rotate(${l.rotate * e}deg) scale(${1 - 0.55 * e})` : '';
+        l.span.style.transform = e ? `translate(${l.x * k * e}px, ${l.y * k * e}px) rotate(${l.rotate * e}deg) scale(${1 - 0.55 * e})` : '';
         l.span.style.opacity = e ? 1 - e : '';
       });
     });
   }
   addEventListener('scroll', update, {passive: true});
-  addEventListener('resize', () => { risen = -1; update(); });
+  addEventListener('resize', () => { OUTRO = RS.len('--footer-reveal'); risen = -1; update(); });
   update();
 })();
 </script>
@@ -535,11 +596,38 @@
   const stages = [...track.querySelectorAll('.end__stage')];
   const under = document.querySelector('.services .end__stage--front .end__block');
   const band = track.querySelector('.footer__band');
-  const REVEAL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));
-  const BARS = 12, DUR = 0.42, EACH = 0.035, WIDTH = 1440;
+  let REVEAL = RS.len('--footer-reveal');
+  const BARS = 12, DUR = 0.42, EACH = 0.035;
   const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];  // start order of each bar, left to right
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+
+  /* Compact layout: the footer ends the page in the flow and comes up through
+     the same bars as it comes into the window, over services' blue: 0 as its
+     top comes in, 1 once it is all on screen (the end of the page). */
+  if (RS.compact) {
+    function rise(){
+      const vh = innerHeight, {top, height} = track.getBoundingClientRect();
+      const p = Math.min(Math.max((vh - top) / Math.min(height, 0.9 * vh), 0), 1);
+      if (p >= 1) { stages.forEach(stage => { stage.style.clipPath = 'none'; }); return; }
+      const t = p * (DUR + EACH * (BARS - 1)), W = track.offsetWidth;
+      const edges = [];
+      for (let i = BARS - 1; i >= 0; i--) {
+        const open = REDUCED ? p : ease(Math.min(Math.max((t - EACH * SLOT[i]) / DUR, 0), 1));
+        const y = (height * (1 - open)).toFixed(1);
+        edges.push(`${W / BARS * (i + 1)}px ${y}px`, `${W / BARS * i}px ${y}px`);
+      }
+      const clip = `polygon(0 100%, 100% 100%, ${edges.join(', ')})`;
+      stages.forEach(stage => { stage.style.clipPath = clip; });
+    }
+    addEventListener('scroll', rise, {passive: true});
+    addEventListener('resize', rise);
+    rise();
+    return;
+  }
+
+  addEventListener('resize', () => { REVEAL = RS.len('--footer-reveal'); });
   function update(){
+    const WIDTH = 1440 * RS.s;
     const {top, height} = track.getBoundingClientRect();
     const pin = height - innerHeight;  // scroll length the stages stay stuck
     const p = Math.min(Math.max((-top - (pin - REVEAL)) / REVEAL, 0), 1);
@@ -592,7 +680,7 @@
   const targets = {
     top: () => 0,
     about: () => pageTop(document.querySelector('.intro__label')) - innerHeight * 0.2,
-    projects: () => pageTop(cases),
+    projects: () => pageTop(cases) - (RS.compact ? 32 : 0),
     contact: () => document.documentElement.scrollHeight - innerHeight
   };
   document.querySelectorAll('[data-go]').forEach(link => link.addEventListener('click', e => {
@@ -740,6 +828,7 @@ uniform vec2  u_offset, u_pointer, u_pointer2;
 uniform float u_pointerAmp, u_pointerAmp2, u_pointerRadius;
 uniform float u_radial, u_grain;
 uniform vec3  u_hole;
+uniform float u_unit;
 out vec4 fragColor;
 #define PI 3.14159265358979323846
 
@@ -785,15 +874,16 @@ void main(){
      wandering paths (two sines per axis, so they spread evenly instead of
      piling up at the edges); each adds a bounded bump (1 − d²/r²)³, so
      neighbours melt together and fill the plate. p is measured in plate
-     heights from the top-left corner. The press hole scales the field down
+     heights from the top-left corner (u_unit: on a narrower plate, a unit
+     that keeps the design's density). The press hole scales the field down
      around its centre, so it bites deeper where the blobs are thin. */
-  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_resolution.y;
-  float aspect=u_resolution.x/u_resolution.y, bt=20.0+0.2*u_time;
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)/u_unit;
+  float aspect=u_resolution.x/u_unit, tall=u_resolution.y/u_unit, bt=20.0+0.2*u_time;
   float edge=0.0;
   for(int i=0;i<12;i++){
     float fi=float(i);
     vec2 c=vec2(aspect*(0.5+0.32*sin(bt*(0.23+0.041*fi)+fi*1.71)+0.24*sin(bt*(0.37-0.023*fi)+fi*0.83)),
-                0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1));
+                tall*(0.5+0.34*sin(bt*(0.31+0.037*mod(fi*3.0,12.0))+fi*2.39)+0.22*sin(bt*(0.19+0.029*fi)+fi*3.1)));
     float r=0.52+0.08*sin(fi*4.13);
     float s=min(dot(p-c,p-c)/(r*r),1.0);
     edge+=(1.0-s)*(1.0-s)*(1.0-s);
@@ -925,7 +1015,10 @@ const METAL = (function(){
     cont:U('u_contour'),ang:U('u_angle'),scale:U('u_scale'),off:U('u_offset'),
     ptr:U('u_pointer'),ptr2:U('u_pointer2'),amp:U('u_pointerAmp'),amp2:U('u_pointerAmp2'),
     prad:U('u_pointerRadius'),radial:U('u_radial'),grain:U('u_grain'),
-    hole:U('u_hole')};
+    hole:U('u_hole'),unit:U('u_unit')};
+  /* The balls' unit (see the shader): the plate's height, or on a plate
+     narrower than the design's 2.48:1, the size that keeps its density. */
+  const unitOf=(w,h)=>w/h<2.48?Math.sqrt(w*h/2.48):h;
 
   const hex=h=>{h=h.replace('#','');return [parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255,1];};
   const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -952,7 +1045,7 @@ const METAL = (function(){
       // only where the plate shows (the hero transition clips it)
       if(!document.elementsFromPoint(e.clientX,e.clientY).includes(canvas))return;
       const r=canvas.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.height, y=(e.clientY-r.top)/r.height;
+      const n=unitOf(r.width,r.height), x=(e.clientX-r.left)/n, y=(e.clientY-r.top)/n;
       // a press inside a hole that is still open grows it again from its current size
       hole.from=Math.hypot(x-hole.x,y-hole.y)<hole.r?hole.r:0;
       hole.x=x; hole.y=y; hole.age=0;
@@ -1006,6 +1099,7 @@ const METAL = (function(){
     gl.uniform1f(u.prad,P.magnetRadius);
     gl.uniform1f(u.radial,P.radial); gl.uniform1f(u.grain,P.grain);
     gl.uniform3f(u.hole,hole.x,hole.y,hole.r);
+    gl.uniform1f(u.unit,unitOf(W,H));
     gl.drawArrays(gl.TRIANGLES,0,3);
     requestAnimationFrame(frame);
   }
@@ -1027,6 +1121,7 @@ uniform float u_time;
 uniform vec3  u_balls[24];
 uniform int   u_count;
 uniform float u_line;
+uniform float u_width, u_pool;  // the footer across, in these units; the pool's straight half-length
 uniform vec2  u_pointer, u_pointer2;
 uniform float u_pointerAmp;
 out vec4 fragColor;
@@ -1065,11 +1160,11 @@ float getColorChanges(float c1,float c2,float sp,vec3 w,float blur,float bump){
   return ch;
 }
 void main(){
-  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)*(1440.0/u_resolution.x);
+  vec2 p=vec2(gl_FragCoord.x,u_resolution.y-gl_FragCoord.y)*(u_width/u_resolution.x);
   if(p.y<u_line){fragColor=vec4(0.0);return;}
 
   // the pool: a band under the text with rounded ends and a flat top
-  vec2 d=vec2(max(abs(p.x-720.0)-590.0,0.0),p.y-u_line);
+  vec2 d=vec2(max(abs(p.x-0.5*u_width)-u_pool,0.0),p.y-u_line);
   float s=min(dot(d,d)/6400.0,1.0);
   float edge=(1.0-s)*(1.0-s)*(1.0-s);
   for(int i=0;i<24;i++){
@@ -1084,7 +1179,7 @@ void main(){
   if(edge<0.2){fragColor=vec4(0.0);return;}
 
   float t=0.3*(u_time+2.8);
-  vec2 centre=vec2(720.0,u_line+133.0);
+  vec2 centre=vec2(0.5*u_width,u_line+133.0);
   vec2 uv=(p-centre)/1000.0+0.5;
   float cycleWidth=repetition;
   vec2 rotatedUV=uv;  // the hero's angle (70) means no rotation
@@ -1188,8 +1283,27 @@ void main(){
   if (!gl) return;
   const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const track = document.querySelector('.footer');
-  const REVEAL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));
-  const H = 660, MAX = 24, DRIPS = 6, GRAVITY = 900;
+  let REVEAL = RS.len('--footer-reveal');
+  addEventListener('resize', () => { REVEAL = RS.len('--footer-reveal'); });
+  const MAX = 24, GRAVITY = 900;
+
+  /* The footer in drip units: 1440 across on the design (a design pixel
+     each, whatever the page's scale) and 660 down. In the compact layout the
+     footer is as tall as its text needs, at 1.4 units to the pixel so the
+     drops keep a size a phone can see: fewer of them, nearer the edges, and
+     the pool 32px under the last line of text. */
+  let W = 1440, H = 660, DRIPS = 6, EDGE = 150, GAP = 150, POOL = 590, SWELL = 470;
+  function measure() {
+    if (!RS.compact) return;
+    const k = 1.4, box = canvas.getBoundingClientRect();
+    W = box.width * k;
+    H = box.height * k;
+    DRIPS = Math.min(6, Math.max(3, Math.floor(W / 170)));
+    EDGE = 70; GAP = 90; POOL = W / 2 - 60; SWELL = W / 2 - 120;
+    const text = document.querySelectorAll('.footer__copyright, .footer__credit, .ab-footer__copyright, .ab-footer__credit');
+    const bottom = Math.max(...[...text].map(el => el.getBoundingClientRect().bottom));
+    if (isFinite(bottom)) line = (bottom - box.top + 32) * k;
+  }
   const clamp = x => Math.min(Math.max(x, 0), 1);
 
   /* The pool's top sits on a grid line. The grid is fixed to the screen (rows
@@ -1206,7 +1320,12 @@ void main(){
     }
     line = best === null ? LINE : best;
   }
-  placeLine(innerHeight - H);
+  measure();
+  if (!RS.compact) placeLine(innerHeight / RS.s - H);
+  addEventListener('resize', () => {
+    measure();
+    drips.forEach(d => { if (d.x > W - EDGE) d.x = EDGE + Math.random() * (W - 2 * EDGE); });
+  });
 
   /* Pointer magnet, as on the hero plate: while the pointer is over the footer
      the chrome's reflections swirl around it, with a second, lagging swirl
@@ -1223,8 +1342,8 @@ void main(){
   function restart(drip, now) {
     let x = 0;
     for (let tries = 0; tries < 30; tries++) {
-      x = 150 + Math.random() * 1140;
-      if (drips.every(o => o === drip || Math.abs(o.x - x) > 150)) break;
+      x = EDGE + Math.random() * (W - 2 * EDGE);
+      if (drips.every(o => o === drip || Math.abs(o.x - x) > GAP)) break;
     }
     Object.assign(drip, {
       x, R: 26 + 16 * Math.random(), start: now + 0.1 + 0.7 * Math.random(), gather: 1.5 + 1.1 * Math.random(),
@@ -1242,7 +1361,7 @@ void main(){
     count = 0;
     // three wide swells keep the pool's lower edge moving slowly
     for (let i = 0; i < 3; i++) {
-      ball(720 + 470 * Math.sin(now * (0.07 + 0.02 * i) + i * 2.1), line + 8, 36 + 8 * Math.sin(now * 0.3 + i * 1.7));
+      ball(W / 2 + SWELL * Math.sin(now * (0.07 + 0.02 * i) + i * 2.1), line + 8, 36 + 8 * Math.sin(now * 0.3 + i * 1.7));
     }
     drips.forEach(d => {
       if (now < d.start) return;
@@ -1290,7 +1409,7 @@ void main(){
   gl.enableVertexAttribArray(attr);
   gl.vertexAttribPointer(attr, 2, gl.FLOAT, false, 0, 0);
   const loc = {
-    res: 'u_resolution', time: 'u_time', balls: 'u_balls', count: 'u_count', line: 'u_line',
+    res: 'u_resolution', time: 'u_time', balls: 'u_balls', count: 'u_count', line: 'u_line', width: 'u_width', pool: 'u_pool',
     ptr: 'u_pointer', ptr2: 'u_pointer2', amp: 'u_pointerAmp'
   };
   Object.keys(loc).forEach(key => { loc[key] = gl.getUniformLocation(program, loc[key]); });
@@ -1299,9 +1418,11 @@ void main(){
   function frame(now) {
     const dt = Math.min(Math.max((now - last) / 1000, 0), 1 / 20);
     last = now;
-    // Only once the footer's bars have started to rise.
+    // Only once the footer's bars have started to rise (in the compact
+    // layout, while the footer is on screen).
     const {top, height} = track.getBoundingClientRect();
-    if (top < innerHeight && -top > height - innerHeight - REVEAL) {
+    const seen = RS.compact ? top < innerHeight && top + height > 0 : top < innerHeight && -top > height - innerHeight - REVEAL;
+    if (seen) {
       const dpr = Math.min(devicePixelRatio || 1, 2);
       const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
       if (canvas.width !== w || canvas.height !== h) {
@@ -1310,12 +1431,13 @@ void main(){
       }
       // The footer is pinned while it shows, so its box is where it sits on screen.
       const box = canvas.getBoundingClientRect();
-      placeLine(box.top);
+      if (RS.compact) measure();
+      else placeLine(box.top / RS.s);
       if (!REDUCED) { clock += dt; step(clock, dt); }
 
       // Pointer in footer pixels; the lagging swirl chases it.
-      const px = (pointer.x - box.left) * 1440 / box.width, py = (pointer.y - box.top) * 1440 / box.width;
-      const target = pointer.on && px >= 0 && px <= 1440 && py >= 0 && py <= H ? MAGNET : 0;
+      const px = (pointer.x - box.left) * W / box.width, py = (pointer.y - box.top) * W / box.width;
+      const target = pointer.on && px >= 0 && px <= W && py >= 0 && py <= H ? MAGNET : 0;
       amp += (target - amp) * (1 - Math.exp(-dt / (target > amp ? 0.09 : 0.3)));
       if (pointer.on && !lag.set) { lag.x = px; lag.y = py; lag.set = true; }
       const follow = 1 - Math.exp(-dt / 0.13);
@@ -1327,6 +1449,8 @@ void main(){
       gl.uniform3fv(loc.balls, balls);
       gl.uniform1i(loc.count, count);
       gl.uniform1f(loc.line, line);
+      gl.uniform1f(loc.width, W);
+      gl.uniform1f(loc.pool, POOL);
       gl.uniform2f(loc.ptr, px, py);
       gl.uniform2f(loc.ptr2, lag.x, lag.y);
       gl.uniform1f(loc.amp, amp);

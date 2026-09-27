@@ -1,0 +1,1139 @@
+/* Responsive — the compact layout, for windows under 1200px: tablets and
+   phones. Loaded after each page's own stylesheet on every page.
+
+   From 1200 up the pages are the design, scaled to the window between 1200
+   and 1439 (see responsive.js). Under 1200 everything that sits at its Figma
+   coordinates goes back into the flow: one column on a phone, two where a
+   tablet has the room, with the page gutter --g at the sides. The site stays
+   itself: the grid lines fixed to the window, text over them and images and
+   the black under them, the chrome in the hero and the headlines, the bars
+   uncovering services and the footer, the footer's drips. What pins and
+   slides sideways on the design simply scrolls here. */
+
+/* MENU only shows on a phone (see the end). */
+.topbar__menu {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+
+  :root {
+    /* The page gutter: 20 on a phone, 40 at 768, up to 48 (responsive.js
+       sets it from the same formula, so the grid lines match its own). */
+    --g: clamp(20px, 5.2vw, 48px);
+    --grid-l: 12px;
+    --grid-c: 50%;
+    --grid-r: calc(100% - 13px);
+
+    /* Nothing is pinned. */
+    --hero-pin: 0px;
+    --hero-shift: 0px;
+    --services-pin: 0px;
+
+    /* The space between the parts of a page. */
+    --gap-section: clamp(96px, 16vw, 160px);
+    --gap-block: clamp(72px, 12vw, 120px);
+  }
+
+  body {
+    min-width: 0;
+  }
+
+  /* ---------- Type: the design's scale, sized to the window ---------- */
+
+  .type-display-72 {
+    font-size: clamp(36px, 7vw + 10px, 72px);
+    line-height: 1;
+  }
+
+  .type-display-60 {
+    font-size: clamp(30px, 5vw + 11px, 60px);
+    line-height: 1;
+  }
+
+  .type-body-30 {
+    font-size: clamp(20px, 1.6vw + 14px, 28px);
+    line-height: 1.2;
+  }
+
+  .type-mono-16 {
+    font-size: clamp(13px, 0.4vw + 11.5px, 16px);
+    line-height: 1.25;
+  }
+
+  .type-mono-12 {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .type-body-16 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  /* ---------- The grid lines ----------
+
+     The window's own grid, fixed like the design's: a line just outside
+     each gutter and one down the middle, rows at 277 + 279k, and a ring at
+     every crossing. The top 3px are cut away, where the ring above the
+     first row would peek in. */
+
+  .grid-overlay {
+    display: none;
+  }
+
+  body::before {
+    --ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='279'%3E%3Ccircle cx='4.5' cy='4.5' r='4' fill='none' stroke='%23ABABAB'/%3E%3C/svg%3E");
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--grid-line-opacity);
+    clip-path: inset(3px 0 0 0);
+    background:
+      var(--ring) calc(var(--grid-l) - 4px) 273px / 9px 279px repeat-y,
+      var(--ring) calc(var(--grid-c) - 4px) 273px / 9px 279px repeat-y,
+      var(--ring) calc(var(--grid-r) - 4px) 273px / 9px 279px repeat-y,
+      linear-gradient(#ababab, #ababab) var(--grid-l) 0 / 1px 100% no-repeat,
+      linear-gradient(#ababab, #ababab) var(--grid-c) 0 / 1px 100% no-repeat,
+      linear-gradient(#ababab, #ababab) var(--grid-r) 0 / 1px 100% no-repeat,
+      linear-gradient(#ababab 1px, transparent 1px) 0 277px / 100% 279px repeat-y;
+  }
+
+  .is-loading body::before {
+    opacity: 0;
+  }
+
+  /* ---------- Top bar ---------- */
+
+  .topbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px var(--g) 0;
+  }
+
+  .topbar__brand,
+  .topbar__nav,
+  .topbar__status {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+
+  .topbar__nav {
+    gap: clamp(16px, 2.4vw, 24px);
+  }
+
+  /* ================================================================ Home */
+
+  .page {
+    width: auto;
+    height: auto;
+  }
+
+  /* The headline, the clock and the place under it, then the plate. */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding: 0 var(--g);
+    margin-top: clamp(64px, 10vw, 100px);
+  }
+
+  .hero__title {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    grid-column: 1 / -1;
+    text-wrap: balance;
+  }
+
+  .hero__time,
+  .hero__location {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    margin-top: clamp(40px, 8vw, 72px);
+  }
+
+  .hero__location {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .hero__track {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    grid-column: 1 / -1;
+    margin-top: 16px;
+  }
+
+  .hero__media {
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* The introduction: her photograph beside the words on a tablet, above
+     them on a phone. */
+  .intro,
+  .cases {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    padding: 0 var(--g);
+    margin-top: var(--gap-section);
+  }
+
+  .intro {
+    display: grid;
+    grid-template-columns: clamp(160px, 22vw, 211px) minmax(0, 1fr);
+    column-gap: clamp(32px, 7vw, 105px);
+    align-items: start;
+  }
+
+  .intro__photo {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 211 / 296;
+    grid-column: 1;
+    grid-row: 1 / span 4;
+  }
+
+  .intro__label,
+  .intro__lead,
+  .intro__aside,
+  .intro__link {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    grid-column: 2;
+  }
+
+  .intro__lead {
+    margin-top: 4px;
+  }
+
+  /* The second paragraph and the link stand in, as on the design. */
+  .intro__aside {
+    margin-top: 0.6em;
+    padding-left: 11%;
+  }
+
+  .intro__link {
+    justify-self: start;
+    margin: 20px 0 0 11%;
+  }
+
+  /* The works, one under another: the picture with its name and year under
+     it. The cards and the pictures are in two layers on the design (text
+     over the grid lines, pictures under them); here both layers let their
+     parts into one grid, each card over its picture. */
+  .cases__track {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cases__stage,
+  .cases__row {
+    display: contents;
+  }
+
+  .cases__label,
+  .cases__title {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+  }
+
+  .cases__label { grid-area: 1 / 1; }
+
+  .cases__title {
+    grid-area: 2 / 1;
+    margin: 8px 0 40px;
+    text-wrap: balance;
+  }
+
+  .cases__more {
+    display: none;
+  }
+
+  .cases__image {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 608 / 424;
+    align-self: start;
+  }
+
+  /* The card is as tall as the picture plus its line of text, and sits over
+     the picture, so the picture opens the case study too. */
+  .cases__card {
+    position: relative;
+    z-index: 2;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-content: start;
+  }
+
+  .cases__card::before {
+    content: "";
+    grid-column: 1 / -1;
+    aspect-ratio: 608 / 424;
+    margin-bottom: 16px;
+  }
+
+  .cases__name,
+  .cases__year {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  .cases__name {
+    white-space: normal;
+  }
+
+  .cases__image--1, .cases__card--1 { grid-area: 3 / 1; }
+  .cases__image--2, .cases__card--2 { grid-area: 4 / 1; margin-top: 40px; }
+  .cases__image--3, .cases__card--3 { grid-area: 5 / 1; margin-top: 40px; }
+
+  /* Services: a blue screen, uncovered through the bars as it comes up the
+     window (the case studies script). Its blue is the ground layer, under
+     the grid lines, and its words the front one, over them. */
+  .services,
+  .footer {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    display: grid;
+  }
+
+  .services {
+    margin-top: var(--gap-section);
+  }
+
+  .end__stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .end__block {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+  }
+
+  .services .end__block {
+    top: auto;
+  }
+
+  .services .end__stage--ground .end__block,
+  .services__band {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+  }
+
+  /* MY SERVICES, then the five services, each with its number beside it —
+     on the left and the right in turn, as on the design (the case studies
+     script moves the numbers in beside the names). */
+  .services .end__stage--front {
+    display: grid;
+    align-content: center;
+    min-height: 100svh;
+    padding: 96px var(--g);
+  }
+
+  .services .end__stage--front .end__block {
+    display: grid;
+    justify-items: center;
+    row-gap: clamp(20px, 4vw, 36px);
+  }
+
+  .services__label,
+  .services__name,
+  .services__index {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+  }
+
+  .services__list {
+    display: grid;
+    row-gap: clamp(12px, 3vw, 24px);
+    width: 100%;
+  }
+
+  .services__list li {
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .services__name {
+    display: inline;
+    white-space: normal;
+  }
+
+  .services__index {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 0.4em;
+  }
+
+  .services__index:first-child { margin-right: 12px; }
+  .services__index:last-child { margin-left: 12px; }
+
+  /* The footer ends the page in the flow and comes up through the bars over
+     services' blue (the footer script). Its black and drips are the back
+     layer, under the grid lines, and its words the front one. */
+  .footer {
+    background: var(--color-blue);
+  }
+
+  .footer .end__stage:not(.end__stage--front) .end__block,
+  .footer__band,
+  .footer__drips {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The words: the line, where to write, the links, then the small print,
+     with room under it for the chrome to hang and drip. */
+  .footer .end__stage--front .end__block,
+  .ab-footer--front {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    padding: clamp(64px, 12vw, 100px) var(--g) clamp(220px, 44vw, 300px);
+  }
+
+  .footer__statement,
+  .footer__label,
+  .footer__email,
+  .footer__links,
+  .footer__credit,
+  .footer__copyright,
+  .ab-footer__statement,
+  .ab-footer__label,
+  .ab-footer__email,
+  .ab-footer__links,
+  .ab-footer__credit,
+  .ab-footer__copyright {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    width: auto;
+    grid-column: 1 / -1;
+  }
+
+  .footer__statement,
+  .ab-footer__statement {
+    text-wrap: balance;
+  }
+
+  .footer__label,
+  .ab-footer__label {
+    margin-top: clamp(40px, 8vw, 64px);
+  }
+
+  .footer__email,
+  .ab-footer__email {
+    justify-self: start;
+    margin-top: 4px;
+  }
+
+  .footer__links,
+  .ab-footer__links {
+    margin-top: 32px;
+  }
+
+  .footer__copyright,
+  .footer__credit,
+  .ab-footer__copyright,
+  .ab-footer__credit {
+    margin-top: 40px;
+  }
+
+  .footer__copyright,
+  .ab-footer__copyright { grid-column: 1; }
+
+  .footer__credit,
+  .ab-footer__credit {
+    grid-column: 2;
+    grid-row: 5;
+    text-align: right;
+  }
+
+  /* ========================================================= About, case */
+
+  .about,
+  .case {
+    width: auto;
+  }
+
+  /* The headline's chrome: on the design it is cut to SVG letters; here the
+     letters are ordinary wrapping text, white around black, laid over the
+     chrome in lighten mode — the white stays white and the black letters
+     show the chrome through them. Both sit under the grid lines. */
+  .ap-hero__chrome {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .ap-hero__chrome canvas {
+    left: 0;
+    top: -25%;
+    width: 100%;
+    height: 150%;
+  }
+
+  .ap-hero__fallback,
+  .no-knockout .ap-hero__fallback {
+    display: block;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    z-index: 0;
+    background: var(--color-white);
+    color: var(--color-black);
+    mix-blend-mode: lighten;
+    text-wrap: balance;
+  }
+
+  .ap-hero__fallback br {
+    display: none;
+  }
+
+  .no-knockout .ap-hero__chrome {
+    display: block;
+  }
+
+  /* About: the headline, the deck, the year and the way down, then her
+     photograph, cut from its middle on a phone. */
+  .ap-hero {
+    position: relative;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding: 0 var(--g);
+    margin-top: clamp(64px, 10vw, 100px);
+  }
+
+  .ap-hero .ap-hero__chrome,
+  .ap-hero .ap-hero__fallback {
+    grid-area: 1 / 1 / 2 / -1;
+    align-self: stretch;
+  }
+
+  .ap-hero__deck,
+  .ap-hero__since,
+  .ap-hero__cue {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+  }
+
+  .ap-hero__deck {
+    grid-column: 1 / -1;
+    max-width: 34em;
+    margin-top: 24px;
+  }
+
+  .ap-hero__since,
+  .ap-hero__cue {
+    margin-top: 32px;
+  }
+
+  .ap-hero__cue {
+    justify-self: end;
+  }
+
+  .ap-hero__track {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    grid-column: 1 / -1;
+    margin-top: 16px;
+  }
+
+  .ap-hero__plate {
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* It opens from its middle. */
+  .ap-hero__photo {
+    clip-path: inset(50% 50% 50% 50% round 4px);
+  }
+
+  .ap-hero__photo img {
+    object-position: 52% 50%;
+  }
+
+  /* The story: each heading over its own text. */
+  .ap-section {
+    display: block;
+    padding: 0 var(--g);
+    margin: var(--gap-block) 0 0;
+  }
+
+  .ap-section__head {
+    position: relative;
+    top: auto;
+    margin-bottom: clamp(20px, 4vw, 32px);
+  }
+
+  .ap-section__body p + p {
+    margin-top: 0.8em;
+  }
+
+  /* The end: the two rows of pictures, still sliding sideways as the page
+     goes by, then the footer in the flow, coming up through the bars as it
+     comes into the window (about.js). */
+  .ap-end {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .ap-end__screen {
+    grid-area: 1 / 1;
+    height: auto;
+  }
+
+  .ap-end__stage {
+    grid-area: 2 / 1;
+    position: relative;
+    top: auto;
+    height: auto;
+    clip-path: none;
+  }
+
+  .ap-end__stage .ab-footer {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: auto;
+  }
+
+  .ab-footer {
+    height: auto;
+  }
+
+  .ap-end__stage--ground .ab-footer {
+    height: 100%;
+  }
+
+  .ab-footer__drips {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ap-strips {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    margin: var(--gap-block) 0;
+  }
+
+  .ap-strip {
+    gap: clamp(12px, 2vw, 24px);
+  }
+
+  .ap-strip + .ap-strip {
+    margin-top: clamp(12px, 2vw, 24px);
+  }
+
+  .ap-strip .ab-image {
+    width: clamp(220px, 44vw, 503px);
+    height: auto;
+    aspect-ratio: 503 / 424;
+  }
+
+  .ap-strip--one { margin-left: -22vw; }
+  .ap-strip--two { margin-left: var(--g); }
+
+  /* The case study: the title, the four facts, the pictures and the text in
+     one column, pictures side by side where a tablet has the room. */
+  .cs-hero {
+    padding-top: clamp(64px, 10vw, 100px);
+  }
+
+  .cs-title {
+    display: grid;
+    width: auto;
+    height: auto;
+    margin: 0 var(--g);
+  }
+
+  .cs-title .ap-hero__chrome,
+  .cs-title .ap-hero__fallback {
+    grid-area: 1 / 1;
+    width: auto;
+  }
+
+  .cs-facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px 24px;
+    margin: 32px var(--g) 0;
+  }
+
+  .cs-shot--hero {
+    width: auto;
+    height: auto;
+    aspect-ratio: 1240 / 500;
+    margin: 32px var(--g) 0;
+  }
+
+  .cs-section {
+    display: block;
+    margin: var(--gap-block) var(--g) 0;
+  }
+
+  .cs-section h2 {
+    position: relative;
+    top: auto;
+    margin-bottom: clamp(20px, 4vw, 32px);
+  }
+
+  .cs-section__body p + p {
+    margin-top: 0.8em;
+  }
+
+  .cs-links {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .cs-row {
+    width: auto;
+    aspect-ratio: 1240 / 424;
+    margin: var(--gap-block) var(--g) 0;
+  }
+
+  .cs-row .cs-shot {
+    width: auto;
+    height: auto;
+    min-width: 0;
+  }
+
+  .cs-row .cs-shot--half { flex: 608 1 0; }
+  .cs-row .cs-shot--wide { flex: 819 1 0; }
+  .cs-row .cs-shot--narrow { flex: 397 1 0; }
+
+  .case .ap-end {
+    margin-top: 0;
+  }
+
+  .cs-end__shots {
+    position: relative;
+    left: auto;
+    top: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: var(--gap-block) var(--g);
+  }
+
+  .cs-end__shots .cs-shot {
+    width: auto;
+    height: auto;
+    aspect-ratio: 608 / 424;
+  }
+
+  .cs-end__shots .cs-shot--full {
+    aspect-ratio: 1240 / 424;
+  }
+
+  /* ========================================================== Playground */
+
+  /* The board keeps the design's arrangement at the scale responsive.js
+     gives it (half size on a phone), with its middle in the middle of the
+     window; the title and the hint are set for the window instead. */
+  .pg-topbar {
+    left: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .pg-topbar button {
+    pointer-events: auto;
+  }
+
+  .pg-layer {
+    left: calc(50% - 720 * var(--px));
+    top: calc(50% - 470 * var(--px));
+  }
+
+  .pg-title,
+  .pg-hint {
+    left: calc(720 * var(--px) - 45vw);
+    width: 90vw;
+  }
+
+  .pg-title {
+    top: auto;
+    bottom: calc(-572 * var(--px));
+    font-size: clamp(28px, 5vw + 10px, 72px);
+    text-wrap: balance;
+  }
+
+  .pg-title br {
+    display: none;
+  }
+
+  .pg-hint {
+    top: calc(600 * var(--px) + 4px);
+  }
+
+  .pg-view__frame {
+    left: 0;
+    width: 100%;
+  }
+
+  .pg-view__close {
+    right: var(--g);
+    top: 24px;
+  }
+
+  .pg-view__note {
+    left: var(--g);
+    right: var(--g);
+    bottom: 64px;
+    white-space: normal;
+  }
+
+  .pg-view__size {
+    left: var(--g);
+    right: auto;
+    bottom: 32px;
+  }
+}
+
+/* ------------------------------------------------------------ Phones */
+
+@media (max-width: 767.98px) {
+
+  /* The menu goes behind MENU. */
+  .topbar__nav,
+  .topbar__status {
+    display: none;
+  }
+
+  .topbar__menu {
+    display: block;
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .has-cursor .topbar__menu {
+    cursor: none;
+  }
+
+  .topbar__menu::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .topbar__menu:hover::after,
+  .topbar__menu:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .hero__media {
+    aspect-ratio: 4 / 5;
+  }
+
+  /* The photograph above the words. */
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .intro__photo {
+    width: 132px;
+    grid-row: auto;
+    margin-bottom: 40px;
+  }
+
+  .intro__label,
+  .intro__lead,
+  .intro__aside,
+  .intro__link {
+    grid-column: 1;
+  }
+
+  .intro__aside {
+    padding-left: 18%;
+  }
+
+  .intro__link {
+    margin-left: 18%;
+  }
+
+  .ap-hero__plate {
+    aspect-ratio: 4 / 5;
+  }
+
+  .cs-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cs-shot--hero {
+    aspect-ratio: 4 / 3;
+  }
+
+  .cs-row {
+    flex-direction: column;
+    gap: 12px;
+    aspect-ratio: auto;
+  }
+
+  .cs-row .cs-shot {
+    flex: none;
+    aspect-ratio: 608 / 424;
+  }
+
+  .cs-end__shots {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .cs-end__shots .cs-shot--full {
+    aspect-ratio: 608 / 424;
+  }
+}
+
+/* ------------------------------------------------------------ Tablets */
+
+/* The works in two columns: the title beside the first, the other two under
+   them — the design's row, folded. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .cases__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+
+  .cases__title {
+    margin-bottom: 0;
+    align-self: start;
+  }
+
+  .cases__image--1,
+  .cases__card--1 { grid-area: 1 / 2 / 3 / 3; }
+
+  .cases__image--2,
+  .cases__card--2 { grid-area: 3 / 1; margin-top: 48px; }
+
+  .cases__image--3,
+  .cases__card--3 { grid-area: 3 / 2; margin-top: 48px; }
+}
+
+/* ------------------------------------------------------------ The menu */
+
+/* A black screen over the page (and its grid lines, which it draws again
+   over its black, as the footer shows them) that rises in the site's bars:
+   the brand and CLOSE at the top, the top bar's links set large, and how to
+   get in touch at the foot. */
+.rs-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px var(--g, 20px) 32px;
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.rs-menu[hidden] {
+  display: none;
+}
+
+.rs-menu-open,
+.rs-menu-open body {
+  overflow: hidden;
+}
+
+.rs-menu::before {
+  --ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='279'%3E%3Ccircle cx='4.5' cy='4.5' r='4' fill='none' stroke='%23ABABAB'/%3E%3C/svg%3E");
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grid-line-opacity);
+  clip-path: inset(3px 0 0 0);
+  background:
+    var(--ring) calc(var(--grid-l, 12px) - 4px) 273px / 9px 279px repeat-y,
+    var(--ring) calc(var(--grid-c, 50%) - 4px) 273px / 9px 279px repeat-y,
+    var(--ring) calc(var(--grid-r, 100%) - 4px) 273px / 9px 279px repeat-y,
+    linear-gradient(#ababab, #ababab) var(--grid-l, 12px) 0 / 1px 100% no-repeat,
+    linear-gradient(#ababab, #ababab) var(--grid-c, 50%) 0 / 1px 100% no-repeat,
+    linear-gradient(#ababab, #ababab) var(--grid-r, 100%) 0 / 1px 100% no-repeat,
+    linear-gradient(#ababab 1px, transparent 1px) 0 277px / 100% 279px repeat-y;
+}
+
+.rs-menu > * {
+  position: relative;
+}
+
+.rs-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rs-menu button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.has-cursor .rs-menu button,
+.has-cursor .rs-menu a {
+  cursor: none;
+}
+
+.rs-menu__close {
+  display: flex;
+  gap: 12px;
+}
+
+.rs-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Each link rises through its own mask as the menu opens. */
+.rs-menu__link {
+  display: block;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 13vw, 72px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.rs-menu__link span {
+  display: block;
+}
+
+.rs-menu__link[aria-current] {
+  color: var(--color-gray-151);
+}
+
+.rs-menu__foot {
+  display: grid;
+  gap: 20px;
+}
+
+.rs-menu__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rs-menu__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-blue);
+}
+
+.rs-menu__contact {
+  display: grid;
+  gap: 12px;
+}
+
+.rs-menu__email {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.rs-menu__social {
+  display: flex;
+  gap: 24px;
+  color: var(--color-gray-151);
+}
+
+.rs-menu :focus-visible {
+  outline: 1px solid var(--color-white);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar__menu::after {
+    transition: none;
+  }
+}
