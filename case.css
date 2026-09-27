@@ -93,6 +93,44 @@
   margin-top: 32px;
 }
 
+/* The links under the outcome: grey labels 30px under the text, 24px apart.
+   They underline on hover and focus like the site's other links (styles.css). */
+.cs-links {
+  display: flex;
+  gap: 24px;
+  margin-top: 30px;
+  color: var(--color-gray-151);
+}
+
+.cs-links a {
+  position: relative;
+}
+
+.cs-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: max(1px, 0.04em);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.cs-links a:hover::after,
+.cs-links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-links a::after {
+    transition: none;
+  }
+}
+
 /* ---------- The end ---------- */
 
 /* The last pictures hold on the final screen and the footer comes up over them
