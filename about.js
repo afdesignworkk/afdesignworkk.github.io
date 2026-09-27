@@ -569,7 +569,7 @@ void main(){
 
   /* 4. The footer comes up over the pictures through twelve vertical bars — the
      home page's bars (each 0.42 long with power2.inOut, 0.035 apart, starting
-     in a scattered order), every one opening from the bottom as far as the
+     in order from the left), every one opening from the bottom as far as the
      footer is tall. The footer is in two stages, its black ground under the
      grid lines and its words over them, and both take the same clip so they
      rise as one. It takes the last --ap-reveal of scroll, so the page ends as
@@ -578,7 +578,7 @@ void main(){
   const stages = [...document.querySelectorAll('.ap-end__stage')];
   const footer = document.querySelector('.ap-end__stage .ab-footer');
   const BARS = 12, DUR = 0.42, EACH = 0.035;
-  const SLOT = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 8, 3];  // start order, left to right
+  const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];  // start order, left to right
   const bars = {top: 0, height: 0, reveal: 0, footer: 0, width: 1440};
 
   function drawFooter(y, vh){

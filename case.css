@@ -160,18 +160,25 @@
 
 /* ---------- The end ---------- */
 
-/* The last pictures hold on the final screen and the footer comes up over them
-   in twelve bars, as the About page's pictures do (about.css .ap-end,
-   about.js). They hold --cs-hold from the top of the window: the mockup's 96px
-   under the outcome where the window has room for both rows, less on shorter
-   windows so the second row still fits; the track starts that much higher, so
-   the gap in the page stays 96px. */
+/* The footer comes up over the last pictures in twelve bars, on About's track
+   (about.css .ap-end, about.js): a screen tall plus the scroll the bars take,
+   with the footer's two stages stuck to its top. The pictures aren't held:
+   their screen scrolls on with the page, so they keep moving while the footer
+   rises and end just above it. They sit --cs-hold into the track, which is
+   where the bars start from: the mockup's 96px under the outcome where the
+   window has room for both rows, less on shorter windows; the track starts
+   that much higher, so the gap in the page stays 96px. */
 :root {
   --cs-hold: clamp(24px, calc(100vh - 896px), 96px);
 }
 
 .case .ap-end {
   margin-top: calc(96px - var(--cs-hold));
+}
+
+.case .ap-end__screen {
+  position: relative;
+  top: auto;
 }
 
 .cs-end__shots {

@@ -386,8 +386,8 @@
    uncovered through 12 horizontal bars — the curtain of the
    preview prototype (each bar 0.42 long with power2.inOut, 0.035 apart), but
    every bar opens from the right and shows the next section as it comes in.
-   The bars start in a scattered order, so the reveal runs right to left with
-   no top-to-bottom sweep. The first bar starts as the last work nears the
+   The bars start in order from the top down, so the reveal's edge runs right
+   to left as one stepped line. The first bar starts as the last work nears the
    right margin, and the last one closes as the row leaves the screen. */
 (function(){
   const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -396,7 +396,7 @@
   const reveal = [...document.querySelectorAll('.services .end__stage')];
   const ROW_END = 2628;  // last work's right edge (x 2604) + the 24px gap between works
   const BARS = 12, DUR = 0.42, EACH = 0.035;
-  const SLOT = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 8, 3];  // start order of each bar, top to bottom
+  const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];  // start order of each bar, top to bottom
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
   function update(){
     const {top, height} = track.getBoundingClientRect();
@@ -523,7 +523,7 @@
 /* Footer: once the services text has broken apart, the footer comes up over
    the pinned services screen through the same bars as the reveal from the case
    studies into services (12 bars, each 0.42 long with power2.inOut, 0.035
-   apart, starting in a scattered order), turned upright: every bar opens from
+   apart, starting in order), turned upright: from the left, every bar opens from
    the bottom, as far as the footer is tall (660px), so the emptied blue of
    services stays above it. It takes the last --footer-reveal of scroll, so the
    page ends as the last bar closes. */
@@ -535,7 +535,7 @@
   const band = track.querySelector('.footer__band');
   const REVEAL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--footer-reveal'));
   const BARS = 12, DUR = 0.42, EACH = 0.035, WIDTH = 1440;
-  const SLOT = [4, 9, 1, 7, 11, 2, 6, 0, 10, 5, 8, 3];  // start order of each bar, left to right
+  const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];  // start order of each bar, left to right
   const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
   function update(){
     const {top, height} = track.getBoundingClientRect();
