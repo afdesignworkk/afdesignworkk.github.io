@@ -478,12 +478,13 @@ void main(){
 
   /* 1. The hand-over from the hero, as on the home page: the photograph sticks
      84px from the top, then over --hero-pin of scroll shrinks toward its top
-     centre — cropped, not scaled — from 1240 x 435 to 608 x 356, lifting so
+     centre — cropped, not scaled — from 1240 x 500 to 608 x 424, lifting so
      its top edge ends 32px from the top of the window, while the story comes
-     up below it. The numbers are index.html's. */
+     up below it. The sizes are index.html's; the lift is this page's, as the
+     photograph sticks at 84 where the home page's plate sticks at 88. */
   const track = document.querySelector('.ap-hero__track');
   const plate = document.querySelector('.ap-hero__plate');
-  const INSET_X = 316, INSET_Y = 39.5, LIFT = 91.5;
+  const INSET_X = 316, INSET_Y = 38, LIFT = 90;   // 84 + 38 - 90: its top edge ends 32 from the top
   const hero = {start: 0, dist: 0};
 
   function drawHero(y){
@@ -499,21 +500,28 @@ void main(){
      section crosses the screen — run once per section. Progress runs from 0
      when the section's top is at 82% of the screen to 1 when its bottom
      reaches 75%, so a section is always fully read before the next one starts
-     (the sections are 140px apart, more than 7% of any window up to 2000px).
+     (the sections are 96px apart, more than 7% of any window up to 1370px).
      Word i of n fades in over [i/n, (i+1)/n]; the words are wrapped in spans
-     with the spaces left as text, so the lines break exactly where they did. */
+     with the spaces left as text, so the lines break exactly where they did.
+     A link (a course's certificate) fades as one, underline and all. */
   const IN = 0.82, OUT = 0.75;
   const stories = [...document.querySelectorAll('.ap-section')].map(section => {
     const spans = [...section.querySelectorAll('.ap-section__body p')].flatMap(p => {
-      const words = p.textContent.split(' ');
-      p.textContent = '';
-      return words.map((word, i) => {
-        if (i) p.append(' ');
-        const span = document.createElement('span');
-        span.textContent = word;
-        p.append(span);
-        return span;
-      });
+      const units = [];
+      for (const node of [...p.childNodes]) {
+        if (node.nodeType !== Node.TEXT_NODE) { units.push(node); continue; }
+        const words = document.createDocumentFragment();
+        node.textContent.split(' ').forEach((word, i) => {
+          if (i) words.append(' ');
+          if (!word) return;
+          const span = document.createElement('span');
+          span.textContent = word;
+          words.append(span);
+          units.push(span);
+        });
+        node.replaceWith(words);
+      }
+      return units;
     });
     return {section, spans, top: 0, height: 0};
   }).filter(story => story.spans.length);
@@ -534,32 +542,21 @@ void main(){
   /* 3. The pictures slide sideways the whole way down — the first row to the
      right, the second to the left, each at its own pace (data-pace, px across
      per px of scroll) — and keep going while the footer rises over them. The
-     slide is 0 at the moment the screen comes to hold, so that is when the
-     rows sit where the mockup has them, and it is kept within what each row
-     can cover: never showing its right end, nor its left end if it runs off
-     that side.
-
-     The screen itself holds (it is sticky), but the rows don't stop dead with
-     it: over the last SETTLE px of scroll before the hold they start to lag
-     behind the page, and over the first SETTLE after it they drift up into
-     place, so their speed falls smoothly from the page's to nothing — the
-     quadratic that meets both straight lines, (s - SETTLE)^2 / 4 SETTLE from
-     where it holds, s being the scroll past the hold. */
+     slide is 0 as the footer's bars start (the end's track reaching the top
+     of the window), so that is when the rows sit where the mockup has them,
+     and it is kept within what each row can cover: never showing its right
+     end, nor its left end if it runs off that side. Up and down, the
+     pictures simply scroll with the page: nothing holds them. */
   const end = document.querySelector('.ap-end');
   const strips = document.querySelector('.ap-strips');
   const rows = [...document.querySelectorAll('.ap-strip[data-pace]')].map(el => ({
     el, pace: parseFloat(el.dataset.pace) || 0, min: -Infinity, max: Infinity,
   }));
-  const SETTLE = 300;
   const gallery = {hold: 0};
 
   function drawGallery(y){
     if (!end || !strips) return;
     const s = y - gallery.hold;
-    let lag = 0;
-    if (s > -SETTLE && s < 0) lag = (s + SETTLE) ** 2 / (4 * SETTLE);
-    else if (s >= 0 && s < SETTLE) lag = (s - SETTLE) ** 2 / (4 * SETTLE);
-    set(strips, 'transform', lag ? `translate3d(0, ${lag.toFixed(2)}px, 0)` : '');
     for (const row of rows) {
       const x = clamp(row.pace * s, row.min, row.max);
       set(row.el, 'transform', `translate3d(${x.toFixed(2)}px, 0, 0)`);
