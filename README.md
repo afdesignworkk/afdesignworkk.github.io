@@ -10,17 +10,18 @@ The site was designed in Figma and built in plain HTML, CSS and JavaScript. Ther
 
 | Page | File | What's on it |
 | --- | --- | --- |
-| Home | `index.html` | Hero, introduction, case studies, services, contact |
+| Home | `index.html` | Hero, selected work, how I work, contact |
 | About | `about.html` | The longer story, a portrait and two rows of travel photographs |
 | Playground | `playground.html` | A board of side projects you drag around, with a full-size view for each piece |
+| Spacebring | `case-spacebring.html` | Case study: the Spacebring admin web app |
 
 ## What's inside
 
-- Liquid chrome metaballs (WebGL2) in the hero and the About headline, drawn toward the pointer
-- A loading screen that draws the grid first, and grid lines that stay fixed while the page scrolls
+- A window of butter jelly behind the hero line (WebGL), which ripples and swells to the pointer, and tags you can pick up and throw
+- Grid lines that stay fixed while the page scrolls, and smooth scrolling
+- How I work: the page dims and scrolling flies you through three principles in depth
+- A footer that comes at you out of the dark, with a pool of the same jelly along the bottom
 - A live clock with the time in Ukraine
-- Scroll-driven transitions between the sections, and chrome drips under the footer
-- A custom cursor and smooth scrolling
 - A drag board on the Playground page
 - Reduced-motion support
 
@@ -28,17 +29,20 @@ The site was designed in Figma and built in plain HTML, CSS and JavaScript. Ther
 
 ```
 .
-├── index.html          Home page (its scripts and shaders are inline)
+├── index.html          Home page
+├── home/               Home page styles, scripts, the jelly shader and the grid
 ├── about.html          About page
 ├── about.css           About page styles
 ├── about.js            About page scripts: scrolling, cursor, gallery, footer
 ├── playground.html     Playground page (its scripts are inline)
 ├── playground.css      Playground page styles
-├── styles.css          Shared styles: colour and type tokens, top bar, grid, home page
+├── case-spacebring.html  Spacebring case study
+├── case.css            Case study styles
+├── styles.css          Shared styles for About, Playground and the case study
+├── responsive.css/js   Laptop, tablet and phone layouts for those pages
 └── assets/
     ├── about/          About page photographs
     ├── playground/     Playground thumbnails, with full-size images in full/
-    ├── hero-orb.png
     ├── grid-overlay.svg
     └── status-dot.svg
 ```

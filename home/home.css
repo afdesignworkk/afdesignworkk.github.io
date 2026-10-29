@@ -1,0 +1,166 @@
+/* Home: the hero's styles (home/base.css) plus what changes when
+   the page goes on past it, from her Figma home-page (617:262):
+     - her grid is fixed; the page scrolls over it
+     - leaving the hero, its corners and its line (with the jelly and the
+       tags) drift and fade (home.js sets their transform, opacity, blur)
+     - the menu and the clock are fixed where they sit on the first screen
+     - Selected work: 80px title, 818 × 440 pictures (radius 12), 48px under
+       the title, the caption 12px under each, 30px to the next */
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+.grid { position: fixed; z-index: 0; }
+
+main { position: relative; z-index: 2; }
+.hero { overflow: visible; overflow-x: clip; z-index: 1; }
+.work { position: relative; z-index: 2; }
+.hero > .top, .hero > .name { will-change: transform, opacity; }
+
+/* the menu and the clock, fixed; a little paper behind them for when the work passes under */
+.foot {
+  position: fixed; z-index: 5; left: 100px; right: 100px; bottom: 100px;
+  pointer-events: none;
+}
+.foot .pill { pointer-events: auto; background: rgb(253 253 251 / .82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
+/* Selected work */
+.work { padding: 0 100px 200px; display: grid; justify-items: center; }
+.work__title {
+  margin: 0 0 48px; font-weight: 500; font-size: clamp(44px, 5.556vw, 96px); line-height: 1; letter-spacing: -.02em;
+  text-align: center;
+}
+.mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .06em; margin-bottom: -.06em; }
+.mask > span { display: inline-block; }
+
+.work__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 30px; width: clamp(300px, 56.806vw, 1100px); }
+.item { display: grid; gap: 12px; }
+.item__pic { display: block; aspect-ratio: 818 / 440; border-radius: 12px; overflow: hidden; }
+.item__fill { display: block; width: 100%; height: 100%; background: var(--soft); transition: scale .9s var(--expo); }
+.item__cap { display: flex; justify-content: space-between; gap: 24px; }
+.item__name {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .5s var(--expo);
+}
+.item__year { flex: none; font-variant-numeric: tabular-nums; }
+.item:hover .item__name, .item:focus-visible .item__name { background-size: 100% 1px; }
+.item:hover .item__fill { scale: 1.03; }
+.item[aria-disabled='true'] { cursor: default; }
+.item[aria-disabled='true']:hover .item__name { background-size: 0 1px; }
+.item[aria-disabled='true']:hover .item__fill { scale: 1; }
+
+/* How I work: the page dims into her ink as the work ends, then scrolling
+   carries you forward through her three things (how.js puts each line in
+   depth, sizes and blurs it); past the last, the footer comes at you. The section is a tall track; its stage stays on screen while
+   you scroll it */
+.how { position: relative; z-index: 2; height: 450svh; pointer-events: none; }
+.how__stage { position: sticky; top: 0; z-index: 1; height: 100svh; overflow: clip; }
+/* the dim: her ink over the whole screen, coming up as the work ends, with
+   her grid where the page's grid is (its lines darkened to sit on the ink) */
+.how__dim { position: fixed; inset: 0; z-index: 0; background: var(--ink); opacity: 0; visibility: hidden; pointer-events: none; }
+.how__ink { position: absolute; inset: 0; color: var(--page); }
+.how__grid { position: absolute; left: 0; top: 0; width: 100%; height: auto; filter: brightness(.18); pointer-events: none; user-select: none; }
+.how__space { position: absolute; inset: 0; }
+.say {
+  position: absolute; left: 0; top: 0; margin: 0; width: max-content; max-width: 290px;
+  transform-origin: 0 0; will-change: transform, opacity, filter;
+  font-weight: 400; font-size: 18px; line-height: 22px; color: rgb(253 253 251 / .74);
+}
+.say--big { max-width: none; font-weight: 500; font-size: clamp(40px, 4.444vw, 76px); line-height: 1.02; letter-spacing: -.03em; color: var(--page); }
+.say .ln { display: block; }
+
+/* Footer: her Figma home-page (617:262), its last 1440 × 900, on her paper
+   with her grid where the page's grid is (it is the screen when it rests):
+   the badge, "Got a product in mind?" (80px, end.js turns
+   the word), her email (36px); Sitemap and Socials at 1007 and 1259; © and
+   Back to top; and the jelly pool under them, filling the bottom from side
+   to side (end.js draws it from .end__pool's top down). how.js brings it in: it lies over How I work's last screen
+   (.is-dive) and, at the end of the flight, is held on the screen and
+   opened as a window that comes at you until it is the page */
+.end { --pad: 100px; position: relative; z-index: 3; overflow: clip; background: var(--page); }
+.end.is-dive { margin-top: -100svh; visibility: hidden; }
+.end__in {
+  position: relative; min-height: 100svh; display: flex; flex-direction: column;
+  padding: clamp(96px, 18.4svh, 166px) var(--pad) 0;
+}
+.end__grid { position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
+.end__jelly { position: absolute; left: -80px; top: -80px; width: calc(100% + 160px); height: calc(100% + 160px); pointer-events: none; }
+.end__top { position: relative; display: grid; grid-template-columns: 1fr 17.5vw auto; align-items: start; }
+.end__say { display: grid; justify-items: start; gap: 24px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px;
+  border: 1px solid var(--soft); border-radius: 16px; font-weight: 500;
+}
+/* the circle, its ring going out every two seconds */
+.badge__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
+.badge__dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--ink); animation: open 2s var(--expo) infinite; }
+@keyframes open { from { transform: scale(1); opacity: .35; } to { transform: scale(3.2); opacity: 0; } }
+.end__line { margin: 0; font-weight: 500; font-size: clamp(44px, 5.556vw, 96px); line-height: .9; letter-spacing: -.02em; white-space: nowrap; }
+/* the word that changes: a window as wide as the word showing, the next coming up into it */
+.end__word { position: relative; display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.end__word > span { display: inline-block; }
+.end__word > span + span { position: absolute; left: 0; top: 0; }
+.end__mail { font-size: clamp(24px, 2.5vw, 44px); line-height: 1; }
+.end__list { margin-top: 34px; display: grid; justify-items: start; gap: 4px; }
+.end__list p { margin: 0; color: var(--soft); }
+.end__row { position: relative; display: flex; justify-content: space-between; gap: 24px; margin: 98px 0 56px; color: var(--soft); }
+.end__row p { margin: 0; }
+/* the pool: from here down, and out past both sides */
+.end__pool { position: relative; height: clamp(100px, 22svh, 200px); margin-top: auto; }
+/* links draw their line in from the left; the quiet ones darken too */
+.end__mail, .end__list a, .end__row a {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .5s var(--expo), color .3s ease;
+}
+.end__mail:hover, .end__mail:focus-visible, .end__list a:hover, .end__list a:focus-visible,
+.end__row a:hover, .end__row a:focus-visible { background-size: 100% 1px; }
+.end__row a:hover, .end__row a:focus-visible { color: var(--ink); }
+/* while the footer shows, the menu and the clock step aside */
+.foot { transition: opacity .4s ease, translate .4s var(--expo); }
+.foot.is-away { opacity: 0; translate: 0 12px; }
+.foot.is-away .pill { pointer-events: none; }
+
+/* without motion: the same words, one after another, on her ink */
+.how.is-still { height: auto; pointer-events: auto; }
+.how.is-still .how__stage { position: static; height: auto; }
+.how.is-still .how__ink { position: relative; clip-path: none; padding: 140px 100px; }
+.how.is-still .how__dim { display: none; }
+.how.is-still .how__ink { background: var(--ink); }
+.how.is-still .how__space { position: static; display: grid; gap: 20px; }
+.how.is-still .say { position: static; max-width: 34ch; }
+.how.is-still .say--big { margin-top: 40px; }
+
+@media (max-width: 1100px) {
+  .foot { left: 48px; right: 48px; }
+  .work { padding-inline: 48px; }
+  .end { --pad: 48px; }
+}
+@media (max-width: 760px) {
+  .foot { left: 16px; right: 16px; bottom: 16px; }
+  .work { padding: 0 16px 120px; }
+  .work__title { margin-bottom: 28px; }
+  .work__list { width: 100%; gap: 24px; }
+  .item { gap: 10px; }
+  .item__cap { font-size: 15px; }
+  .how__grid { display: none; }
+  .say { max-width: 230px; font-size: 16px; line-height: 20px; }
+  .say--big { max-width: none; font-size: clamp(32px, 9.4vw, 40px); line-height: 1.02; }
+  /* the footer on a phone: the line and the email, then the two lists side by side */
+  .end { --pad: 16px; }
+  .end__in { padding-top: 96px; }
+  .end__top { grid-template-columns: 1fr 1fr; row-gap: 48px; }
+  .end__say { grid-column: 1 / -1; gap: 18px; }
+  .end__line { font-size: clamp(36px, 10.4vw, 48px); line-height: .95; white-space: normal; text-wrap: balance; }
+  .end__mail { font-size: 22px; line-height: 1.2; }
+  .end__list { margin-top: 0; }
+  .end__row { margin-block: 48px 40px; font-size: 14px; }
+  .end__grid { display: none; }
+  .end__pool { height: 150px; }
+  .how.is-still .how__ink { padding: 110px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item__fill, .item__name, .end__mail, .end__list a, .end__row a, .foot { transition: none; }
+  .badge__dot::after { animation: none; }
+}
