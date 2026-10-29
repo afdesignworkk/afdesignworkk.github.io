@@ -1,4 +1,4 @@
-/* Home: the hero's styles (home/base.css) plus what changes when
+/* Home: the Liquid hero's styles (liquid/liquid.css) plus what changes when
    the page goes on past it, from her Figma home-page (617:262):
      - her grid is fixed; the page scrolls over it
      - leaving the hero, its corners and its line (with the jelly and the
@@ -6,6 +6,18 @@
      - the menu and the clock are fixed where they sit on the first screen
      - Selected work: 80px title, 818 × 440 pictures (radius 12), 48px under
        the title, the caption 12px under each, 30px to the next */
+
+/* the loader: paper over everything until the page is in, her grid on it
+   where the page's grid is, the drop in the middle and the count under it.
+   (If the scripts never come, it lifts by itself after a few seconds) */
+.load { position: fixed; inset: 0; z-index: 50; background: var(--page); animation: load-lift .6s ease 8s forwards; }
+.load__grid { position: absolute; left: 0; top: 0; width: 100%; height: auto; clip-path: inset(0 0 100% 0); }
+.load__drop { position: absolute; left: 50%; top: 50%; width: 320px; height: 320px; translate: -50% -50%; }
+.load__count {
+  position: absolute; left: 50%; top: calc(50% + 64px); translate: -50% 0; margin: 0;
+  font-size: 14px; line-height: 18px; font-variant-numeric: tabular-nums; color: #8b8b86;
+}
+@keyframes load-lift { to { opacity: 0; visibility: hidden; } }
 
 /* Lenis */
 html.lenis, html.lenis body { height: auto; }
@@ -73,8 +85,8 @@ main { position: relative; z-index: 2; }
 
 /* Footer: her Figma home-page (617:262), its last 1440 × 900, on her paper
    with her grid where the page's grid is (it is the screen when it rests):
-   the badge, "Got a product in mind?" (80px, end.js turns
-   the word), her email (36px); Sitemap and Socials at 1007 and 1259; © and
+   "Open to work", "Got a product in mind?" (80px, end.js turns the word),
+   her email (36px) and a button that copies it; Sitemap and Socials at 1007 and 1259; © and
    Back to top; and the jelly pool under them, filling the bottom from side
    to side (end.js draws it from .end__pool's top down). how.js brings it in: it lies over How I work's last screen
    (.is-dive) and, at the end of the flight, is held on the screen and
@@ -83,16 +95,13 @@ main { position: relative; z-index: 2; }
 .end.is-dive { margin-top: -100svh; visibility: hidden; }
 .end__in {
   position: relative; min-height: 100svh; display: flex; flex-direction: column;
-  padding: clamp(96px, 18.4svh, 166px) var(--pad) 0;
+  padding: clamp(96px, 20svh, 180px) var(--pad) 0;
 }
 .end__grid { position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
 .end__jelly { position: absolute; left: -80px; top: -80px; width: calc(100% + 160px); height: calc(100% + 160px); pointer-events: none; }
 .end__top { position: relative; display: grid; grid-template-columns: 1fr 17.5vw auto; align-items: start; }
 .end__say { display: grid; justify-items: start; gap: 24px; }
-.badge {
-  display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px;
-  border: 1px solid var(--soft); border-radius: 16px; font-weight: 500;
-}
+.badge { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; }
 /* the circle, its ring going out every two seconds */
 .badge__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
 .badge__dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--ink); animation: open 2s var(--expo) infinite; }
@@ -102,21 +111,32 @@ main { position: relative; z-index: 2; }
 .end__word { position: relative; display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
 .end__word > span { display: inline-block; }
 .end__word > span + span { position: absolute; left: 0; top: 0; }
+.end__reach { display: flex; align-items: center; gap: 24px; margin: 0; }
 .end__mail { font-size: clamp(24px, 2.5vw, 44px); line-height: 1; }
-.end__list { margin-top: 34px; display: grid; justify-items: start; gap: 4px; }
+/* the copy button: a ring round her icon, darkening on hover */
+.end__copy { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border: 1px solid var(--soft); border-radius: 50%; transition: border-color .3s ease, background-color .3s ease; }
+.end__copy:hover, .end__copy:focus-visible { border-color: var(--ink); }
+.end__copy:active { background: var(--chip); }
+.end__copied { font-size: 14px; color: var(--ink); opacity: 0; translate: -6px 0; transition: opacity .3s ease, translate .5s var(--expo); }
+.end__copied.is-on { opacity: 1; translate: 0 0; }
+.end__list { margin-top: 20px; display: grid; justify-items: start; gap: 4px; }
 .end__list p { margin: 0; color: var(--soft); }
 .end__row { position: relative; display: flex; justify-content: space-between; gap: 24px; margin: 98px 0 56px; color: var(--soft); }
 .end__row p { margin: 0; }
 /* the pool: from here down, and out past both sides */
 .end__pool { position: relative; height: clamp(100px, 22svh, 200px); margin-top: auto; }
 /* links draw their line in from the left; the quiet ones darken too */
-.end__mail, .end__list a, .end__row a {
+.end__mail, .end__list a, .end__up span {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
   transition: background-size .5s var(--expo), color .3s ease;
 }
 .end__mail:hover, .end__mail:focus-visible, .end__list a:hover, .end__list a:focus-visible,
-.end__row a:hover, .end__row a:focus-visible { background-size: 100% 1px; }
-.end__row a:hover, .end__row a:focus-visible { color: var(--ink); }
+.end__up:hover span, .end__up:focus-visible span { background-size: 100% 1px; }
+/* back to top, its arrow going up a little on hover */
+.end__up { display: inline-flex; align-items: center; gap: 10px; transition: color .3s ease; }
+.end__up img { transition: translate .5s var(--expo); }
+.end__up:hover, .end__up:focus-visible { color: var(--ink); }
+.end__up:hover img, .end__up:focus-visible img { translate: 0 -3px; }
 /* while the footer shows, the menu and the clock step aside */
 .foot { transition: opacity .4s ease, translate .4s var(--expo); }
 .foot.is-away { opacity: 0; translate: 0 12px; }
@@ -144,7 +164,7 @@ main { position: relative; z-index: 2; }
   .work__list { width: 100%; gap: 24px; }
   .item { gap: 10px; }
   .item__cap { font-size: 15px; }
-  .how__grid { display: none; }
+  .how__grid, .load__grid { display: none; }
   .say { max-width: 230px; font-size: 16px; line-height: 20px; }
   .say--big { max-width: none; font-size: clamp(32px, 9.4vw, 40px); line-height: 1.02; }
   /* the footer on a phone: the line and the email, then the two lists side by side */
@@ -154,6 +174,7 @@ main { position: relative; z-index: 2; }
   .end__say { grid-column: 1 / -1; gap: 18px; }
   .end__line { font-size: clamp(36px, 10.4vw, 48px); line-height: .95; white-space: normal; text-wrap: balance; }
   .end__mail { font-size: 22px; line-height: 1.2; }
+  .end__reach { gap: 14px; }
   .end__list { margin-top: 0; }
   .end__row { margin-block: 48px 40px; font-size: 14px; }
   .end__grid { display: none; }
@@ -161,6 +182,7 @@ main { position: relative; z-index: 2; }
   .how.is-still .how__ink { padding: 110px 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .item__fill, .item__name, .end__mail, .end__list a, .end__row a, .foot { transition: none; }
+  .load { display: none; }
+  .item__fill, .item__name, .end__mail, .end__list a, .end__row a, .end__row span, .end__up img, .end__copy, .end__copied, .foot { transition: none; }
   .badge__dot::after { animation: none; }
 }

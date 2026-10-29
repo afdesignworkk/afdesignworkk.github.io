@@ -11,7 +11,7 @@
         off it towards you. The pointer leans the view a little
      3. the way out: past the last line you keep flying, and the footer
         comes at you: a small screen far off where everything was heading,
-        growing until it is the page (it lies over the track's last screen
+        faint at first, growing until it is the page (it lies over the track's last screen
         and is held on the screen until the track ends). The menu and the
         clock step aside as it comes
    The section is a tall track (its height is the whole flight); its stage
@@ -39,9 +39,9 @@ if (REDUCED) how.classList.add('is-still');
 /* the depth: one step, how far the eye is from the screen */
 const STEP = 2400, F = 900;
 /* the flight, in screens scrolled into the track: [when, where the camera is] */
-const ROUTE = [[0, -1100], [.7, 0], [1.5, STEP], [2.3, STEP * 2], [3.1, STEP * 3], [4.05, STEP * 4.15]];
-/* the footer coming at you (from 5% of the screen), and where the track ends */
-const OUT = [3.25, 4.05], LAST = 4.2, FIRST = .05;
+const ROUTE = [[0, -1100], [.7, 0], [1.5, STEP], [2.3, STEP * 2], [3.1, STEP * 3], [4.5, STEP * 4.3]];
+/* the footer coming at you (from 4% of the screen, over well over a screen of scrolling), and where the track ends */
+const OUT = [3.15, 4.5], LAST = 4.65, FIRST = .04;
 
 const camAt = u => {
   if (u <= ROUTE[0][0]) return ROUTE[0][1];
@@ -53,7 +53,7 @@ const camAt = u => {
 };
 
 /* where things are, worked out again on resize */
-let W = 0, H = 0, vw = 0, vh = 0, top = 0, phone = false;
+let W = 0, H = 0, vw = 0, vh = 0, top = 0, fh = 0, phone = false;
 const items = says.map(el => ({
   el, z: +el.dataset.z * STEP, x: 0, y: 0, w: 0,
   d: el.dataset.d.split(',').map(Number), m: el.dataset.m.split(',').map(Number),
@@ -65,6 +65,7 @@ function layout() {
   how.style.height = `${(1 + LAST) * vh}px`;
   top = how.getBoundingClientRect().top + scrollY;
   endIn.style.transformOrigin = `${vw / 2}px ${vh / 2}px`;
+  fh = end.offsetHeight;
   for (const it of items) {
     it.el.style.transform = 'none';
     it.w = it.el.offsetWidth;
@@ -98,10 +99,12 @@ function footer(u, o, vx, vy, cx, cy) {
   end.style.visibility = o > 0 ? 'visible' : '';
   end.classList.toggle('is-landed', o >= 1);
   if (o <= 0) return;
+  /* far off it is faint, like the lines ahead were */
+  end.style.opacity = o >= 1 ? '' : smooth(0, .22, o).toFixed(3);
   if (o >= 1) { end.style.clipPath = endIn.style.transform = ''; return; }
   /* growing so that it seems to come at you evenly, from where everything was heading to the middle */
   const k = FIRST * Math.pow(1 / FIRST, o), ox = lerp(vx, cx, o), oy = lerp(vy, cy, o);
-  end.style.clipPath = windowAt(ox, oy, vw * k, vh * k, lerp(10, 0, o), end.offsetHeight);
+  end.style.clipPath = windowAt(ox, oy, vw * k, vh * k, lerp(12, 0, o), fh);
   endIn.style.transform = `translate(${(ox - cx).toFixed(1)}px, ${(oy - cy).toFixed(1)}px) scale(${k.toFixed(4)})`;
 }
 

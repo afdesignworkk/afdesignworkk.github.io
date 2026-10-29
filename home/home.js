@@ -13,8 +13,10 @@
      7. Selected work: the title rises out of its line, each picture opens
         out as it comes up
      8. Odesa time in the corner, to the second
-     9. the opening: the jelly swells open and wobbles to rest */
-import {view, RIPPLES, BUBBLES} from './windowgl.js?v=1';
+     9. the opening: the jelly swells open and wobbles to rest; first, the
+        loader: her grid draws in and a drop of the jelly grows in the
+        middle as the page comes in, then spreads as the paper lifts */
+import {view, RIPPLES, BUBBLES} from './windowgl.js?v=2';
 
 const {gsap, ScrollTrigger, Draggable, InertiaPlugin, Lenis} = window;
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
@@ -36,6 +38,15 @@ qa('[data-top]').forEach(a => a.addEventListener('click', e => {
   e.preventDefault();
   if (lenis) lenis.scrollTo(0, {duration: 1.6});
   else scrollTo({top: 0});
+}));
+/* Contact in the menu: all the way down, through How I work, to the footer */
+const inOut3 = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+qa('[data-contact]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const end = document.documentElement.scrollHeight - innerHeight;
+  /* (measured afresh: the page grows as How I work sets its track) */
+  if (lenis) { lenis.resize(); lenis.scrollTo(end, {duration: Math.min(3.2, 1.4 + Math.abs(end - scrollY) / 4000), easing: inOut3}); }
+  else scrollTo({top: end});
 }));
 
 /* 2. the jelly */
@@ -290,18 +301,86 @@ const tick = () => { clock.textContent = fmt.format(new Date()); };
 tick();
 setInterval(tick, 1000);
 
-/* 9. the opening, once the line's face has loaded (the jelly is shaped from it) */
-Promise.all(['500 100px "Hanken Grotesk"', '400 16px "Hanken Grotesk"'].map(f => document.fonts.load(f).catch(() => null)))
-  .then(() => document.fonts.ready).then(() => {
-    layout();
-    work();
-    if (REDUCED) return;
-    /* the opening plays only at the top; further down, the hero is already there */
-    if (scrollY > 10) { G.grow = 1; return; }
-    gsap.timeline()
-      .from('.grid', {opacity: 0, duration: 1.2, ease: 'power2.out'}, 0)
-      .from('.name .w', {y: 50, opacity: 0, filter: 'blur(10px)', duration: 1.3, ease: 'expo.out', stagger: .08}, .25)
-      .to(G, {grow: 1, duration: 2.2, ease: 'elastic.out(1, .45)'}, .55)
-      .from('.top > *, .foot > *', {y: 12, opacity: 0, duration: .9, ease: 'expo.out', stagger: .06}, .6)
-      .from(chips, {scale: 0, duration: .8, ease: 'back.out(2)', stagger: .08}, 1.3);
+/* 9. the loader: her grid draws in on the paper; a drop of the jelly grows
+   in the middle (it takes at least a second and a half, and waits for the
+   line's face, which the hero's jelly is shaped from), the count going to
+   100 under it; then it spreads and fades, and the paper lifts as the hero
+   opens underneath */
+function loader(fontsIn) {
+  const load = q('.load');
+  if (!load) return Promise.resolve(false);
+  if (REDUCED) { load.remove(); return Promise.resolve(false); }
+  load.style.animation = 'none';
+  if (lenis) lenis.stop();
+  let ready = false;
+  fontsIn.then(() => { ready = true; });
+  const cv = q('.load__drop'), count = q('.load__count'), drop = view(cv);
+  if (drop) drop.colours([V.light, V.body, V.deep, V.rimColour]);
+  else cv.remove();
+  /* its shape: a circle, softened, at half the size */
+  const KD = 1 / 2, mk = document.createElement('canvas'), mx = mk.getContext('2d');
+  if (drop) { drop.size(); mk.width = Math.round(cv.clientWidth * KD); mk.height = Math.round(cv.clientHeight * KD); }
+  const still = new Float32Array(RIPPLES * 4), held = new Float32Array(BUBBLES * 4);
+  const S = {p: 0, r: 0};
+  const t0 = performance.now();
+  gsap.to('.load__grid', {clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.inOut'});
+  return new Promise(done => {
+    let leaving = false;
+    function tick(t) {
+      const el = (performance.now() - t0) / 1000;
+      const goal = Math.min(ready ? 1 : .9, smoothstep(.1, 1.5, el));
+      S.p = Math.abs(goal - S.p) < .003 ? goal : S.p + (goal - S.p) * .1;
+      count.textContent = Math.round(S.p * 100);
+      if (!leaving) S.r = 4 + 30 * S.p;
+      if (drop) {
+        const w = mk.width, h = mk.height, off = w + 40;
+        mx.shadowColor = 'transparent';
+        mx.fillStyle = '#000';
+        mx.fillRect(0, 0, w, h);
+        mx.fillStyle = mx.shadowColor = '#fff';
+        mx.shadowBlur = Math.min(5, S.r * KD * .8); mx.shadowOffsetX = off;
+        mx.beginPath();
+        mx.arc(w / 2 - off, h / 2, Math.max(0, S.r) * KD, 0, Math.PI * 2);
+        mx.fill();
+        drop.mask(mk);
+        held.set([cv.clientWidth / 2 - S.r * .35, cv.clientHeight / 2 + S.r * .25, S.r > 18 ? 2.6 : 0, 1]);
+        const r = cv.getBoundingClientRect();
+        drop.draw({
+          time: t, off: [r.left, r.top], th: .45, ptr: [0, 0, 0], ripples: still, bubbles: held, values: V,
+          grid: innerWidth > 760 ? document.documentElement.clientWidth / 1440 : 0,
+        });
+      }
+      if (!leaving && S.p >= 1) { leaving = true; leave(); }
+    }
+    function leave() {
+      if (lenis) lenis.start();
+      gsap.timeline({onComplete: () => { gsap.ticker.remove(tick); load.remove(); }})
+        .to(S, {r: 80, duration: .8, ease: 'expo.out'}, 0)
+        .to(cv, {opacity: 0, duration: .5, ease: 'power2.in'}, .05)
+        .to(count, {opacity: 0, y: -6, duration: .4, ease: 'power2.in'}, 0)
+        .to(load, {opacity: 0, duration: 1, ease: 'power2.inOut'}, .15);
+      done(true);
+    }
+    gsap.ticker.add(tick);
   });
+}
+function smoothstep(a, b, v) { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t); }
+
+/* the opening, once the line's face has loaded (the jelly is shaped from it) and the loader lifts */
+const fontsIn = Promise.all(['500 100px "Hanken Grotesk"', '400 16px "Hanken Grotesk"'].map(f => document.fonts.load(f).catch(() => null)))
+  .then(() => document.fonts.ready);
+const loaded = loader(fontsIn);
+fontsIn.then(() => { layout(); work(); });
+Promise.all([fontsIn, loaded]).then(([, fromLoader]) => {
+  if (REDUCED) return;
+  /* the opening plays only at the top; further down, the hero is already there */
+  if (scrollY > 10) { G.grow = 1; return; }
+  const open = gsap.timeline();
+  /* (after the loader her grid is already there) */
+  if (!fromLoader) open.from('.grid', {opacity: 0, duration: 1.2, ease: 'power2.out'}, 0);
+  open
+    .from('.name .w', {y: 50, opacity: 0, filter: 'blur(10px)', duration: 1.3, ease: 'expo.out', stagger: .08}, .25)
+    .to(G, {grow: 1, duration: 2.2, ease: 'elastic.out(1, .45)'}, .55)
+    .from('.top > *, .foot > *', {y: 12, opacity: 0, duration: .9, ease: 'expo.out', stagger: .06}, .6)
+    .from(chips, {scale: 0, duration: .8, ease: 'back.out(2)', stagger: .08}, 1.3);
+});

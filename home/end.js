@@ -13,7 +13,7 @@
    never shows; while the footer is still coming at you (how.js scales it)
    the pool is drawn the same, only smaller. Without motion the pool is
    still and the word stays "product". */
-import {view, RIPPLES, BUBBLES} from './windowgl.js?v=1';
+import {view, RIPPLES, BUBBLES} from './windowgl.js?v=2';
 
 const {gsap} = window;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -76,11 +76,13 @@ function maskOf(t) {
 }
 
 /* where the pool's top is, on the canvas (worked out again on resize), and a few air bubbles held in it */
+/* while the footer is still coming at you it is shown small, so it is drawn with fewer pixels */
+let res = 1.5;
 function layout() {
   pool.x = OUT; pool.y = poolBox.offsetTop + OUT;
   pool.w = poolBox.offsetParent.offsetWidth; pool.h = poolBox.offsetHeight;
   if (jelly) {
-    jelly.size();
+    jelly.size(res);
     mc.width = Math.max(2, Math.round(canvas.clientWidth * K));
     mc.height = Math.max(2, Math.round(canvas.clientHeight * K));
   }
@@ -124,7 +126,10 @@ function frame(t) {
     ripple(pool.x + pool.w * .8, cy, .5, .4);
   }
   landed = now;
-  if (!jelly || getComputedStyle(end).visibility === 'hidden' || e.top > innerHeight || e.bottom < 0) return;
+  const shown = !end.classList.contains('is-dive') || end.style.visibility === 'visible';
+  if (!jelly || !shown || e.top > innerHeight || e.bottom < 0) return;
+  const want = landed ? 1.5 : .75;
+  if (want !== res) { res = want; jelly.size(res); }
   const c = canvas.getBoundingClientRect();
   scale = c.width / canvas.clientWidth || 1;
   /* where the canvas is on the page; while the footer is still coming at you, where it will be */
@@ -139,6 +144,28 @@ function frame(t) {
     grid: innerWidth > 760 ? document.documentElement.clientWidth / 1440 : 0,
   });
 }
+
+/* the copy button: the address onto the clipboard, and a word saying so */
+const copyBtn = q('.end__copy'), copied = q('.end__copied');
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  /* (where the clipboard isn't allowed, the old way) */
+  const area = Object.assign(document.createElement('textarea'), {value: text});
+  area.style.cssText = 'position: fixed; opacity: 0;';
+  document.body.append(area);
+  area.select();
+  let done = false;
+  try { done = document.execCommand('copy'); } catch {}
+  area.remove();
+  return done;
+}
+copyBtn.addEventListener('click', async () => {
+  const done = await copyText(q('.end__mail').textContent.trim());
+  copied.textContent = done ? 'Copied' : 'Couldn’t copy';
+  copied.classList.add('is-on');
+  clearTimeout(copyBtn.timer);
+  copyBtn.timer = setTimeout(() => copied.classList.remove('is-on'), 1800);
+});
 
 /* the word: up and out, the next up into its place */
 const slot = q('.end__word'), WORDS = slot.dataset.words.split('|');

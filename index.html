@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="home/base.css?v=1">
-  <link rel="stylesheet" href="home/home.css?v=1">
+  <link rel="stylesheet" href="home/base.css?v=2">
+  <link rel="stylesheet" href="home/home.css?v=2">
 </head>
 <body>
 
@@ -21,7 +21,17 @@
        her ink and holds, and scrolling flies you forward through "Three
        things I bring to every project" and the three; then the footer comes
        at you out of the dark and becomes the page.
-       The menu and the clock stay put until the footer, which has its own. -->
+       The menu and the clock stay put until the footer, which has its own;
+       Contact in the menu takes you down to it. -->
+  <!-- The loader: her grid draws in on the paper, and a drop of the hero's
+       butter jelly grows in the middle as the page comes in, counting to
+       100 under it; then the drop spreads, the paper lifts and the hero
+       opens underneath (home.js) -->
+  <div class="load" aria-hidden="true">
+    <img class="load__grid" src="home/grid.svg" width="1440" height="2871" alt="">
+    <canvas class="load__drop"></canvas>
+    <p class="load__count">0</p>
+  </div>
   <img class="grid" src="home/grid.svg" width="1440" height="2871" alt="" aria-hidden="true">
 
   <main>
@@ -95,7 +105,7 @@
        Back to top; her grid, where the page's grid is; and a pool of the
        hero's butter jelly (end.js) filling the bottom from side to side, that
        swells to the pointer and ripples. -->
-  <footer class="end" aria-labelledby="end-title">
+  <footer class="end" id="contact" aria-labelledby="end-title">
     <div class="end__in">
       <img class="end__grid" src="home/grid.svg" width="1440" height="2871" alt="" aria-hidden="true">
       <canvas class="end__jelly" aria-hidden="true"></canvas>
@@ -103,7 +113,11 @@
         <div class="end__say">
           <p class="badge"><span class="badge__dot" aria-hidden="true"></span>Open to work</p>
           <h2 class="end__line" id="end-title" aria-label="Got a product in mind?">Got a <span class="end__word" aria-hidden="true" data-words="product|website|web app|startup"><span>product</span></span> in mind?</h2>
-          <a class="end__mail" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
+          <p class="end__reach">
+            <a class="end__mail" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
+            <button class="end__copy" type="button" aria-label="Copy the email"><img src="home/copy.svg" width="20" height="20" alt=""></button>
+            <span class="end__copied" aria-live="polite"></span>
+          </p>
         </div>
         <nav class="end__list" aria-label="Sitemap">
           <p aria-hidden="true">Sitemap</p>
@@ -118,14 +132,14 @@
       </div>
       <div class="end__row">
         <p>© 2026 Created by Anna Fesenko</p>
-        <a href="#" data-top>Back to top</a>
+        <a class="end__up" href="#" data-top><span>Back to top</span><img src="home/arrow-up.svg" width="20" height="20" alt=""></a>
       </div>
       <div class="end__pool" aria-hidden="true"></div>
     </div>
   </footer>
 
   <footer class="foot">
-    <nav class="pill" aria-label="Main"><a class="is-on" href="#" aria-current="page" data-top>Home</a><a href="about.html">About</a><a href="mailto:af.designworkk@gmail.com">Contact</a></nav>
+    <nav class="pill" aria-label="Main"><a class="is-on" href="#" aria-current="page" data-top>Home</a><a href="about.html">About</a><a href="#contact" data-contact>Contact</a></nav>
     <p class="pill" aria-label="Time in Odesa"><span class="clock" data-clock>--:--:--</span></p>
   </footer>
 
@@ -134,8 +148,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Draggable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/InertiaPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="home/home.js?v=1"></script>
-  <script type="module" src="home/how.js?v=1"></script>
-  <script type="module" src="home/end.js?v=1"></script>
+  <script type="module" src="home/home.js?v=2"></script>
+  <script type="module" src="home/how.js?v=2"></script>
+  <script type="module" src="home/end.js?v=2"></script>
 </body>
 </html>

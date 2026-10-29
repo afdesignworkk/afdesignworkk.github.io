@@ -267,8 +267,9 @@ export function view(canvas) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
   let dpr = 1, w = 1, h = 1;
-  function size() {
-    dpr = Math.min(devicePixelRatio, 1.5);
+  /* cap: the most pixels per CSS pixel to draw at */
+  function size(cap = 1.5) {
+    dpr = Math.min(devicePixelRatio, cap);
     w = canvas.clientWidth; h = canvas.clientHeight;
     canvas.width = Math.max(1, Math.round(w * dpr));
     canvas.height = Math.max(1, Math.round(h * dpr));
