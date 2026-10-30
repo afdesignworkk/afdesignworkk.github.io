@@ -1,11 +1,11 @@
-/* Home: the Liquid hero's styles (liquid/liquid.css) plus what changes when
-   the page goes on past it, from her Figma home-page (617:262):
+/* Home: the page's styles past the hero, from her Figma home-page
+   (617:262):
      - her grid is fixed; the page scrolls over it
-     - leaving the hero, its corners and its line (with the jelly and the
-       tags) drift and fade (home.js sets their transform, opacity, blur)
-     - the menu and the clock are fixed where they sit on the first screen
-     - Selected work: 80px title, 818 × 440 pictures (radius 12), 48px under
-       the title, the caption 12px under each, 30px to the next */
+     - leaving the hero, its top, its line, the info and the flowers drift
+       and fade (home.js sets their transform, opacity, blur)
+     - the menu and the clock are on the hero now, so nothing is fixed
+     - Selected projects: 71/72 capitals, 818 × 440 pictures (radius 12),
+       48px under the title, the caption 12px under each, 30px to the next */
 
 /* the loader: paper over everything until the page is in, her grid on it
    where the page's grid is, the drop in the middle and the count under it.
@@ -29,20 +29,13 @@ html.lenis, html.lenis body { height: auto; }
 main { position: relative; z-index: 2; }
 .hero { overflow: visible; overflow-x: clip; z-index: 1; }
 .work { position: relative; z-index: 2; }
-.hero > .top, .hero > .name { will-change: transform, opacity; }
-
-/* the menu and the clock, fixed; a little paper behind them for when the work passes under */
-.foot {
-  position: fixed; z-index: 5; left: 100px; right: 100px; bottom: 100px;
-  pointer-events: none;
-}
-.foot .pill { pointer-events: auto; background: rgb(253 253 251 / .82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.hero > .top, .hero > .line, .hero > .info, .hero > .bed { will-change: transform, opacity; }
 
 /* Selected work */
 .work { padding: 0 100px 200px; display: grid; justify-items: center; }
 .work__title {
-  margin: 0 0 48px; font-weight: 500; font-size: clamp(44px, 5.556vw, 96px); line-height: 1; letter-spacing: -.02em;
-  text-align: center;
+  margin: 0 0 48px; font-weight: 500; font-size: clamp(34px, 4.931vw, 86px); line-height: 1.014; letter-spacing: -.02em;
+  text-transform: uppercase; text-align: center;
 }
 .mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .06em; margin-bottom: -.06em; }
 .mask > span { display: inline-block; }
@@ -137,10 +130,6 @@ main { position: relative; z-index: 2; }
 .end__up img { transition: translate .5s var(--expo); }
 .end__up:hover, .end__up:focus-visible { color: var(--ink); }
 .end__up:hover img, .end__up:focus-visible img { translate: 0 -3px; }
-/* while the footer shows, the menu and the clock step aside */
-.foot { transition: opacity .4s ease, translate .4s var(--expo); }
-.foot.is-away { opacity: 0; translate: 0 12px; }
-.foot.is-away .pill { pointer-events: none; }
 
 /* without motion: the same words, one after another, on her ink */
 .how.is-still { height: auto; pointer-events: auto; }
@@ -153,12 +142,10 @@ main { position: relative; z-index: 2; }
 .how.is-still .say--big { margin-top: 40px; }
 
 @media (max-width: 1100px) {
-  .foot { left: 48px; right: 48px; }
   .work { padding-inline: 48px; }
   .end { --pad: 48px; }
 }
 @media (max-width: 760px) {
-  .foot { left: 16px; right: 16px; bottom: 16px; }
   .work { padding: 0 16px 120px; }
   .work__title { margin-bottom: 28px; }
   .work__list { width: 100%; gap: 24px; }
@@ -183,6 +170,6 @@ main { position: relative; z-index: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   .load { display: none; }
-  .item__fill, .item__name, .end__mail, .end__list a, .end__row a, .end__row span, .end__up img, .end__copy, .end__copied, .foot { transition: none; }
+  .item__fill, .item__name, .end__mail, .end__list a, .end__row a, .end__row span, .end__up img, .end__copy, .end__copied { transition: none; }
   .badge__dot::after { animation: none; }
 }

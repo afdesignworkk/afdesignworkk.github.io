@@ -8,22 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="home/base.css?v=2">
-  <link rel="stylesheet" href="home/home.css?v=2">
+  <link rel="stylesheet" href="home/base.css?v=3">
+  <link rel="stylesheet" href="home/home.css?v=3">
 </head>
 <body>
 
-  <!-- Home: hero + selected work, from her Figma home-page (617:262).
-       Her grid stays where it is and the page slides over it. Leaving the
-       hero, everything on it (name, intro, tags, the line and its jelly)
-       drifts up slower than the page, goes faint and soft and is gone while
-       "Selected work" comes up over it. Then How I work: the page dims into
-       her ink and holds, and scrolling flies you forward through "Three
-       things I bring to every project" and the three; then the footer comes
-       at you out of the dark and becomes the page.
-       The menu and the clock stay put until the footer, which has its own;
-       Contact in the menu takes you down to it. -->
-  <!-- The loader: her grid draws in on the paper, and a drop of the hero's
+  <!-- Home: from her Figma home-page (617:262). The hero: her name, the
+       menu, Odesa's time and "Available worldwide" along the top; the line,
+       its first row edge to edge; the intro and what she does; and in the
+       bottom band of her grid, a row of butter-jelly flowers growing up out
+       of the bottom edge (home/flowers.js). Her grid stays where it is and
+       the page slides over it: leaving the hero, its words drift up slower
+       than the page and fade, the flowers first, while Selected projects
+       comes up over it. Then How I work: the page dims into her ink and
+       holds, and scrolling flies you forward through her three things; then
+       the footer comes at you out of the dark and becomes the page.
+       The loader first: her grid draws in on the paper and a drop of the
        butter jelly grows in the middle as the page comes in, counting to
        100 under it; then the drop spreads, the paper lifts and the hero
        opens underneath (home.js) -->
@@ -36,22 +36,29 @@
 
   <main>
     <section class="hero" aria-label="Intro">
-      <section class="name">
-        <canvas class="name__glow" aria-hidden="true"></canvas>
-        <h1 data-line="Taste in every detail,|care in every flow"><span class="ln">Taste in every detail,</span> <span class="ln">care in every flow</span></h1>
-        <button class="chip" type="button" data-d="10.83,24.33" data-m="5,29">Product design</button>
-        <button class="chip" type="button" data-d="71.25,28.11" data-m="55,25">Design systems</button>
-        <button class="chip" type="button" data-d="66.39,68.11" data-m="60,69">Websites</button>
-        <button class="chip" type="button" data-d="13.13,65.44" data-m="9,71">Audits</button>
-      </section>
+      <canvas class="bed" aria-hidden="true"></canvas>
       <header class="top">
-        <p class="me"><b>Anna Fesenko</b><span>UI/UX designer</span></p>
-        <p class="about">Hi! I’m Anna, a UI/UX designer with 3.5 years of experience. I design digital products and websites people find their way through without thinking, and teams can keep building on. Open to new projects.</p>
+        <p class="who">Anna Fesenko</p>
+        <nav class="menu" aria-label="Main">
+          <a href="#work" data-work>Projects</a>
+          <a href="about.html">About</a>
+          <a href="#contact" data-contact>Contact</a>
+          <a href="playground.html">Playground</a>
+        </nav>
+        <p class="time" aria-label="Time in Odesa"><span class="clock" data-clock>--:--:--</span></p>
+        <p class="where">Available worldwide</p>
       </header>
+      <h1 class="line"><span class="ln"><span class="pt">Taste in every</span> <span class="pt">detail,</span></span> <span class="ln"><span class="pt">care in every</span> <span class="pt">flow</span></span></h1>
+      <div class="info">
+        <p class="about">Hi! I’m Anna, a UI/UX designer with 3.5 years of experience. I design digital products and websites people find their way through without thinking, and teams can keep building on.</p>
+        <ul class="does" aria-label="What I do">
+          <li>Product design &amp; websites</li><li>Advisory &amp; audits</li><li>Social media design</li>
+        </ul>
+      </div>
     </section>
 
     <section class="work" id="work" aria-labelledby="work-title">
-      <h2 class="work__title" id="work-title"><span class="mask"><span>Selected</span></span> <span class="mask"><span>work</span></span></h2>
+      <h2 class="work__title" id="work-title"><span class="mask"><span>Selected</span></span> <span class="mask"><span>projects</span></span></h2>
       <ol class="work__list">
         <li><a class="item" href="#">
           <span class="item__pic"><span class="item__fill"></span></span>
@@ -138,18 +145,11 @@
     </div>
   </footer>
 
-  <footer class="foot">
-    <nav class="pill" aria-label="Main"><a class="is-on" href="#" aria-current="page" data-top>Home</a><a href="about.html">About</a><a href="#contact" data-contact>Contact</a></nav>
-    <p class="pill" aria-label="Time in Odesa"><span class="clock" data-clock>--:--:--</span></p>
-  </footer>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/Draggable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/InertiaPlugin.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="home/home.js?v=2"></script>
-  <script type="module" src="home/how.js?v=2"></script>
-  <script type="module" src="home/end.js?v=2"></script>
+  <script type="module" src="home/home.js?v=3"></script>
+  <script type="module" src="home/how.js?v=3"></script>
+  <script type="module" src="home/end.js?v=3"></script>
 </body>
 </html>

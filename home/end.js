@@ -116,7 +116,7 @@ end.addEventListener('pointerdown', e => {
 
 function frame(t) {
   const e = end.getBoundingClientRect();
-  if (REDUCED) foot.classList.toggle('is-away', e.top < innerHeight * .55);
+  if (REDUCED) foot?.classList.toggle('is-away', e.top < innerHeight * .55);
   /* landing: a wave runs through the pool */
   const now = REDUCED || !end.classList.contains('is-dive') || end.classList.contains('is-landed');
   if (now && !landed) {

@@ -93,7 +93,7 @@ function footer(u, o, vx, vy, cx, cy) {
   /* held on the screen until the track ends (it lies that far below its top) */
   const hold = Math.max(0, (LAST - u) * vh);
   end.style.transform = hold > 0 && o > 0 ? `translate3d(0, ${(-hold).toFixed(1)}px, 0)` : '';
-  foot.classList.toggle('is-away', o > .5);
+  foot?.classList.toggle('is-away', o > .5);
   if (o === opened && o >= 1) return;
   opened = o;
   end.style.visibility = o > 0 ? 'visible' : '';
