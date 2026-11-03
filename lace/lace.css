@@ -119,9 +119,9 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 
 /* The footer: her dark card (732:246), 12 px in from the sides and 48 px off
    the bottom, 96 px under the projects. A line, the email with a copy pill,
-   three columns, and the name across the foot, drawn in lace dots like the
-   butterfly on the canvas behind (lace.js), with a small butterfly in the
-   top right corner. Over the card the menu turns light. */
+   three columns, and the name across the foot, drawn on the canvas behind
+   (lace.js): lace dots like the butterfly, settling into type. Over the
+   card the menu turns light. */
 .foot { position: relative; z-index: 4; padding: 0 12px 48px; }
 .foot__panel { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; min-height: 888px;
   padding: 88px calc(var(--side) - 12px); border-radius: 32px; color: var(--bg); will-change: clip-path;

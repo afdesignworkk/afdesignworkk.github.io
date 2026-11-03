@@ -18,9 +18,7 @@ const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
-// the footer is hidden on the live page for now; ?foot shows it
 const foot = document.querySelector('.foot');
-if (new URLSearchParams(location.search).has('foot')) foot.hidden = false;
 
 // --- the dot field over the whole screen --------------------------------------
 const S = 4;                                            // mask pixels a cell
@@ -433,24 +431,27 @@ for (const b of document.querySelectorAll('[data-copy]')) {
 }
 const panel = foot.querySelector('.foot__panel');
 
-// The name across the foot of the card, and a small butterfly in its empty
-// top right corner, drawn the way the hero butterfly is: a grid of cells, each
-// reading how deep it sits inside the shape and drawn as one lace dot (light
-// on the card). Cells grow fast and shrink slowly, so whatever moves leaves a
-// trail: the butterfly as its wings beat, and the pointer, which drags a soft
-// brush of dots across the card. The name blooms in, left to right, the first
-// time the card comes up.
+// The name across the foot of the card, drawn the way the hero butterfly is:
+// a grid of cells, each reading how deep it sits inside the letters and drawn
+// as one lace dot (light on the card; the brush on the bare card is fainter). The first time the card comes up the
+// name blooms in as dots, left to right, then settles into solid type, as in
+// her mockup. The pointer leaves a fading trail: where it passes, the type
+// opens back into dots, and a soft brush of dots follows it across the card.
 const fcv = panel.querySelector('.foot__field'), fx = fcv.getContext('2d');
 const nameBox = panel.querySelector('.foot__name');
-const FD = { c: 9, cols: 0, rows: 0, w: 0, h: 0, dpr: 1, name: null, cur: null, tgt: null, sweep: 0, bloom: false,
-  fly: { x: 0, y: 0, u: 0, i0: 0, j0: 0, ci: 0, cj: 0, phase: 0, t: 0 }, ptr: { x: -1e4, y: -1e4, on: false } };
+const FD = { c: 9, cols: 0, rows: 0, w: 0, h: 0, dpr: 1, name: null, cur: null, tgt: null, hole: null, sweep: 0, solid: 0, bloom: false,
+  type: { size: 100, x: 0, y: 0, ls: 0 }, trail: [] };
 const fmask = document.createElement('canvas'), fm = fmask.getContext('2d', { willReadFrequently: true });
+const tcv = document.createElement('canvas'), tx = tcv.getContext('2d');
+const FAINT = .35;              // how strongly the brush dots show on the bare card (in the letters they stay full)
+// fcut: what dims the dots on the bare card, everywhere but the letters
+const fcut = document.createElement('canvas'), fc = fcut.getContext('2d');
 function sizeFoot() {
   if (foot.hidden) return;
   const w = panel.clientWidth, h = panel.clientHeight, dpr = Math.min(devicePixelRatio, 2), c = w < 760 ? 4 : 9;
-  const cols = Math.ceil(w / c), rows = Math.ceil(h / c);
-  Object.assign(FD, { w, h, dpr, c, cols, rows, cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), name: new Float32Array(cols * rows) });
-  fcv.width = w * dpr; fcv.height = h * dpr;
+  const cols = Math.ceil(w / c), rows = Math.ceil(h / c), n = cols * rows;
+  Object.assign(FD, { w, h, dpr, c, cols, rows, cur: new Float32Array(n), tgt: new Float32Array(n), hole: new Float32Array(n), name: new Float32Array(n) });
+  fcv.width = tcv.width = fcut.width = w * dpr; fcv.height = tcv.height = fcut.height = h * dpr;
   // the name: Hanken Grotesk Medium, fitted to its box, painted once
   fmask.width = cols * S; fmask.height = rows * S;
   fm.setTransform(1, 0, 0, 1, 0, 0); fm.clearRect(0, 0, fmask.width, fmask.height);
@@ -463,45 +464,27 @@ function sizeFoot() {
   fm.font = `500 ${size}px 'Hanken Grotesk', sans-serif`;
   if ('letterSpacing' in fm) fm.letterSpacing = `${-size * .02}px`;
   const cap = fm.measureText('A').actualBoundingBoxAscent;
-  fm.textBaseline = 'alphabetic'; fm.fillText('Anna Fesenko', bx, by + bh / 2 + cap / 2);
+  FD.type = { size, x: bx, y: by + bh / 2 + cap / 2, ls: -size * .02 };
+  fm.textBaseline = 'alphabetic'; fm.fillText('Anna Fesenko', bx, FD.type.y);
+  fc.setTransform(1, 0, 0, 1, 0, 0); fc.fillStyle = `rgba(0,0,0,${1 - FAINT})`; fc.fillRect(0, 0, fcut.width, fcut.height);
+  fc.setTransform(dpr, 0, 0, dpr, 0, 0); fc.globalCompositeOperation = 'destination-out';
+  fc.font = fm.font; if ('letterSpacing' in fc) fc.letterSpacing = fm.letterSpacing;
+  fc.lineWidth = c; fc.lineJoin = 'round'; fc.textBaseline = 'alphabetic';
+  fc.fillText('Anna Fesenko', bx, FD.type.y); fc.strokeText('Anna Fesenko', bx, FD.type.y);
+  fc.globalCompositeOperation = 'source-over';
   const d = fm.getImageData(0, 0, fmask.width, fmask.height).data;
   for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) FD.name[j * cols + i] = d[((j * S + S / 2) * fmask.width + i * S + S / 2) * 4 + 3] / 255;
-  // the corner butterfly: in the space right of the line, its wings in line
-  // with the columns' right edge; on a phone, small, in the card's top padding
-  const say = panel.querySelector('.foot__say'), fly = FD.fly, side = nameBox.offsetLeft;
-  if (w < 760) Object.assign(fly, { u: 24, x: w - side - 24, y: 38 });
-  else {
-    const u = Math.min(92, (w - side - say.offsetLeft - say.offsetWidth) * .32);
-    Object.assign(fly, { u, x: w - side - u * 1.25, y: say.offsetTop + u * 1.05 });
-  }
-  fly.ci = Math.ceil(fly.u * 2.6 / c); fly.cj = Math.ceil(fly.u * 2.2 / c);
-  fly.i0 = Math.max(0, Math.round(fly.x / c - fly.ci / 2)); fly.j0 = Math.max(0, Math.round(fly.y / c - fly.cj / 2));
 }
 let footReady = false;
 document.fonts.load("500 100px 'Hanken Grotesk'").then(() => { sizeFoot(); footReady = true; }, () => { sizeFoot(); footReady = true; });
 addEventListener('resize', () => { if (footReady) sizeFoot(); });
 new ResizeObserver(() => { if (footReady && Math.abs(panel.clientHeight - FD.h) > 1) sizeFoot(); }).observe(panel);
-panel.addEventListener('pointermove', (e) => { const r = panel.getBoundingClientRect(); Object.assign(FD.ptr, { x: e.clientX - r.left, y: e.clientY - r.top, on: e.pointerType === 'mouse' }); });
-panel.addEventListener('pointerleave', () => { FD.ptr.on = false; });
-const bm = document.createElement('canvas'), bmx = bm.getContext('2d', { willReadFrequently: true });
-function flyTarget(dt) {
-  const fly = FD.fly, { c, cols, rows, tgt } = FD;
-  fly.t += dt;
-  const glide = Math.max(0, Math.sin(fly.t * .3) - .6) / .4;
-  fly.phase += dt * (2.4 + Math.sin(fly.t * .8) * .5) * (1 - glide * .9) * (reduce ? 0 : 1);
-  const open = Math.pow(.5 + .5 * Math.cos(fly.phase), .75) * (1 - glide) + glide;
-  bm.width = fly.ci * S; bm.height = fly.cj * S;
-  bmx.filter = `blur(${S * .8}px)`; bmx.fillStyle = '#000'; bmx.strokeStyle = '#000';
-  const k = S / c;
-  bmx.setTransform(k, 0, 0, k, -fly.i0 * c * k, -fly.j0 * c * k);
-  bmx.translate(fly.x, fly.y + Math.sin(fly.t * .9) * fly.u * .04); bmx.rotate(Math.sin(fly.t * .37) * .06); bmx.scale(fly.u, fly.u);
-  butterfly(bmx, open);
-  const d = bmx.getImageData(0, 0, bm.width, bm.height).data;
-  for (let j = 0; j < fly.cj; j++) for (let i = 0; i < fly.ci; i++) {
-    const gi = fly.i0 + i, gj = fly.j0 + j; if (gi >= cols || gj >= rows) continue;
-    const n = gj * cols + gi; tgt[n] = Math.max(tgt[n], d[((j * S + S / 2) * bm.width + i * S + S / 2) * 4 + 3] / 255);
-  }
-}
+// the pointer's trail: a point every 8 px, each fading out over .8 s
+// (rollFoot adds the points, so a pointer resting on the card keeps its spot open)
+panel.addEventListener('pointermove', (e) => { FD.at = e.pointerType === 'mouse' ? { x: e.clientX, y: e.clientY } : null; });
+panel.addEventListener('pointerleave', () => { FD.at = null; });
+
+const TRAIL = 70;                                      // px, how far round each trail point the type opens
 function rollFoot(dt = 1 / 60) {
   if (foot.hidden) return;
   const H = innerHeight, r = foot.getBoundingClientRect();
@@ -511,21 +494,56 @@ function rollFoot(dt = 1 / 60) {
   document.body.classList.toggle('on-ink', panel.getBoundingClientRect().top < 72);
   panel.style.clipPath = `inset(0 ${(1 - k) * 6}% 0 ${(1 - k) * 6}% round ${32 + (1 - k) * 16}px)`;
   if (!footReady || r.bottom < 0) return;
-  // the name blooms in, left to right, once the card is half up
-  if (!FD.bloom && p > .5) { FD.bloom = true; gsap.to(FD, { sweep: 1.3, duration: reduce ? 0 : 1.6, ease: 'power2.out' }); }
-  const { c, cols, rows, cur, tgt, name, ptr } = FD;
-  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-    const n = j * cols + i, front = Math.min(1, Math.max(0, (FD.sweep - i / cols) * 5));
-    let v = name[n] * front;
-    if (ptr.on) { const dx = (i + .5) * c - ptr.x, dy = (j + .5) * c - ptr.y; v = Math.max(v, .62 * Math.exp(-(dx * dx + dy * dy) / 1300)); }
-    tgt[n] = v;
+  // the name blooms in as dots, left to right, once the card is half up, then
+  // the type fills in
+  if (!FD.bloom && p > .5) {
+    FD.bloom = true;
+    gsap.to(FD, { sweep: 1.3, duration: reduce ? 0 : 1.6, ease: 'power2.out' });
+    gsap.to(FD, { solid: 1, duration: reduce ? 0 : .9, delay: reduce ? 0 : 1.2, ease: 'power1.inOut' });
   }
-  flyTarget(dt);
+  const { c, cols, rows, cur, tgt, hole, name, trail } = FD;
+  for (const q of trail) q.life -= dt / .8;
+  if (FD.at) {
+    const pr = panel.getBoundingClientRect(), x = FD.at.x - pr.left, y = FD.at.y - pr.top, last = trail.at(-1);
+    if (last && Math.hypot(x - last.x, y - last.y) <= 8) last.life = 1;
+    else { trail.push({ x, y, life: 1 }); if (trail.length > 60) trail.shift(); }
+  }
+  while (trail.length && trail[0].life <= 0) trail.shift();
+  hole.fill(0);
+  const reach = Math.ceil(TRAIL / c);
+  for (const q of trail) {
+    const ci = Math.floor(q.x / c), cj = Math.floor(q.y / c);
+    for (let j = Math.max(0, cj - reach); j <= Math.min(rows - 1, cj + reach); j++) for (let i = Math.max(0, ci - reach); i <= Math.min(cols - 1, ci + reach); i++) {
+      const dx = (i + .5) * c - q.x, dy = (j + .5) * c - q.y, n = j * cols + i;
+      hole[n] = Math.max(hole[n], q.life * Math.exp(-(dx * dx + dy * dy) / 1300));
+    }
+  }
+  for (let n = 0; n < cur.length; n++) {
+    const front = Math.min(1, Math.max(0, (FD.sweep - (n % cols) / cols) * 5));
+    tgt[n] = Math.max(name[n] * front * (1 - FD.solid * (1 - Math.min(1, hole[n] * 1.6))), .62 * hole[n]);
+  }
   const f = dt * 60, ku = 1 - Math.pow(.66, f), kd = 1 - Math.pow(.95, f);
   for (let n = 0; n < cur.length; n++) { const t = tgt[n], v = cur[n]; cur[n] = v + (t - v) * (t > v ? ku : kd); }
   fx.setTransform(1, 0, 0, 1, 0, 0); fx.globalCompositeOperation = 'source-over'; fx.clearRect(0, 0, fcv.width, fcv.height);
   fx.setTransform(FD.dpr, 0, 0, FD.dpr, 0, 0);
   lace(fx, cur, cols, rows, { c, x: 0, y: 0 }, '#f7f7f4');
+  fx.setTransform(1, 0, 0, 1, 0, 0); fx.globalCompositeOperation = 'destination-out'; fx.drawImage(fcut, 0, 0);
+  // the solid name, opened where the pointer has just been
+  if (FD.solid > 0) {
+    const T = FD.type;
+    tx.setTransform(1, 0, 0, 1, 0, 0); tx.globalCompositeOperation = 'source-over'; tx.clearRect(0, 0, tcv.width, tcv.height);
+    tx.setTransform(FD.dpr, 0, 0, FD.dpr, 0, 0);
+    tx.font = `500 ${T.size}px 'Hanken Grotesk', sans-serif`; if ('letterSpacing' in tx) tx.letterSpacing = `${T.ls}px`;
+    tx.textBaseline = 'alphabetic'; tx.fillStyle = '#f7f7f4'; tx.fillText('Anna Fesenko', T.x, T.y);
+    tx.globalCompositeOperation = 'destination-out';
+    for (const q of trail) {
+      const g = tx.createRadialGradient(q.x, q.y, 0, q.x, q.y, TRAIL);
+      g.addColorStop(0, `rgba(0,0,0,${q.life})`); g.addColorStop(.45, `rgba(0,0,0,${q.life * .7})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+      tx.fillStyle = g; tx.fillRect(q.x - TRAIL, q.y - TRAIL, TRAIL * 2, TRAIL * 2);
+    }
+    fx.setTransform(1, 0, 0, 1, 0, 0); fx.globalCompositeOperation = 'source-over';
+    fx.globalAlpha = FD.solid; fx.drawImage(tcv, 0, 0); fx.globalAlpha = 1;
+  }
 }
 
 // Odesa time on a 12-hour clock, as in her frame: 1:10:12 PM GMT+2
