@@ -143,8 +143,9 @@ function target(ty) {
   const arc = Math.sin(Math.PI * e), s = (a.s + (b.s - a.s) * e) * (1 - arc * .1);
   return {
     x: a.x + (b.x - a.x) * e - arc * F.W * .06,           // swings out a little to the side
-    y: Math.max((a.y - ty) + ((b.y - ty) - (a.y - ty)) * e,
-      96 + F.bw / 2 * s * .9),                            // but stays under the menu
+    y: e > 0 && e < 1                                     // in flight it stays under the menu;
+      ? Math.max((a.y - ty) + ((b.y - ty) - (a.y - ty)) * e, 96 + F.bw / 2 * s * .9)
+      : (a.y - ty) + ((b.y - ty) - (a.y - ty)) * e,       // perched, it rides with the page
     s,
   };
 }
@@ -180,6 +181,7 @@ gsap.ticker.add((time, dms) => {
   step(dt);
   draw(dt, Math.min(1, intro.k));
   movePols(dt);
+  rollWorks();
   veil.classList.toggle('on', ty > 40);
   // the hero's text fades as it nears the menu, so the two never overlap
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
@@ -216,6 +218,52 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
   drop.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && mouse.matches) leave = setTimeout(() => set(false), 220); });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
   addEventListener('pointerdown', (e) => { if (open && !drop.contains(e.target)) set(false); });
+}
+
+// Selected projects (Focus): the heading rises in once; then the list holds
+// still on screen while the page scrolls through it. The project in the
+// middle is open at full size; the others close into strips above and below
+// it, a contents list. Scrolling closes the open one into a strip as the next
+// one opens, each holding open a moment.
+{
+  const h = document.querySelector('.work__h');
+  gsap.set(h, { opacity: 0, y: reduce ? 0 : 40 });
+  const io = new IntersectionObserver((list) => {
+    for (const e of list) if (e.isIntersecting) { io.unobserve(e.target); gsap.to(e.target, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }); }
+  }, { rootMargin: '0px 0px -12% 0px' });
+  io.observe(h);
+}
+const workSec = document.querySelector('.work'), workList = workSec.querySelector('.work__list');
+const works = [...workList.children].map((li) => ({ li, pic: li.querySelector('.work__pic'), cap: li.querySelector('.work__cap') }));
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const sstep = (x) => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+if (!reduce) workSec.classList.add('focus');
+const FOC = { step: .7, strip: 88, phoneStrip: 64, narrow: .72, gap: 24, cap: 36 };
+function rollWorks() {
+  if (reduce) return;
+  const y = lenis.scroll, H = innerHeight, n = works.length, phone = innerWidth < 760;
+  const step = FOC.step * H, full = Math.min(818, workList.clientWidth), fullH = full * 416 / 818, strip = phone ? FOC.phoneStrip : FOC.strip;
+  workList.style.height = `${(n - 1) * step + H}px`;
+  const listTop = workList.getBoundingClientRect().top + y;
+  const pin = clamp(y - listTop, 0, (n - 1) * step);
+  // which card is open: a float index, eased so each one holds
+  const raw = pin / step, base = Math.min(Math.floor(raw), n - 2), fr = raw - base;
+  const v = base + sstep((fr - .15) / .7);
+  const open = works.map((_, i) => sstep(1 - Math.abs(i - v)));
+  const hs = open.map((o) => strip + (fullH - strip) * o);
+  const tops = []; let acc = 0;
+  hs.forEach((h, i) => { tops[i] = acc; acc += h + FOC.cap + FOC.gap; });
+  // line the open point (between two cards' centres) up with the middle of the screen
+  const ctr = (i) => tops[i] + (hs[i] + FOC.cap) / 2;
+  const b = Math.min(Math.floor(v), n - 2), f = v - b;
+  const shift = H / 2 - (ctr(b) + (ctr(b + 1) - ctr(b)) * f);
+  works.forEach(({ li, pic, cap }, i) => {
+    const o = open[i], w = full * (FOC.narrow + (1 - FOC.narrow) * o);
+    li.style.width = `${w}px`;
+    li.style.transform = `translate3d(-50%, ${pin + shift + tops[i]}px, 0)`;
+    pic.style.height = `${hs[i]}px`;
+    cap.style.opacity = .4 + .6 * o;
+  });
 }
 
 // Odesa time on a 12-hour clock, as in her frame: 1:10:12 PM GMT+2

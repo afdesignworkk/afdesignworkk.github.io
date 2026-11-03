@@ -66,7 +66,7 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 /* About: four small notes (292), three big paragraphs (608, centred on the
    page at 1440), the About me pill; the polaroids sit to the right */
 .about { position: relative; display: grid; grid-template-columns: 292px 608px; column-gap: 24px; align-items: start;
-  padding: 150px var(--side) 180px; overflow-x: clip; }
+  padding: 150px var(--side) 160px; overflow-x: clip; }
 .facts, .story { position: relative; z-index: 4; }
 .facts { display: grid; row-gap: 48px; }
 .facts .tag { display: block; margin-bottom: 6px; font-size: 12px; line-height: 16px; color: var(--mute); }
@@ -88,6 +88,25 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .waves img { aspect-ratio: 4 / 3; }
 .batu { width: 230px; padding: 12.65px 12.65px 0; }
 .batu img { aspect-ratio: 3 / 4; }
+
+/* Selected projects: the heading centred, then three wide cards (818 × 416,
+   grey until the shots are in) with the name and year underneath. With
+   motion on, JS holds the list on screen and opens one card at a time
+   (.focus, see rollWorks in lace.js). */
+.work { position: relative; z-index: 4; padding: 0 var(--side) 160px; overflow-x: clip; }
+.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(40px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
+.work__list { display: grid; row-gap: 30px; justify-items: center; }
+.work__list li { width: min(818px, 100%); }
+.work__item { display: block; }
+.work__pic { display: block; aspect-ratio: 818 / 416; border-radius: 20px; background: #d6d6d6; overflow: hidden; }
+.work__pic > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.work__cap { display: flex; justify-content: space-between; gap: 24px; margin-top: 16px; }
+.work__year { font-variant-numeric: tabular-nums; }
+.work.focus .work__list { display: block; position: relative; }
+.work.focus .work__list li { position: absolute; top: 0; left: 50%; will-change: transform, width; }
+.work.focus .work__pic { aspect-ratio: auto; }
+.work.focus .work__cap { white-space: nowrap; }
+.work.focus .work__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }   /* one line, so a strip keeps its height */
 
 @media (max-width: 1240px) {                         /* the polaroids come into the flow, under the paragraphs */
   .about { grid-template-columns: 292px minmax(0, 608px); }
