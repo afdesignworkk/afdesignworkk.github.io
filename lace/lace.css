@@ -3,7 +3,7 @@
    bottom, the hero intro from the 58.33 % column. */
 :root {
   --bg: #f7f7f4; --ink: #1b1b1b; --mute: #737373; --font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --side: clamp(20px, 6.945vw, 100px);
+  --side: clamp(20px, 6.945vw, 100px); --line: rgba(27, 27, 27, .1);
 }
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/20px var(--font); letter-spacing: -.02em; -webkit-font-smoothing: antialiased; }
@@ -88,6 +88,17 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .waves img { aspect-ratio: 4 / 3; }
 .batu { width: 230px; padding: 12.65px 12.65px 0; }
 .batu img { aspect-ratio: 3 / 4; }
+
+/* Services: one grey line of type running across the page, 48 px under the
+   hero (her frame 732:246: 64/72 Medium, dots between the words; #c4c4c4,
+   the grey of the empty project cards, so it can be read; lace.js moves it) */
+.band { position: relative; z-index: 4; padding: 48px 0 14px; color: #c4c4c4; }
+.band__run { overflow: hidden; }
+.band__line { white-space: nowrap; font-weight: 500; font-size: 64px; line-height: 72px; letter-spacing: -.02em; }
+.band__track { display: inline-flex; align-items: center; gap: 24px; padding-right: 24px; will-change: transform; }
+.band__sep { display: inline-grid; place-items: center; width: 70px; height: 45px; fill: currentColor; }
+.band__sep svg { width: 45px; height: 45px; }
+.band__say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 /* Selected projects: the heading centred, then three wide cards (818 × 530,
    her frame 732:246; grey until the shots are in) with the name and year

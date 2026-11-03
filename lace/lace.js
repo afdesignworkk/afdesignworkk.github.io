@@ -152,6 +152,24 @@ function target(ty) {
 
 const heroText = [...document.querySelectorAll('.hero .line, .hero .intro')], veil = document.querySelector('.veil');
 
+// --- the services band ----------------------------------------------------------
+// One big line of the services running across the page. It drifts on its
+// own; scrolling speeds it up and turns it the way the page is going.
+const BAND = { speed: 85, boost: .5, max: 680 };          // px a second
+const track = document.querySelector('.band__track');
+track.innerHTML += track.innerHTML;                       // the words twice, so the line can loop
+let runX = 0, runDir = 1, runVel = 0, runY = null;
+function rollBand(dt) {
+  const y = lenis.scroll;
+  if (runY !== null && Math.abs(y - runY) > .5) runDir = Math.sign(y - runY);
+  if (runY !== null) runVel += (Math.abs(y - runY) / Math.max(dt, .001) - runVel) * Math.min(1, dt * 8);
+  runY = y;
+  if (reduce) return;
+  const half = track.scrollWidth / 2;
+  runX = ((runX + (BAND.speed + Math.min(BAND.max, runVel * BAND.boost)) * runDir * dt) % half + half) % half;
+  track.style.transform = `translate3d(${-runX}px, 0, 0)`;
+}
+
 // --- the butterfly -------------------------------------------------------------
 const B = { x: 0, y: 0, s: 1, rot: 0 };
 { const t0 = target(0); Object.assign(B, t0); }
@@ -182,6 +200,7 @@ gsap.ticker.add((time, dms) => {
   draw(dt, Math.min(1, intro.k));
   movePols(dt);
   rollWorks(dt);
+  rollBand(dt);
   veil.classList.toggle('on', ty > 40);
   // the hero's text fades as it nears the menu, so the two never overlap
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
