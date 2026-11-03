@@ -89,24 +89,27 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .batu { width: 230px; padding: 12.65px 12.65px 0; }
 .batu img { aspect-ratio: 3 / 4; }
 
-/* Selected projects: the heading centred, then three wide cards (818 × 416,
-   grey until the shots are in) with the name and year underneath. With
-   motion on, JS holds the list on screen and opens one card at a time
-   (.focus, see rollWorks in lace.js). */
+/* Selected projects: the heading centred, then three wide cards (818 × 530,
+   her frame 732:246; grey until the shots are in) with the name and year
+   underneath. JS rides them over a drum as the page scrolls and, with a
+   mouse, brings each one's second picture in in dots on hover (rollWorks and
+   DOTS in lace.js). */
 .work { position: relative; z-index: 4; padding: 0 var(--side) 160px; overflow-x: clip; }
 .work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(40px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
-.work__list { display: grid; row-gap: 30px; justify-items: center; }
-.work__list li { width: min(818px, 100%); }
+.work__list { display: grid; row-gap: 32px; justify-items: center; }
+.work__list li { width: min(818px, 100%); will-change: transform; }
 .work__item { display: block; }
-.work__pic { display: block; aspect-ratio: 818 / 416; border-radius: 20px; background: #d6d6d6; overflow: hidden; }
-.work__pic > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.work__pic { position: relative; display: block; aspect-ratio: 818 / 530; border-radius: 20px; background: #c4c4c4; overflow: hidden; }
+.work__shot { position: absolute; inset: 0; transform: translateY(var(--py, 0)) scale(1.1); }
+.work__shot img, .work__dots { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.work__shot img { object-fit: cover; }
+.work__dots { pointer-events: none; }
 .work__cap { display: flex; justify-content: space-between; gap: 24px; margin-top: 16px; }
 .work__year { font-variant-numeric: tabular-nums; }
-.work.focus .work__list { display: block; position: relative; }
-.work.focus .work__list li { position: absolute; top: 0; left: 50%; will-change: transform, width; }
-.work.focus .work__pic { aspect-ratio: auto; }
-.work.focus .work__cap { white-space: nowrap; }
-.work.focus .work__name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }   /* one line, so a strip keeps its height */
+/* the blur over the list at the top and bottom of the screen (JS sets where) */
+.haze { position: fixed; z-index: 1; left: 0; right: 0; display: none; overflow: hidden; pointer-events: none; }
+.haze__zone { position: absolute; left: 0; right: 0; }
+.haze__layer { position: absolute; inset: 0; }
 
 @media (max-width: 1240px) {                         /* the polaroids come into the flow, under the paragraphs */
   .about { grid-template-columns: 292px minmax(0, 608px); }

@@ -181,7 +181,7 @@ gsap.ticker.add((time, dms) => {
   step(dt);
   draw(dt, Math.min(1, intro.k));
   movePols(dt);
-  rollWorks();
+  rollWorks(dt);
   veil.classList.toggle('on', ty > 40);
   // the hero's text fades as it nears the menu, so the two never overlap
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
@@ -220,11 +220,12 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
   addEventListener('pointerdown', (e) => { if (open && !drop.contains(e.target)) set(false); });
 }
 
-// Selected projects (Focus): the heading rises in once; then the list holds
-// still on screen while the page scrolls through it. The project in the
-// middle is open at full size; the others close into strips above and below
-// it, a contents list. Scrolling closes the open one into a strip as the next
-// one opens, each holding open a moment.
+// Selected projects, as on her reference (ilyamadzichynau.com): the cards ride
+// a drum. The one in the middle of the screen is full size and holds there a
+// moment before the next takes over; the others shrink a little, bend away
+// round the drum and tip back. The first time the list comes up, the cards fly
+// in from below, tipped right over. With a mouse, the top and bottom of the
+// screen blur over the list, more the faster it scrolls.
 {
   const h = document.querySelector('.work__h');
   gsap.set(h, { opacity: 0, y: reduce ? 0 : 40 });
@@ -233,37 +234,164 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
   }, { rootMargin: '0px 0px -12% 0px' });
   io.observe(h);
 }
+const RIDE = {
+  gap: -20, phoneGap: 0,                                   // cards a little closer than laid out
+  curve: .16, perspective: 1400,                           // the drum
+  tip: 12,                                                 // extra tip back away from the middle
+  focus: { scale: 1.11, spread: 2, push: .6, straight: .52 },
+  dwell: .2, follow: .5,                                   // how long a card holds, how softly the list follows
+  enter: { at: .7, distance: 610, depth: -560, tip: 81, grow: .19, duration: .7, stagger: .1 },
+  blur: { zone: .15, max: 16, speed: 16 },
+  parallax: { amount: 20 },
+};
 const workSec = document.querySelector('.work'), workList = workSec.querySelector('.work__list');
-const works = [...workList.children].map((li) => ({ li, pic: li.querySelector('.work__pic'), cap: li.querySelector('.work__cap') }));
+const works = [...workList.children].map((li) => ({ li, shot: li.querySelector('.work__shot') }));
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const sstep = (x) => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
-if (!reduce) workSec.classList.add('focus');
-const FOC = { step: .7, strip: 88, phoneStrip: 64, narrow: .72, gap: 24, cap: 36 };
-function rollWorks() {
-  if (reduce) return;
-  const y = lenis.scroll, H = innerHeight, n = works.length, phone = innerWidth < 760;
-  const step = FOC.step * H, full = Math.min(818, workList.clientWidth), fullH = full * 416 / 818, strip = phone ? FOC.phoneStrip : FOC.strip;
-  workList.style.height = `${(n - 1) * step + H}px`;
-  const listTop = workList.getBoundingClientRect().top + y;
-  const pin = clamp(y - listTop, 0, (n - 1) * step);
-  // which card is open: a float index, eased so each one holds
-  const raw = pin / step, base = Math.min(Math.floor(raw), n - 2), fr = raw - base;
-  const v = base + sstep((fr - .15) / .7);
-  const open = works.map((_, i) => sstep(1 - Math.abs(i - v)));
-  const hs = open.map((o) => strip + (fullH - strip) * o);
-  const tops = []; let acc = 0;
-  hs.forEach((h, i) => { tops[i] = acc; acc += h + FOC.cap + FOC.gap; });
-  // line the open point (between two cards' centres) up with the middle of the screen
-  const ctr = (i) => tops[i] + (hs[i] + FOC.cap) / 2;
-  const b = Math.min(Math.floor(v), n - 2), f = v - b;
-  const shift = H / 2 - (ctr(b) + (ctr(b + 1) - ctr(b)) * f);
-  works.forEach(({ li, pic, cap }, i) => {
-    const o = open[i], w = full * (FOC.narrow + (1 - FOC.narrow) * o);
-    li.style.width = `${w}px`;
-    li.style.transform = `translate3d(-50%, ${pin + shift + tops[i]}px, 0)`;
-    pic.style.height = `${hs[i]}px`;
-    cap.style.opacity = .4 + .6 * o;
+const erf = (x) => { const q = x * x, k = .147; return Math.sign(x) * Math.sqrt(1 - Math.exp(-q * (4 / Math.PI + k * q) / (1 + k * q))); };
+const out3 = (x) => 1 - Math.pow(1 - x, 3);
+const fine = matchMedia('(hover: hover) and (pointer: fine)');
+let rows = [], cardH = 0, pitch = 0, follow = null, lastY = null, vel = 0;
+const enter = { t: -1 };
+function measureWorks() {
+  const y = lenis.scroll;
+  const keep = works.map((w) => w.li.style.transform);
+  for (const w of works) w.li.style.transform = '';
+  rows = works.map((w) => w.li.getBoundingClientRect().top + y);
+  works.forEach((w, i) => { w.li.style.transform = keep[i]; });
+  cardH = works[0].li.offsetHeight; pitch = rows[1] - rows[0];
+}
+addEventListener('resize', measureWorks);
+new ResizeObserver(measureWorks).observe(workList);
+
+// the blur at the screen's edges: six layers a side, each blurring twice as
+// much as the one before over a narrower strip
+const haze = document.createElement('div');
+haze.className = 'haze'; haze.setAttribute('aria-hidden', 'true');
+const zones = ['top', 'bottom'].map((side) => {
+  const zone = document.createElement('div'); zone.className = `haze__zone haze__zone--${side}`;
+  const pc = (i) => `${(i / 6 * 100).toFixed(2)}%`;
+  const layers = Array.from({ length: 6 }, (_, i) => {
+    const l = document.createElement('div'); l.className = 'haze__layer';
+    const m = `linear-gradient(${side === 'top' ? 'to top' : 'to bottom'}, transparent ${pc(i)}, #000 ${pc(i + 1)}, #000 ${pc(i + 2)}, transparent ${pc(i + 3)})`;
+    l.style.maskImage = l.style.webkitMaskImage = m; zone.append(l); return l;
   });
+  haze.append(zone); return { side, zone, layers };
+});
+workSec.append(haze);
+let hazeKey = '';
+function setHaze(amount, top, bottom, zoneH) {
+  const key = [amount.toFixed(1), Math.round(top), Math.round(bottom), Math.round(zoneH)].join('|');
+  if (key === hazeKey) return; hazeKey = key;
+  if (amount < .1 || top + bottom >= innerHeight) { haze.style.display = 'none'; return; }
+  Object.assign(haze.style, { display: 'block', top: `${top}px`, bottom: `${bottom}px` });
+  for (const { side, zone, layers } of zones) {
+    zone.style.height = `${zoneH}px`;
+    zone.style.top = side === 'top' ? `${-top}px` : '';
+    zone.style.bottom = side === 'bottom' ? `${-bottom}px` : '';
+    layers.forEach((l, i) => { const f = `blur(${(amount * 2 ** (i - 5)).toFixed(2)}px)`; l.style.backdropFilter = l.style.webkitBackdropFilter = f; });
+  }
+}
+
+function rollWorks(dt) {
+  if (reduce) return;
+  if (!rows.length) measureWorks();
+  const y = lenis.scroll, H = innerHeight, mid = H / 2, n = works.length;
+  if (lastY !== null) vel += (Math.abs(y - lastY) / Math.max(dt, .001) - vel) * Math.min(1, dt * 12);
+  lastY = y;
+
+  // which card is in the middle: a float index, held a moment at each card
+  const at = (y + mid - (rows[0] + cardH / 2)) / pitch, i0 = clamp(at, 0, n - 1);
+  const base = Math.min(Math.floor(i0), n - 2), fr = i0 - base, hold = .35 * RIDE.dwell;
+  const want = base + fr + (sstep((fr - hold) / Math.max(.001, 1 - 2 * hold)) - fr) * RIDE.dwell;
+  follow = follow === null ? want : follow + (want - follow) * (1 - Math.exp(-dt * (1 - RIDE.follow) * 30));
+  const anchor = mid - (at - i0) * pitch;                  // the middle, until the list runs out
+
+  const E = RIDE.enter;
+  if (enter.t < 0 && rows[0] - y < H * E.at) gsap.to(enter, { t: E.duration + E.stagger * (n - 1), duration: E.duration + E.stagger * (n - 1), ease: 'none', startAt: { t: 0 } });
+
+  const space = pitch + (innerWidth < 1024 ? RIDE.phoneGap : RIDE.gap), spread = Math.max(.05, RIDE.focus.spread) * space;
+  const shrink = 1 - 1 / Math.max(1, RIDE.focus.scale);
+  const push = (r) => r - RIDE.focus.push * (cardH / space) * shrink * (r - Math.sqrt(Math.PI) / 2 * spread * erf(r / spread));
+  const bend = RIDE.curve * Math.PI / Math.max(1, H);
+  workList.style.perspective = `${RIDE.perspective}px`;
+  workList.style.perspectiveOrigin = `50% ${anchor - workList.getBoundingClientRect().top}px`;
+
+  works.forEach(({ li, shot }, i) => {
+    const r = (i - follow) * space, near = Math.exp(-((r / spread) ** 2));
+    const sc = 1 - shrink * (1 - near), o = push(r), ang = o * bend;
+    const ly = Math.sin(ang) / bend, lz = (1 - Math.cos(ang)) / bend;
+    const m = clamp(o / mid, -1.5, 1.5), tip = RIDE.tip * Math.tanh(m * 6) * (1 - RIDE.focus.straight * near);
+    const home = rows[i] - y + cardH / 2;
+    shot.style.setProperty('--py', `${(-m * RIDE.parallax.amount).toFixed(2)}px`);
+    const k = enter.t < 0 ? 0 : clamp((enter.t - i * E.stagger) / E.duration, 0, 1), go = out3(k), left = 1 - go;
+    const grow = out3(clamp(k / E.grow, 0, 1));
+    li.style.visibility = go <= 0 ? 'hidden' : '';
+    li.style.transform = `translate3d(0, ${anchor + ly - home + left * E.distance}px, ${lz - left * E.depth}px) rotateX(${ang * 180 / Math.PI + tip + left * E.tip}deg) scale(${Math.max(1e-4, sc * grow)})`;
+  });
+
+  const sec = workSec.getBoundingClientRect(), amount = RIDE.blur.max + RIDE.blur.speed * Math.min(1, vel / 2500);
+  const top = Math.min(workList.getBoundingClientRect().top, works[0].li.getBoundingClientRect().top) - amount * 3;
+  setHaze(fine.matches && sec.bottom > 0 && top < H ? amount : 0, Math.max(0, top), Math.max(0, H - sec.bottom), RIDE.blur.zone * H);
+}
+
+// Hovering a project's picture brings in its second picture the way the
+// butterfly is drawn: in dots. They start where the pointer comes in and spread
+// out over the card, each growing until they run together into the whole
+// picture; leaving, they shrink back to where they began. Only the picture
+// reacts. data-hover is the second picture, or a colour until there is one.
+const DOTS = { cell: 16, soft: 150, in: .9, out: .6 };
+for (const pic of document.querySelectorAll('.work__pic[data-hover]')) {
+  const shot = pic.querySelector('.work__shot'), src = pic.dataset.hover;
+  const cv = document.createElement('canvas'); cv.className = 'work__dots'; cv.setAttribute('aria-hidden', 'true');
+  shot.append(cv);
+  const ctx = cv.getContext('2d');
+  let img = null;
+  if (!src.startsWith('#')) { img = new Image(); img.decoding = 'async'; img.src = src; }
+  const st = { k: 0 }, at = { x: 0, y: 0 };
+  let W = 0, H = 0, far = 1, tw = null;
+  function size() {
+    const dpr = Math.min(devicePixelRatio, 2);
+    W = shot.offsetWidth; H = shot.offsetHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function draw() {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.clearRect(0, 0, W, H);
+    if (st.k <= 0) return;
+    const c = DOTS.cell, full = c * .72, front = st.k * (far + DOTS.soft);
+    if (st.k >= 1) ctx.fillRect(0, 0, W, H);
+    else {
+      ctx.beginPath();
+      for (let y = c / 2; y < H + c; y += c) for (let x = c / 2; x < W + c; x += c) {
+        const d = Math.hypot(x - at.x, y - at.y), r = full * clamp((front - d) / DOTS.soft, 0, 1);
+        if (r > .3) { ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, Math.PI * 2); }
+      }
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-in';
+    if (img && img.complete && img.naturalWidth) {
+      const s = Math.max(W / img.naturalWidth, H / img.naturalHeight), w = img.naturalWidth * s, h = img.naturalHeight * s;
+      ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+    } else { ctx.fillStyle = img ? '#c4c4c4' : src; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#000'; }
+  }
+  function local(e) {                                     // the pointer in the picture's own pixels
+    const r = shot.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H };
+  }
+  pic.addEventListener('pointerenter', (e) => {
+    if (e.pointerType !== 'mouse' || reduce) return;
+    size();
+    if (st.k <= .001) Object.assign(at, local(e));
+    far = Math.max(...[[0, 0], [W, 0], [0, H], [W, H]].map(([x, y]) => Math.hypot(x - at.x, y - at.y)));
+    tw?.kill(); tw = gsap.to(st, { k: 1, duration: DOTS.in * (1 - st.k), ease: 'power2.out', onUpdate: draw });
+  });
+  pic.addEventListener('pointerleave', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    tw?.kill(); tw = gsap.to(st, { k: 0, duration: DOTS.out * st.k, ease: 'power2.in', onUpdate: draw });
+  });
+  if (img) img.addEventListener('load', () => { if (st.k > 0) draw(); });
 }
 
 // Odesa time on a 12-hour clock, as in her frame: 1:10:12 PM GMT+2
