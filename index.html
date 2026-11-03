@@ -4,152 +4,64 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anna Fesenko — UI/UX Designer</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23f9e39a'/%3E%3C/svg%3E">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="home/base.css?v=3">
-  <link rel="stylesheet" href="home/home.css?v=3">
+  <link rel="stylesheet" href="lace/lace.css?v=1">
 </head>
 <body>
 
-  <!-- Home: from her Figma home-page (617:262). The hero: her name, the
-       menu, Odesa's time and "Available worldwide" along the top; the line,
-       its first row edge to edge; the intro and what she does; and in the
-       bottom band of her grid, a row of butter-jelly flowers growing up out
-       of the bottom edge (home/flowers.js). Her grid stays where it is and
-       the page slides over it: leaving the hero, its words drift up slower
-       than the page and fade, the flowers first, while Selected projects
-       comes up over it. Then How I work: the page dims into her ink and
-       holds, and scrolling flies you forward through her three things; then
-       the footer comes at you out of the dark and becomes the page.
-       The loader first: her grid draws in on the paper and a drop of the
-       butter jelly grows in the middle as the page comes in, counting to
-       100 under it; then the drop spreads, the paper lifts and the hero
-       opens underneath (home.js) -->
-  <div class="load" aria-hidden="true">
-    <img class="load__grid" src="home/grid.svg" width="1440" height="2871" alt="">
-    <canvas class="load__drop"></canvas>
-    <p class="load__count">0</p>
-  </div>
-  <img class="grid" src="home/grid.svg" width="1440" height="2871" alt="" aria-hidden="true">
+  <!-- Home · Lace, from her Figma frame home-page (732:246): the hero, then
+       About below it (four small notes on the left, three big paragraphs
+       and an About me pill in the middle, two polaroids on the right). The
+       lace butterfly lives on a fixed dot grid over the whole screen; as the
+       page scrolls it flies from the hero down onto the waves polaroid, its
+       dots trailing behind it, and each wingbeat sends a ring of air through
+       the grid. -->
 
-  <main>
+  <canvas class="bg" aria-hidden="true"></canvas>
+  <canvas class="gl" aria-hidden="true"></canvas>
+
+  <div class="veil" aria-hidden="true"></div>
+  <header class="top">
+    <p>Anna Fesenko</p>
+    <p class="clock"><time>11:15:45 PM GMT+2</time></p>
+    <nav aria-label="Main"><a class="ul" href="#about">About</a><a class="ul" href="case-spacebring.html">Projects</a><a class="ul" href="playground.html">Playground</a><a class="ul" href="mailto:af.designworkk@gmail.com">Contact</a></nav>
+  </header>
+
+  <main class="ride">
+
     <section class="hero" aria-label="Intro">
-      <canvas class="bed" aria-hidden="true"></canvas>
-      <header class="top">
-        <p class="who">Anna Fesenko</p>
-        <nav class="menu" aria-label="Main">
-          <a href="#work" data-work>Projects</a>
-          <a href="about.html">About</a>
-          <a href="#contact" data-contact>Contact</a>
-          <a href="playground.html">Playground</a>
-        </nav>
-        <p class="time" aria-label="Time in Odesa"><span class="clock" data-clock>--:--:--</span></p>
-        <p class="where">Available worldwide</p>
-      </header>
-      <h1 class="line"><span class="ln"><span class="pt">Taste in every</span> <span class="pt">detail,</span></span> <span class="ln"><span class="pt">care in every</span> <span class="pt">flow</span></span></h1>
-      <div class="info">
-        <p class="about">Hi! I’m Anna, a UI/UX designer with 3.5 years of experience. I design digital products and websites people find their way through without thinking, and teams can keep building on.</p>
-        <ul class="does" aria-label="What I do">
-          <li>Product design &amp; websites</li><li>Advisory &amp; audits</li><li>Social media design</li>
+        <span class="perch" data-scale="1" data-at=".5" aria-hidden="true"></span>
+        <h1 class="line">Lorem ipsum dolor sit amet consectetur.</h1>
+        <p class="intro">Lorem ipsum dolor sit amet consectetur. Varius purus cum aliquam ut fringilla sed nunc vel. Aliquet sed urna sem tortor posuere dui. Facilisi odio pretium orci odio ultricies phasellus lorem. In justo vulputate.</p>
+      </section>
+
+      <section class="about" id="about" aria-label="About">
+        <ul class="facts">
+          <li><span class="tag">Text</span><p>Lorem ipsum dolor sit amet consectetur. Varius purus cum aliquam ut fringilla se nunc.</p></li>
+          <li><span class="tag">Text</span><p>Lorem ipsum dolor sit amet consectetur. Varius purus cum aliquam ut fringilla se nunc.</p></li>
+          <li><span class="tag">Text</span><p>Lorem ipsum dolor sit amet consectetur. Varius purus cum aliquam ut fringilla se nunc.</p></li>
+          <li><span class="tag">Text</span><p>Lorem ipsum dolor sit amet consectetur. Varius purus cum aliquam ut fringilla se nunc.</p></li>
         </ul>
-      </div>
-    </section>
-
-    <section class="work" id="work" aria-labelledby="work-title">
-      <h2 class="work__title" id="work-title"><span class="mask"><span>Selected</span></span> <span class="mask"><span>projects</span></span></h2>
-      <ol class="work__list">
-        <li><a class="item" href="#">
-          <span class="item__pic"><span class="item__fill"></span></span>
-          <span class="item__cap"><span class="item__name">Jeff.Q Productions portfolio website</span><span class="item__year">2026</span></span>
-        </a></li>
-        <li><a class="item" href="case-spacebring.html">
-          <span class="item__pic"><span class="item__fill"></span></span>
-          <span class="item__cap"><span class="item__name">Spacebring admin web app</span><span class="item__year">2025</span></span>
-        </a></li>
-        <li><a class="item" href="#">
-          <span class="item__pic"><span class="item__fill"></span></span>
-          <span class="item__cap"><span class="item__name">Spacebring marketing website</span><span class="item__year">2024</span></span>
-        </a></li>
-        <li><a class="item" href="#" aria-disabled="true">
-          <span class="item__pic"><span class="item__fill"></span></span>
-          <span class="item__cap"><span class="item__name">TalentMinted job board system</span><span class="item__year">Coming soon</span></span>
-        </a></li>
-      </ol>
-    </section>
-
-    <!-- How I work: the page dims and softens into her ink as the work ends
-         (her grid stays put, its lines going from light to dark), and the
-         ink stays; scrolling then carries you forward through her three
-         things, each line coming off the grid at you, sharp as you reach it
-         and blurring past; past the last, the footer comes at you. Each
-         line's place: data-d (desktop) and data-m (phone) = x, y as parts of
-         the frame from its middle, data-z = how deep (1 = one step). -->
-    <section class="how" id="how" aria-labelledby="how-title">
-      <div class="how__dim" aria-hidden="true"><img class="how__grid" src="home/grid.svg" width="1440" height="2871" alt=""></div>
-      <div class="how__stage">
-        <div class="how__ink">
-          <div class="how__space">
-            <h2 class="say say--big" id="how-title" data-z="0" data-d="-.42,-.36" data-m="-.5,-.24"><span class="ln">Three things I bring</span> <span class="ln">to every project</span></h2>
-            <h3 class="say say--big" data-z="1" data-d="-.4,-.3" data-m="-.5,-.22">Ask first</h3>
-            <p class="say" data-z="1.05" data-d=".06,.03" data-m="-.32,.04">Most problems get solved in the questions, before any screen exists</p>
-            <h3 class="say say--big" data-z="2" data-d="-.04,-.28" data-m="-.5,-.24">Make it obvious</h3>
-            <p class="say" data-z="2.05" data-d="-.36,.04" data-m="-.32,.02">If someone has to stop and think, the screen isn’t done yet</p>
-            <h3 class="say say--big" data-z="3" data-d="-.3,-.18" data-m="-.5,-.22">Leave a system</h3>
-            <p class="say" data-z="3.05" data-d=".1,.08" data-m="-.32,.04">Every screen comes with the parts and rules that make the next one faster</p>
-          </div>
+        <div class="story">
+          <p class="say">Lorem ipsum dolor sit amet consectetur. Auctor erat eget dolor potenti tempus feugiat. Sit eget ut pharetra vitae. Bibendum odio elit in congue. Duis ac porttitor pretium a nulla. Luctus ut eget mauris quisque sit eget lectus.</p>
+          <p class="say">Lorem ipsum dolor sit amet consectetur. Auctor erat eget dolor potenti tempus feugiat. Sit eget ut pharetra vitae. Bibendum odio elit in congue. Duis ac porttitor pretium a nulla. Luctus ut eget mauris quisque sit eget lectus.</p>
+          <p class="say">Lorem ipsum dolor sit amet consectetur. Auctor erat eget dolor potenti tempus feugiat. Sit eget ut pharetra vitae. Bibendum odio elit in congue. Duis ac porttitor pretium a nulla. Luctus ut eget mauris quisque sit eget lectus.</p>
+          <a class="pill" href="about.html">About me<span class="go" aria-hidden="true"><img src="lace/caret-right.svg" alt="" width="12" height="12"></span></a>
         </div>
-      </div>
-    </section>
+        <figure class="pol waves" style="--x: calc(100% - 224.9px); --y: 225.5px; --r: -8deg; --d: .16"><img src="assets/about/waves-on-rocks.jpg" alt="Waves breaking over dark rocks" width="1006" height="848" decoding="async"><span class="strip"></span></figure>
+        <figure class="pol batu" style="--x: calc(100% - 160.2px); --y: 591.75px; --r: 8deg; --d: .26"><img src="assets/about/batu-caves.jpg" alt="The golden statue at Batu Caves, Malaysia" width="1006" height="848" decoding="async"><span class="strip"></span></figure>
+        <span class="perch" data-scale=".38" data-at=".5" aria-hidden="true"></span>
+      </section>
+
   </main>
 
-  <!-- Footer: her Figma home-page (617:262), its last 1440 × 900. Past How
-       I work's last line it comes at you out of the dark, a small screen far
-       off where everything was heading, growing until it is the page (how.js);
-       then: the open-to-work badge, "Got a product in mind?" (the word keeps
-       changing: website, web app, startup), her email, Sitemap and Socials; © and
-       Back to top; her grid, where the page's grid is; and a pool of the
-       hero's butter jelly (end.js) filling the bottom from side to side, that
-       swells to the pointer and ripples. -->
-  <footer class="end" id="contact" aria-labelledby="end-title">
-    <div class="end__in">
-      <img class="end__grid" src="home/grid.svg" width="1440" height="2871" alt="" aria-hidden="true">
-      <canvas class="end__jelly" aria-hidden="true"></canvas>
-      <div class="end__top">
-        <div class="end__say">
-          <p class="badge"><span class="badge__dot" aria-hidden="true"></span>Open to work</p>
-          <h2 class="end__line" id="end-title" aria-label="Got a product in mind?">Got a <span class="end__word" aria-hidden="true" data-words="product|website|web app|startup"><span>product</span></span> in mind?</h2>
-          <p class="end__reach">
-            <a class="end__mail" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
-            <button class="end__copy" type="button" aria-label="Copy the email"><img src="home/copy.svg" width="20" height="20" alt=""></button>
-            <span class="end__copied" aria-live="polite"></span>
-          </p>
-        </div>
-        <nav class="end__list" aria-label="Sitemap">
-          <p aria-hidden="true">Sitemap</p>
-          <a href="#" data-top>Home</a><a href="about.html">About</a><a href="playground.html">Playground</a>
-        </nav>
-        <nav class="end__list" aria-label="Socials">
-          <p aria-hidden="true">Socials</p>
-          <a href="https://www.linkedin.com/in/anna-fesenko-79b015271/" target="_blank" rel="noopener">Linkedin</a>
-          <a href="https://www.instagram.com/ai_annae21/" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://github.com/afdesignworkk" target="_blank" rel="noopener">Github</a>
-        </nav>
-      </div>
-      <div class="end__row">
-        <p>© 2026 Created by Anna Fesenko</p>
-        <a class="end__up" href="#" data-top><span>Back to top</span><img src="home/arrow-up.svg" width="20" height="20" alt=""></a>
-      </div>
-      <div class="end__pool" aria-hidden="true"></div>
-    </div>
-  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="home/home.js?v=3"></script>
-  <script type="module" src="home/how.js?v=3"></script>
-  <script type="module" src="home/end.js?v=3"></script>
+  <script type="module" src="lace/lace.js?v=1"></script>
 </body>
 </html>

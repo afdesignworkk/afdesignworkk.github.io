@@ -10,18 +10,17 @@ The site was designed in Figma and built in plain HTML, CSS and JavaScript. Ther
 
 | Page | File | What's on it |
 | --- | --- | --- |
-| Home | `index.html` | Hero, selected work, how I work, contact |
+| Home | `index.html` | Hero with the lace butterfly, then About with two polaroids |
 | About | `about.html` | The longer story, a portrait and two rows of travel photographs |
 | Playground | `playground.html` | A board of side projects you drag around, with a full-size view for each piece |
 | Spacebring | `case-spacebring.html` | Case study: the Spacebring admin web app |
 
 ## What's inside
 
-- A window of butter jelly behind the hero line (WebGL), which ripples and swells to the pointer, and tags you can pick up and throw
-- Grid lines that stay fixed while the page scrolls, and smooth scrolling
-- How I work: the page dims and scrolling flies you through three principles in depth
-- A footer that comes at you out of the dark, with a pool of the same jelly along the bottom
-- A live clock with the time in Ukraine
+- A butterfly drawn in round dots that overlap into lace; it flaps, glides and leaves a trail of small dots
+- A faint dot grid across the whole page; each wingbeat sends a ring of air through it
+- As you scroll, the butterfly flies down from the hero and lands on a polaroid in About
+- Smooth scrolling, and a live clock with the time in Ukraine
 - A drag board on the Playground page
 - Reduced-motion support
 
@@ -30,7 +29,7 @@ The site was designed in Figma and built in plain HTML, CSS and JavaScript. Ther
 ```
 .
 ├── index.html          Home page
-├── home/               Home page styles, scripts, the jelly shader and the grid
+├── lace/               Home page styles and scripts: the lace butterfly, its dot grid, the polaroids
 ├── about.html          About page
 ├── about.css           About page styles
 ├── about.js            About page scripts: scrolling, cursor, gallery, footer
