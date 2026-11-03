@@ -191,6 +191,33 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
   lenis.scrollTo('#about', { duration: 1.6 });
 });
 
+// the Projects menu: opens on click (and on hover with a mouse), the panel
+// unrolls from the top and its rows come in one after another; Escape, a
+// click outside or leaving it closes it
+{
+  const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
+  const rows = panel.querySelectorAll('li');
+  let open = false, leave = 0;
+  function set(o) {
+    if (o === open) return;
+    open = o; drop.classList.toggle('open', o); btn.setAttribute('aria-expanded', o);
+    gsap.killTweensOf([panel, rows]);
+    if (o) {
+      panel.hidden = false;
+      gsap.fromTo(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0, duration: reduce ? 0 : .55, ease: 'power3.out' });
+      gsap.fromTo(rows, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: reduce ? 0 : .4, ease: 'power2.out', stagger: .05, delay: .08 });
+    } else {
+      gsap.to(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6, duration: reduce ? 0 : .3, ease: 'power2.in', onComplete: () => { panel.hidden = true; } });
+    }
+  }
+  btn.addEventListener('click', () => set(!open));
+  const mouse = matchMedia('(hover: hover) and (pointer: fine)');
+  drop.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && mouse.matches) { clearTimeout(leave); set(true); } });
+  drop.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && mouse.matches) leave = setTimeout(() => set(false), 220); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
+  addEventListener('pointerdown', (e) => { if (open && !drop.contains(e.target)) set(false); });
+}
+
 // Odesa time on a 12-hour clock, as in her frame: 1:10:12 PM GMT+2
 const clock = document.querySelector('.clock time');
 const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true, timeZoneName: 'shortOffset' });

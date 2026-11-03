@@ -27,6 +27,33 @@ a { color: inherit; text-decoration: none; }
 .clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .top nav { display: flex; gap: 30px; }
 
+/* Projects: a dark panel that drops from the menu, in the ink of the About me
+   pill. The word becomes a small pill while it is open. JS reveals it (from
+   the top, rows one after another) and closes it on Escape or outside. */
+.top nav { position: relative; }
+.drop { position: relative; }                  /* the panel hangs centred under Projects */
+.drop__btn { font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+/* every menu tab: on hover (and while Projects is open) the word turns cream
+   on a small ink pill that springs up behind it */
+.tab { position: relative; transition: color .25s; }
+.tab::before { content: ''; position: absolute; inset: -8px -12px; z-index: -1; border-radius: 50px; background: var(--ink); transform: scale(.6); opacity: 0;
+  transition: transform .4s cubic-bezier(.3, 1.3, .5, 1), opacity .25s; }
+.tab:hover, .tab:focus-visible, .drop.open .tab { color: var(--bg); outline: none; }
+.tab:hover::before, .tab:focus-visible::before, .drop.open .tab::before { transform: none; opacity: 1; }
+.drop__panel { position: absolute; top: calc(100% + 16px); left: 50%; width: 330px; margin-left: -165px; padding: 4px 30px; border-radius: 20px;
+  background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
+.drop__panel[hidden] { display: none; }
+.drop__panel li + li { border-top: 1px solid rgba(247, 247, 244, .12); }
+.row { display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; height: 66px; padding-top: 16px; }
+.row .n { font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .5); font-variant-numeric: tabular-nums; }
+.row .t { position: relative; transition: transform .45s cubic-bezier(.3, 1.3, .5, 1); }
+.row .t::before { content: ''; position: absolute; left: -14px; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--bg); transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1); }
+.row small { display: block; font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .5); }
+.row .y { font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .45); font-variant-numeric: tabular-nums; }
+a.row:hover .t, a.row:focus-visible .t { transform: translateX(14px); }
+a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
+.row.soon { opacity: .5; cursor: default; }
+
 .ride { position: relative; }
 .perch { position: absolute; width: 1px; height: 1px; pointer-events: none; }
 
@@ -79,6 +106,8 @@ a { color: inherit; text-decoration: none; }
 }
 @media (max-width: 520px) {                       /* four links: the menu takes its own line under the name */
   .top { flex-direction: column; gap: 8px; } .top nav { gap: 18px; }
+  .drop { position: static; }
+  .drop__panel { left: -12px; margin-left: 0; width: min(330px, calc(100vw - 2 * var(--side) + 24px)); }
   .veil { height: 120px; }
   .facts { grid-template-columns: minmax(0, 1fr); }
 }

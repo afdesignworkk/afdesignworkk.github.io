@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="lace/lace.css?v=1">
+  <link rel="stylesheet" href="lace/lace.css?v=5">
 </head>
 <body>
 
@@ -28,7 +28,22 @@
   <header class="top">
     <p>Anna Fesenko</p>
     <p class="clock"><time>11:15:45 PM GMT+2</time></p>
-    <nav aria-label="Main"><a class="ul" href="#about">About</a><a class="ul" href="case-spacebring.html">Projects</a><a class="ul" href="playground.html">Playground</a><a class="ul" href="mailto:af.designworkk@gmail.com">Contact</a></nav>
+    <nav aria-label="Main">
+      <a class="tab" href="#about">About</a>
+      <div class="drop">
+        <button class="drop__btn tab" type="button" aria-expanded="false" aria-controls="projects-menu">Projects</button>
+        <div class="drop__panel" id="projects-menu" hidden>
+          <ul>
+            <li><a class="row" href="#"><span class="n">01</span><span class="t">Jeff.Q Productions<small>Portfolio website</small></span><span class="y">2026</span></a></li>
+            <li><a class="row" href="case-spacebring.html"><span class="n">02</span><span class="t">Spacebring<small>Admin web app</small></span><span class="y">2025</span></a></li>
+            <li><a class="row" href="#"><span class="n">03</span><span class="t">Spacebring<small>Marketing website</small></span><span class="y">2024</span></a></li>
+            <li><span class="row soon" aria-disabled="true"><span class="n">04</span><span class="t">TalentMinted<small>Job board system</small></span><span class="y">Soon</span></span></li>
+          </ul>
+        </div>
+      </div>
+      <a class="tab" href="playground.html">Playground</a>
+      <a class="tab" href="mailto:af.designworkk@gmail.com">Contact</a>
+    </nav>
   </header>
 
   <main class="ride">
@@ -62,6 +77,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="lace/lace.js?v=1"></script>
+  <script type="module" src="lace/lace.js?v=2"></script>
 </body>
 </html>
