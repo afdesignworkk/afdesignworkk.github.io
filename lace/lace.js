@@ -17,6 +17,11 @@ import { lace, butterfly } from './field.js?v=1';
 const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+
+// the footer is hidden on the live page for now; ?foot shows it
+const foot = document.querySelector('.foot');
+if (new URLSearchParams(location.search).has('foot')) foot.hidden = false;
+
 // --- the dot field over the whole screen --------------------------------------
 const S = 4;                                            // mask pixels a cell
 const gl = document.querySelector('.gl'), ctx = gl.getContext('2d');
@@ -80,35 +85,38 @@ function draw(dt, fade) {
   bctx.globalAlpha = 1;
 }
 
-// --- the polaroids in About ---------------------------------------------------
-// Two prints placed by CSS (her frame). As they scroll through the screen
-// they drift a little against the page (by depth) and turn a touch; hovering
-// one lifts it. The butterfly lands on the photo of the first (waves): its
-// perch is set from that card's untransformed box, so it holds at any width.
+// --- About ----------------------------------------------------------------------
+// The butterfly lands on the layout's [data-perch-on]: its perch is set from
+// that element's untransformed box, so it holds at any width.
 const about = document.querySelector('.about'), aboutPerch = about.querySelector('.perch');
-const pols = [...about.querySelectorAll('.pol')].map((el) => {
-  const p = { el, lift: 0, hover: false, d: +getComputedStyle(el).getPropertyValue('--d') || .2 };
-  el.addEventListener('pointerenter', () => { p.hover = true; }); el.addEventListener('pointerleave', () => { p.hover = false; });
-  return p;
-});
 function placePerch() {
-  const el = pols[0].el, abs = getComputedStyle(el).position === 'absolute';
-  const cx = el.offsetLeft + (abs ? 0 : el.offsetWidth / 2), cy = el.offsetTop + (abs ? 0 : el.offsetHeight / 2);
-  const img = el.querySelector('img'), photoCy = img.offsetTop + img.offsetHeight / 2 - el.offsetHeight / 2;
-  aboutPerch.style.left = cx + 'px'; aboutPerch.style.top = cy + photoCy + 'px';
+  const el = about.querySelector('[data-perch-on]');
+  let x = el.offsetWidth / 2, y = el.offsetHeight / 2;
+  for (let n = el; n && n !== about; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+  aboutPerch.style.left = x + 'px'; aboutPerch.style.top = y + 'px';
 }
 placePerch(); addEventListener('resize', placePerch);
 
-function movePols(dt) {
-  const H = innerHeight, k = 1 - Math.pow(.82, dt * 60);
-  for (const c of pols) {
-    c.lift += ((c.hover ? 1 : 0) - c.lift) * k;
-    const r = c.el.getBoundingClientRect(), off = (r.top + r.height / 2 - H / 2) / H;   // −… above the middle, +… below
-    const abs = getComputedStyle(c.el).position === 'absolute';
-    const base = abs ? 'translate(-50%, -50%) ' : '';
-    c.el.style.transform = `${base}translateY(${off * c.d * 120 - c.lift * 10}px) rotate(calc(var(--r) * ${1 - c.lift * .5} + ${off * c.d * 6}deg)) scale(${1 + c.lift * .03})`;
-    c.el.style.zIndex = c.lift > .05 ? 3 : '';
-  }
+// deck: the trip photos as a stack of prints. Clicking the top one throws it
+// off to the side and slips it under the others; the rest move up a place.
+const deck = about.querySelector('.deck');
+if (deck) {
+  const cards = [...deck.querySelectorAll('.deck__card')].reverse();     // top first
+  const turns = [-1.5, 4, -6, 2, 5, -4, 3];
+  let shown = 0;
+  const lay = (instant) => cards.forEach((c, d) => {
+    c.style.zIndex = cards.length - d;
+    c.tabIndex = d ? -1 : 0;
+    gsap.to(c, { x: d * 7.6, y: d * 7.6, rotation: turns[(d + shown) % turns.length], scale: 1 - d * .025, opacity: d > 3 ? 0 : 1,
+      duration: instant || reduce ? 0 : .55, ease: 'power3.out' });
+  });
+  lay(true);
+  deck.addEventListener('click', (e) => {
+    const top = cards[0];
+    if (!top.contains(e.target) || gsap.isTweening(top)) return;
+    shown = (shown + 1) % cards.length;
+    gsap.to(top, { x: 260, y: -30, rotation: 16, duration: reduce ? 0 : .32, ease: 'power2.in', onComplete: () => { cards.push(cards.shift()); lay(); cards[0].focus({ preventScroll: true }); } });
+  });
 }
 
 // --- the page: a plain vertical scroll, smoothed --------------------------------
@@ -198,9 +206,9 @@ gsap.ticker.add((time, dms) => {
   shape(B.x, B.y + Math.sin(t * .8) * .035 * u, B.s * intro.k, B.rot + Math.sin(t * .37) * .05, open);
   step(dt);
   draw(dt, Math.min(1, intro.k));
-  movePols(dt);
   rollWorks(dt);
   rollBand(dt);
+  rollFoot(dt);
   veil.classList.toggle('on', ty > 40);
   // the hero's text fades as it nears the menu, so the two never overlap
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
@@ -413,13 +421,119 @@ for (const pic of document.querySelectorAll('.work__pic[data-hover]')) {
   if (img) img.addEventListener('load', () => { if (st.k > 0) draw(); });
 }
 
+// footer: the copy button; the card widens to the edges as it comes up and
+// the menu turns light over it
+for (const b of document.querySelectorAll('[data-copy]')) {
+  const label = b.querySelector('[data-label]'), was = label.textContent;
+  b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); label.textContent = 'Copied'; }
+    catch { location.href = `mailto:${b.dataset.copy}`; return; }
+    clearTimeout(b._t); b._t = setTimeout(() => { label.textContent = was; }, 1600);
+  });
+}
+const panel = foot.querySelector('.foot__panel');
+
+// The name across the foot of the card, and a small butterfly in its empty
+// top right corner, drawn the way the hero butterfly is: a grid of cells, each
+// reading how deep it sits inside the shape and drawn as one lace dot (light
+// on the card). Cells grow fast and shrink slowly, so whatever moves leaves a
+// trail: the butterfly as its wings beat, and the pointer, which drags a soft
+// brush of dots across the card. The name blooms in, left to right, the first
+// time the card comes up.
+const fcv = panel.querySelector('.foot__field'), fx = fcv.getContext('2d');
+const nameBox = panel.querySelector('.foot__name');
+const FD = { c: 9, cols: 0, rows: 0, w: 0, h: 0, dpr: 1, name: null, cur: null, tgt: null, sweep: 0, bloom: false,
+  fly: { x: 0, y: 0, u: 0, i0: 0, j0: 0, ci: 0, cj: 0, phase: 0, t: 0 }, ptr: { x: -1e4, y: -1e4, on: false } };
+const fmask = document.createElement('canvas'), fm = fmask.getContext('2d', { willReadFrequently: true });
+function sizeFoot() {
+  if (foot.hidden) return;
+  const w = panel.clientWidth, h = panel.clientHeight, dpr = Math.min(devicePixelRatio, 2), c = w < 760 ? 4 : 9;
+  const cols = Math.ceil(w / c), rows = Math.ceil(h / c);
+  Object.assign(FD, { w, h, dpr, c, cols, rows, cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), name: new Float32Array(cols * rows) });
+  fcv.width = w * dpr; fcv.height = h * dpr;
+  // the name: Hanken Grotesk Medium, fitted to its box, painted once
+  fmask.width = cols * S; fmask.height = rows * S;
+  fm.setTransform(1, 0, 0, 1, 0, 0); fm.clearRect(0, 0, fmask.width, fmask.height);
+  fm.filter = `blur(${S * .5}px)`; fm.fillStyle = '#000';
+  const k = S / c; fm.setTransform(k, 0, 0, k, 0, 0);
+  const bx = nameBox.offsetLeft, by = nameBox.offsetTop, bw = nameBox.offsetWidth, bh = nameBox.offsetHeight;
+  fm.font = "500 100px 'Hanken Grotesk', sans-serif";
+  if ('letterSpacing' in fm) fm.letterSpacing = '-2px';
+  const size = 100 * bw / fm.measureText('Anna Fesenko').width;
+  fm.font = `500 ${size}px 'Hanken Grotesk', sans-serif`;
+  if ('letterSpacing' in fm) fm.letterSpacing = `${-size * .02}px`;
+  const cap = fm.measureText('A').actualBoundingBoxAscent;
+  fm.textBaseline = 'alphabetic'; fm.fillText('Anna Fesenko', bx, by + bh / 2 + cap / 2);
+  const d = fm.getImageData(0, 0, fmask.width, fmask.height).data;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) FD.name[j * cols + i] = d[((j * S + S / 2) * fmask.width + i * S + S / 2) * 4 + 3] / 255;
+  // the corner butterfly: in the space right of the line, its wings in line
+  // with the columns' right edge; on a phone, small, in the card's top padding
+  const say = panel.querySelector('.foot__say'), fly = FD.fly, side = nameBox.offsetLeft;
+  if (w < 760) Object.assign(fly, { u: 24, x: w - side - 24, y: 38 });
+  else {
+    const u = Math.min(92, (w - side - say.offsetLeft - say.offsetWidth) * .32);
+    Object.assign(fly, { u, x: w - side - u * 1.25, y: say.offsetTop + u * 1.05 });
+  }
+  fly.ci = Math.ceil(fly.u * 2.6 / c); fly.cj = Math.ceil(fly.u * 2.2 / c);
+  fly.i0 = Math.max(0, Math.round(fly.x / c - fly.ci / 2)); fly.j0 = Math.max(0, Math.round(fly.y / c - fly.cj / 2));
+}
+let footReady = false;
+document.fonts.load("500 100px 'Hanken Grotesk'").then(() => { sizeFoot(); footReady = true; }, () => { sizeFoot(); footReady = true; });
+addEventListener('resize', () => { if (footReady) sizeFoot(); });
+new ResizeObserver(() => { if (footReady && Math.abs(panel.clientHeight - FD.h) > 1) sizeFoot(); }).observe(panel);
+panel.addEventListener('pointermove', (e) => { const r = panel.getBoundingClientRect(); Object.assign(FD.ptr, { x: e.clientX - r.left, y: e.clientY - r.top, on: e.pointerType === 'mouse' }); });
+panel.addEventListener('pointerleave', () => { FD.ptr.on = false; });
+const bm = document.createElement('canvas'), bmx = bm.getContext('2d', { willReadFrequently: true });
+function flyTarget(dt) {
+  const fly = FD.fly, { c, cols, rows, tgt } = FD;
+  fly.t += dt;
+  const glide = Math.max(0, Math.sin(fly.t * .3) - .6) / .4;
+  fly.phase += dt * (2.4 + Math.sin(fly.t * .8) * .5) * (1 - glide * .9) * (reduce ? 0 : 1);
+  const open = Math.pow(.5 + .5 * Math.cos(fly.phase), .75) * (1 - glide) + glide;
+  bm.width = fly.ci * S; bm.height = fly.cj * S;
+  bmx.filter = `blur(${S * .8}px)`; bmx.fillStyle = '#000'; bmx.strokeStyle = '#000';
+  const k = S / c;
+  bmx.setTransform(k, 0, 0, k, -fly.i0 * c * k, -fly.j0 * c * k);
+  bmx.translate(fly.x, fly.y + Math.sin(fly.t * .9) * fly.u * .04); bmx.rotate(Math.sin(fly.t * .37) * .06); bmx.scale(fly.u, fly.u);
+  butterfly(bmx, open);
+  const d = bmx.getImageData(0, 0, bm.width, bm.height).data;
+  for (let j = 0; j < fly.cj; j++) for (let i = 0; i < fly.ci; i++) {
+    const gi = fly.i0 + i, gj = fly.j0 + j; if (gi >= cols || gj >= rows) continue;
+    const n = gj * cols + gi; tgt[n] = Math.max(tgt[n], d[((j * S + S / 2) * bm.width + i * S + S / 2) * 4 + 3] / 255);
+  }
+}
+function rollFoot(dt = 1 / 60) {
+  if (foot.hidden) return;
+  const H = innerHeight, r = foot.getBoundingClientRect();
+  if (r.top > H) { document.body.classList.remove('on-ink'); return; }
+  const p = Math.min(1, Math.max(0, (H - r.top) / (H * .9)));   // 0 as it comes up … 1 when it fills the screen
+  const k = reduce ? 1 : 1 - Math.pow(1 - p, 3);
+  document.body.classList.toggle('on-ink', panel.getBoundingClientRect().top < 72);
+  panel.style.clipPath = `inset(0 ${(1 - k) * 6}% 0 ${(1 - k) * 6}% round ${32 + (1 - k) * 16}px)`;
+  if (!footReady || r.bottom < 0) return;
+  // the name blooms in, left to right, once the card is half up
+  if (!FD.bloom && p > .5) { FD.bloom = true; gsap.to(FD, { sweep: 1.3, duration: reduce ? 0 : 1.6, ease: 'power2.out' }); }
+  const { c, cols, rows, cur, tgt, name, ptr } = FD;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const n = j * cols + i, front = Math.min(1, Math.max(0, (FD.sweep - i / cols) * 5));
+    let v = name[n] * front;
+    if (ptr.on) { const dx = (i + .5) * c - ptr.x, dy = (j + .5) * c - ptr.y; v = Math.max(v, .62 * Math.exp(-(dx * dx + dy * dy) / 1300)); }
+    tgt[n] = v;
+  }
+  flyTarget(dt);
+  const f = dt * 60, ku = 1 - Math.pow(.66, f), kd = 1 - Math.pow(.95, f);
+  for (let n = 0; n < cur.length; n++) { const t = tgt[n], v = cur[n]; cur[n] = v + (t - v) * (t > v ? ku : kd); }
+  fx.setTransform(1, 0, 0, 1, 0, 0); fx.globalCompositeOperation = 'source-over'; fx.clearRect(0, 0, fcv.width, fcv.height);
+  fx.setTransform(FD.dpr, 0, 0, FD.dpr, 0, 0);
+  lace(fx, cur, cols, rows, { c, x: 0, y: 0 }, '#f7f7f4');
+}
+
 // Odesa time on a 12-hour clock, as in her frame: 1:10:12 PM GMT+2
-const clock = document.querySelector('.clock time');
+const clocks = document.querySelectorAll('.clock time, time[data-clock]');
 const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true, timeZoneName: 'shortOffset' });
 function tick() {
-  const now = new Date();
-  clock.textContent = fmt.format(now).replace(/ | /g, ' ');
-  clock.dateTime = now.toISOString();
+  const now = new Date(), text = fmt.format(now).replace(/ | /g, ' ');
+  for (const clock of clocks) { clock.textContent = text; clock.dateTime = now.toISOString(); }
 }
 tick(); setInterval(tick, 1000);
 

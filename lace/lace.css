@@ -63,36 +63,31 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .line { position: absolute; z-index: 4; left: var(--side); bottom: 48px; max-width: 9.03em; font-weight: 500; font-size: clamp(36px, 4.861vw, 70px); line-height: .914; letter-spacing: -.02em; }
 .intro { position: absolute; z-index: 4; left: calc(58.33% - 3px); right: var(--side); bottom: 52px; max-width: 503px; }
 
-/* About: four small notes (292), three big paragraphs (608, centred on the
-   page at 1440), the About me pill; the polaroids sit to the right */
-.about { position: relative; display: grid; grid-template-columns: 292px 608px; column-gap: 24px; align-items: start;
-  padding: 150px var(--side) 160px; overflow-x: clip; }
-.facts, .story { position: relative; z-index: 4; }
-.facts { display: grid; row-gap: 48px; }
-.facts .tag { display: block; margin-bottom: 6px; font-size: 12px; line-height: 16px; color: var(--mute); }
-.story { display: grid; row-gap: 48px; justify-items: start; }
-.say { font-weight: 500; font-size: 30px; line-height: 34px; letter-spacing: -.02em; }
+/* About, her mockup (732:246): a stack of prints on the left you flip
+   through (grey until the photos are chosen), two statements and the About
+   me pill on the right; the butterfly lands on the stack ([data-perch-on]). */
+.about { position: relative; padding: 150px var(--side) 160px; overflow-x: clip; }
+.about > :not(.perch) { position: relative; z-index: 4; }
+.about__say { font-weight: 500; font-size: clamp(28px, 2.78vw, 40px); line-height: 1.1; letter-spacing: -.02em; max-width: 19em; }
 .pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; border-radius: 50px; background: var(--ink); color: var(--bg); }
 .pill .go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 16px; background: var(--bg); transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
 .pill .go img { display: block; }
 .pill:hover .go { transform: translateX(3px); }
 
-/* a polaroid: cream card, photo, an empty strip at the foot. Placed by its
-   centre (--x, --y) and turn (--r); JS adds the drift and the hover lift. */
-.pol { position: absolute; z-index: 2; left: var(--x); top: var(--y); background: var(--bg);
-  transform: translate(-50%, -50%) rotate(var(--r));
-  filter: drop-shadow(0 14px 16px rgba(20, 20, 20, .15)) drop-shadow(0 1px 1px rgba(20, 20, 20, .05)); will-change: transform; }
-.pol img { display: block; width: 100%; height: auto; object-fit: cover; }
-.pol .strip { display: block; height: 62.5px; }
-.waves { width: 262px; padding: 14.41px 14.41px 0; }
-.waves img { aspect-ratio: 4 / 3; }
-.batu { width: 230px; padding: 12.65px 12.65px 0; }
-.batu img { aspect-ratio: 3 / 4; }
+.about--deck { display: grid; grid-template-columns: 421px minmax(0, 819px); align-items: start; padding-top: 120px; padding-bottom: 120px; }
+.about--deck .about__text { display: grid; row-gap: 30px; justify-items: start; }
+.about--deck .about__say { max-width: none; }
+.deck { position: relative; z-index: 2 !important; width: 327px; height: 360px; margin-left: 14px; }
+.deck__card { position: absolute; left: 0; top: 0; width: 327px; padding: 15px 15px 0; border: 0; background: var(--bg); cursor: pointer;
+  filter: drop-shadow(0 8px 12px rgba(20, 20, 20, .07)) drop-shadow(0 1px 1px rgba(20, 20, 20, .04)); will-change: transform; }
+.deck__photo { display: block; aspect-ratio: 1006 / 848; background: #c4c4c4; }
+.deck__cap { display: block; padding: 19px 2px 22px; text-align: left; font: inherit; font-size: 15px; line-height: 20px; color: var(--mute); }
 
-/* Services: one grey line of type running across the page, 48 px under the
+
+/* Services: one grey line of type running across the page, 72 px under the
    hero (her frame 732:246: 64/72 Medium, dots between the words; #c4c4c4,
    the grey of the empty project cards, so it can be read; lace.js moves it) */
-.band { position: relative; z-index: 4; padding: 48px 0 14px; color: #c4c4c4; }
+.band { position: relative; z-index: 4; padding: 72px 0 0; color: #c4c4c4; }
 .band__run { overflow: hidden; }
 .band__line { white-space: nowrap; font-weight: 500; font-size: 64px; line-height: 72px; letter-spacing: -.02em; }
 .band__track { display: inline-flex; align-items: center; gap: 24px; padding-right: 24px; will-change: transform; }
@@ -105,7 +100,7 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
    underneath. JS rides them over a drum as the page scrolls and, with a
    mouse, brings each one's second picture in in dots on hover (rollWorks and
    DOTS in lace.js). */
-.work { position: relative; z-index: 4; padding: 0 var(--side) 160px; overflow-x: clip; }
+.work { position: relative; z-index: 4; padding: 0 var(--side) 96px; overflow-x: clip; }
 .work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(40px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
 .work__list { display: grid; row-gap: 32px; justify-items: center; }
 .work__list li { width: min(818px, 100%); will-change: transform; }
@@ -122,25 +117,56 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .haze__zone { position: absolute; left: 0; right: 0; }
 .haze__layer { position: absolute; inset: 0; }
 
-@media (max-width: 1240px) {                         /* the polaroids come into the flow, under the paragraphs */
-  .about { grid-template-columns: 292px minmax(0, 608px); }
-  .pol { position: relative; left: auto; top: auto; grid-column: 2; margin-top: 56px; justify-self: start; transform: rotate(var(--r)); }
-  .batu { margin-left: 46%; margin-top: -40px; }
+/* The footer: her dark card (732:246), 12 px in from the sides and 48 px off
+   the bottom, 96 px under the projects. A line, the email with a copy pill,
+   three columns, and the name across the foot, drawn in lace dots like the
+   butterfly on the canvas behind (lace.js), with a small butterfly in the
+   top right corner. Over the card the menu turns light. */
+.foot { position: relative; z-index: 4; padding: 0 12px 48px; }
+.foot__panel { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; min-height: 888px;
+  padding: 88px calc(var(--side) - 12px); border-radius: 32px; color: var(--bg); will-change: clip-path;
+  background: radial-gradient(rgba(247, 247, 244, .09) 1.1px, transparent 1.5px) 0 0 / 17px 17px, var(--ink); }
+.foot__field { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.foot__panel > :not(canvas) { position: relative; }
+.foot__say { margin: 0; max-width: 924px; font-weight: 500; font-size: clamp(36px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
+.foot__mail { display: flex; flex-wrap: wrap; align-items: center; column-gap: 36px; row-gap: 16px; margin-top: 30px; }
+.foot__email { font-weight: 500; font-size: clamp(22px, 2.083vw, 30px); line-height: 34px; }
+.pill { border: 0; font: inherit; letter-spacing: inherit; cursor: pointer; }
+.pill .go { color: var(--ink); }
+.pill--light { background: var(--bg); color: var(--ink); }
+.pill--light .go { background: var(--ink); color: var(--bg); }
+.foot__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; width: 100%; margin-top: auto; padding-top: 120px; }
+.foot__tag { margin-bottom: 16px; color: #8c8c8c; }
+.foot ul { display: grid; row-gap: 8px; }
+.foot time { font-variant-numeric: tabular-nums; }
+.foot__name { width: 100%; aspect-ratio: 1240 / 162; margin: 88px 0 0; }
+.foot__name span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+/* over the card the menu turns light */
+body.on-ink .top { color: var(--bg); transition: color .3s; }
+body.on-ink .tab::before { background: var(--bg); }
+body.on-ink .tab:hover, body.on-ink .tab:focus-visible, body.on-ink .drop.open .tab { color: var(--ink); }
+body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27, 0)); }
+@media (max-width: 900px) {
+  .foot__panel { min-height: 0; padding: 72px calc(var(--side) - 4px) 56px; border-radius: 24px; }
+  .foot { padding: 0 4px 24px; }
+  .foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; padding-top: 88px; }
+  .foot__name { margin-top: 64px; }
+}
+
+@media (max-width: 1240px) {
+  .about--deck { grid-template-columns: 380px minmax(0, 1fr); }
 }
 @media (max-width: 900px) {
   .top { top: 24px; } .top nav { gap: 14px; } .clock { display: none; }
   .line { bottom: auto; top: 66svh; }
   .intro { left: var(--side); bottom: 28px; }
-  .about { grid-template-columns: minmax(0, 1fr); row-gap: 56px; padding-top: 110px; }
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 32px; }
-  .say { font-size: 24px; line-height: 28px; }
-  .pol { grid-column: 1; }
-  .batu { justify-self: end; margin-left: 0; margin-right: 6px; }
+  .about { padding-top: 110px; }
+  .about--deck { grid-template-columns: minmax(0, 1fr); row-gap: 72px; }
+  .deck { margin-left: 0; }
 }
 @media (max-width: 520px) {                       /* four links: the menu takes its own line under the name */
   .top { flex-direction: column; gap: 8px; } .top nav { gap: 18px; }
   .drop { position: static; }
   .drop__panel { left: -12px; margin-left: 0; width: min(330px, calc(100vw - 2 * var(--side) + 24px)); }
   .veil { height: 120px; }
-  .facts { grid-template-columns: minmax(0, 1fr); }
 }
