@@ -118,7 +118,9 @@ if (deck) {
 }
 
 // --- the page: a plain vertical scroll, smoothed --------------------------------
-const lenis = new Lenis({ autoRaf: false });
+// lerp: how much of the way to the target the page moves each frame (Lenis'
+// default is .1); lower glides longer. Values from her tuning, 2026-11-04.
+const lenis = new Lenis({ autoRaf: false, lerp: .05, wheelMultiplier: 1, touchMultiplier: 1.3 });
 gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 
@@ -213,7 +215,7 @@ function rollSay() {
   }
   if (sayPill) {
     const a = Math.min(1, Math.max(0, (last - .85) / .15));
-    sayPill.style.opacity = a; sayPill.style.transform = a >= 1 ? '' : `translateY(${(1 - a) * 10}px)`;
+    sayPill.style.opacity = a; sayPill.style.translate = a >= 1 ? '' : `0 ${(1 - a) * 10}px`;   // translate, not transform: the hover owns that
   }
 }
 
@@ -334,6 +336,7 @@ const workSec = document.querySelector('.work'), workList = workSec.querySelecto
 const works = [...workList.children].map((li) => ({ li, shot: li.querySelector('.work__shot'), pic: li.querySelector('.work__pic'), cap: li.querySelector('.work__cap') }));
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const sstep = (x) => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+const sstep5 = (x) => { x = clamp(x, 0, 1); return x * x * x * (x * (6 * x - 15) + 10); };   // flatter at both ends
 const erf = (x) => { const q = x * x, k = .147; return Math.sign(x) * Math.sqrt(1 - Math.exp(-q * (4 / Math.PI + k * q) / (1 + k * q))); };
 const out3 = (x) => 1 - Math.pow(1 - x, 3);
 const fine = matchMedia('(hover: hover) and (pointer: fine)');
@@ -432,8 +435,9 @@ function rollWorks(dt) {
 // The stage's grid is the page's at half the pitch: every other dot of it is
 // one of the page's (those rest; the ones between only show in a ring).
 const STAGE = {
-  down: [.95, .35],                                       // the section's top, as a share of the screen: lights start … are down
-  up: [.8, .3],                                           // its bottom: lights start … are up
+  down: [.7, .3],                                         // the section's top, as a share of the screen: lights start … are down
+  up: [.85, .3],                                          // its bottom: lights start … are up
+  ease: .9,                                               // how much the lights lag the scroll each frame (0 = locked to it)
   dot: { r: .065, a: .1, grow: .3, glow: .5 },            // a resting dot (radius in page cells, alpha), and how much a lit one grows / brightens
   ripple: { life: 2.8, width: 70, speed: .12, peak: .7 },  // speed: share of the screen's diagonal a second; peak: how lit at most
   clear: 22,                                              // px kept free of the ring round the heading and each project's name
@@ -456,19 +460,22 @@ function sizeField() {
 sizeField(); addEventListener('resize', () => requestAnimationFrame(sizeField));
 
 const ripples = [], workHead = workSec.querySelector('.work__h');
-let stageInk = false, lastLt = -1, settled = -1;
+let stageInk = false, lastLt = -1, settled = -1, ltS = 0;
 const paper = [247, 247, 244], ink = [27, 27, 27];
 function rollStage(dt) {
   const H = innerHeight, W = innerWidth, r = workSec.getBoundingClientRect(), D = STAGE.down, U = STAGE.up;
-  const down = sstep((D[0] * H - r.top) / ((D[0] - D[1]) * H)), up = sstep((r.bottom - U[1] * H) / ((U[0] - U[1]) * H));
-  const lt = Math.round(Math.min(down, up) * 1000) / 1000;
+  const down = sstep5((D[0] * H - r.top) / ((D[0] - D[1]) * H)), up = sstep5((r.bottom - U[1] * H) / ((U[0] - U[1]) * H));
+  // the lights follow the scroll with a little lag, so a fast flick still
+  // dims and lifts them gently instead of snapping
+  ltS += (Math.min(down, up) - ltS) * (1 - Math.pow(STAGE.ease, dt * 60));
+  const lt = Math.round(ltS * 1000) / 1000;
   stageInk = lt > .6;
   if (lt !== lastLt) {
     lastLt = lt;
     stage.style.opacity = lt;
     stage.style.visibility = lt > 0 ? 'visible' : 'hidden';
-    workSec.style.setProperty('--lt', sstep((lt - .3) / .4));          // the type turns from ink to paper round the middle
-    const fade = r.top < H ? 1 - sstep((down - .3) / .55) : 1;
+    workSec.style.setProperty('--lt', sstep((lt - .25) / .5));         // the type turns from ink to paper round the middle
+    const fade = r.top < H ? 1 - sstep((lt - .2) / .65) : 1;
     about.style.opacity = fade; gl.style.opacity = fade;               // the butterfly perched there goes with it
     const v = paper.map((p, j) => Math.round(p + (ink[j] - p) * lt));
     veil.style.background = lt > 0 ? `linear-gradient(rgb(${v}) 50%, rgba(${v}, 0))` : '';
@@ -583,13 +590,56 @@ for (const pic of document.querySelectorAll('.work__pic[data-hover]')) {
   if (img) img.addEventListener('load', () => { if (st.k > 0) draw(); });
 }
 
-// footer: the copy button, and Back to top through Lenis
+// --- the pills: About me and Copy email ------------------------------------
+// Hovering one, its label rolls up and a fresh copy rolls in from below; the
+// round icon swells a little and About me's arrow runs out and back in (all
+// CSS, on .is-on). Mouse and keyboard focus only: on touch a tap just goes.
+for (const pill of document.querySelectorAll('.pill')) {
+  for (const l of pill.querySelectorAll('[data-label]')) l.innerHTML = `<i>${l.textContent}</i>`;
+  const on = () => pill.classList.add('is-on'), off = () => pill.classList.remove('is-on');
+  pill.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(); });
+  pill.addEventListener('pointerleave', off);
+  pill.addEventListener('focus', () => { if (pill.matches(':focus-visible')) on(); });
+  pill.addEventListener('blur', off);
+}
+
+// a pill's label rolls up and out and the new one rolls in from below; the
+// pill eases to its new width
+function relabel(pill, text) {
+  const labels = pill.querySelectorAll('[data-label]'), w0 = pill.offsetWidth;
+  if (reduce) { labels.forEach((l) => { (l.querySelector('i') || l).textContent = text; }); return; }
+  gsap.to(labels, { yPercent: -110, opacity: 0, duration: .2, ease: 'power2.in', onComplete: () => {
+    labels.forEach((l) => { (l.querySelector('i') || l).textContent = text; });
+    const w1 = pill.offsetWidth;
+    gsap.fromTo(pill, { width: w0 }, { width: w1, duration: .4, ease: 'power3.out', clearProps: 'width' });
+    gsap.fromTo(labels, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .4, ease: 'power3.out', clearProps: 'transform,opacity' });
+  } });
+}
+
+// Copy email: the address is copied, a faint copy of it lifts off the big
+// email and softens away as it rises, the label turns to Copied and the
+// icon's two sheets give way to a tick
+const email = foot.querySelector('.foot__email');
+function liftCopy() {
+  if (reduce) return;
+  const g = document.createElement('p');
+  g.className = 'foot__ghost'; g.setAttribute('aria-hidden', 'true'); g.textContent = email.textContent;
+  g.style.left = `${email.offsetLeft}px`; g.style.top = `${email.offsetTop}px`;
+  foot.append(g);
+  const h = email.offsetHeight;
+  gsap.timeline({ onComplete: () => g.remove() })
+    .fromTo(g, { y: 0, opacity: .35, filter: 'blur(0px)' }, { y: -h * .4, opacity: 0, filter: 'blur(6px)', duration: 1, ease: 'power2.out' }, 0);
+}
 for (const b of document.querySelectorAll('[data-copy]')) {
-  const label = b.querySelector('[data-label]'), was = label.textContent;
+  const was = b.querySelector('[data-label]').textContent;
   b.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(b.dataset.copy); label.textContent = 'Copied'; }
+    try { await navigator.clipboard.writeText(b.dataset.copy); }
     catch { location.href = `mailto:${b.dataset.copy}`; return; }
-    clearTimeout(b._t); b._t = setTimeout(() => { label.textContent = was; }, 1600);
+    liftCopy();
+    if (!b.classList.contains('copied')) relabel(b, 'Copied');
+    b.classList.add('copied');
+    clearTimeout(b._t);
+    b._t = setTimeout(() => { b.classList.remove('copied'); relabel(b, was); }, 2000);
   });
 }
 foot.querySelector('.foot__top').addEventListener('click', (e) => {
@@ -604,7 +654,7 @@ function rollFoot() {
   document.body.classList.toggle('on-ink', stageInk);
   if (lastLt === footLt) return;
   footLt = lastLt;
-  const k = 1 - sstep(lastLt / .45);
+  const k = 1 - sstep5(lastLt / .45);
   foot.style.opacity = k;
   foot.style.transform = k < 1 ? `translateY(${(1 - k) * 40}px)` : '';
 }

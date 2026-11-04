@@ -69,10 +69,29 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .about { position: relative; padding: 150px var(--side) 160px; overflow-x: clip; }
 .about > :not(.perch) { position: relative; z-index: 4; }
 .about__say { font-weight: 500; font-size: clamp(28px, 2.78vw, 40px); line-height: 1.1; letter-spacing: -.02em; max-width: 19em; }
-.pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; border-radius: 50px; background: var(--ink); color: var(--bg); }
-.pill .go { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 16px; background: var(--bg); transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
-.pill .go img { display: block; }
-.pill:hover .go { transform: translateX(3px); }
+.pill { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px;
+  border-radius: 50px; background: var(--ink); color: var(--bg); }
+.pill [data-label] { display: inline-block; white-space: nowrap; height: 20px; line-height: 20px; overflow: hidden; vertical-align: top; }
+.pill [data-label] i { display: block; font-style: normal; }
+.pill .go { display: grid; place-items: center; overflow: hidden; width: 20px; height: 20px; border-radius: 16px; background: var(--bg); color: var(--ink); }
+.pill .go svg { display: block; overflow: visible; }
+/* the pills' hover (lace.js adds .is-on): the label rolls up and a copy of it
+   (its shadow, 20 px down) rolls in; the icon swells a touch, and About me's
+   arrow runs out to the right and back in from the left */
+.pill [data-label] i { text-shadow: 0 20px currentColor; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
+.pill.is-on [data-label] i { transform: translateY(-20px); }
+.pill .go { transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+.pill.is-on .go { transform: scale(1.15); }
+.pill:not(.foot__copy).is-on .go svg { animation: pill-run .6s cubic-bezier(.65, 0, .35, 1); }
+@keyframes pill-run { 45% { transform: translateX(12px); } 46% { transform: translateX(-12px); } 100% { transform: none; } }
+/* Copy email: on hover its two sheets slide apart, a copy being peeled off;
+   once copied they give way to a tick */
+.cp-a, .cp-b { transition: transform .4s cubic-bezier(.3, 1.4, .5, 1), opacity .2s; }
+.foot__copy:hover .cp-a, .foot__copy:focus-visible .cp-a { transform: translate(1px, 1px); }
+.foot__copy:hover .cp-b, .foot__copy:focus-visible .cp-b { transform: translate(-1px, -1px); }
+.cp-ok { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .1s; }
+.copied .cp-a, .copied .cp-b { opacity: 0; transform: scale(.6); transform-origin: 6px 6px; }
+.copied .cp-ok { stroke-dashoffset: 0; transition: stroke-dashoffset .45s .12s cubic-bezier(.65, 0, .35, 1); }
 
 .about--deck { display: grid; grid-template-columns: 421px minmax(0, 819px); align-items: start; padding-top: 120px; padding-bottom: 120px; }
 .about--deck .about__text { display: grid; row-gap: 30px; justify-items: start; }
@@ -142,6 +161,10 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
   padding-bottom: .1em; margin-bottom: -.1em; background-size: 0 max(2px, .03em); }
 .foot__email:hover, .foot__email:focus-visible { background-size: 100% max(2px, .03em); outline: none; }
 .foot__copy { margin-top: 24px; }
+/* clicking Copy email lifts a faint copy of the address off it, rising and
+   softening away (lace.js) */
+.foot__ghost { position: absolute; z-index: 1; margin: 0; font-weight: 500; font-size: 8.72cqi; line-height: 1; letter-spacing: -.03em; white-space: nowrap;
+  pointer-events: none; color: var(--ink); }
 .pill { border: 0; font: inherit; letter-spacing: inherit; cursor: pointer; }
 .pill .go { color: var(--ink); }
 .foot__row { isolation: isolate; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 160px; }
