@@ -77,6 +77,13 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .about--deck { display: grid; grid-template-columns: 421px minmax(0, 819px); align-items: start; padding-top: 120px; padding-bottom: 120px; }
 .about--deck .about__text { display: grid; row-gap: 30px; justify-items: start; }
 .about--deck .about__say { max-width: none; }
+/* the statements arrive as the page scrolls (lace.js rollSay): each word waits
+   as faint pinprick dots, and its dots swell, in reading order, until they
+   merge into solid type, the way the footer's name settles */
+.say__w { display: inline-block; --r: .5px; --o: .3; color: transparent;
+  background: radial-gradient(circle, rgba(27, 27, 27, var(--o)) var(--r), transparent calc(var(--r) + .7px)) 0 0 / var(--cell, 5px) var(--cell, 5px);
+  -webkit-background-clip: text; background-clip: text; }
+.say__w.set { background: none; color: var(--ink); }
 .deck { position: relative; z-index: 2 !important; width: 327px; height: 360px; margin-left: 14px; }
 .deck__card { position: absolute; left: 0; top: 0; width: 327px; padding: 15px 15px 0; border: 0; background: var(--bg); cursor: pointer;
   filter: drop-shadow(0 8px 12px rgba(20, 20, 20, .07)) drop-shadow(0 1px 1px rgba(20, 20, 20, .04)); will-change: transform; }

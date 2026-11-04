@@ -158,6 +158,65 @@ function target(ty) {
 
 const heroText = [...document.querySelectorAll('.hero .line, .hero .intro')], veil = document.querySelector('.veil');
 
+// --- the About statements: dots into type, line by line, as the page scrolls
+// Each word is drawn in lace dots (a dot pattern clipped to its letters).
+// While a statement's top runs from SAY.from to SAY.to of the screen, its
+// lines swell one after another from pinpricks into solid type, each line
+// settling from its left end to its right; scrolling back takes them back to
+// dots. The About me pill comes in as the last line settles.
+const SAY = { from: .92, to: .4, spread: 1.4, sweep: .35 };   // spread: lines in motion at once; sweep: lag along a line
+const says = [...about.querySelectorAll('.about__say')].map((p) => {
+  const words = p.textContent.trim().split(/\s+/);
+  p.textContent = '';
+  const w = words.map((word, i) => {
+    const el = document.createElement('span');
+    el.className = 'say__w'; el.textContent = word; el._q = -1;
+    p.append(el); if (i < words.length - 1) p.append(' ');
+    return el;
+  });
+  return { p, w, lines: [], cell: 5 };
+});
+const sayPill = about.querySelector('.about__text .pill');
+function sizeSay() {
+  for (const s of says) {
+    // ~8 dots across the type's height
+    s.cell = Math.max(4, Math.round(parseFloat(getComputedStyle(s.p).fontSize) / 8));
+    s.p.style.setProperty('--cell', s.cell + 'px');
+    // the lines as the text wraps now: words grouped by their top, each with
+    // where it sits along its line (0 left end, 1 right end)
+    const width = s.p.clientWidth || 1, rows = new Map();
+    for (const el of s.w) { const k = el.offsetTop; if (!rows.has(k)) rows.set(k, []); rows.get(k).push(el); }
+    s.lines = [...rows.keys()].sort((x, y) => x - y).map((k) => rows.get(k).map((el) => ({ el, at: el.offsetLeft / width })));
+  }
+}
+sizeSay(); addEventListener('resize', sizeSay); document.fonts?.ready.then(sizeSay);
+function rollSay() {
+  const H = innerHeight;
+  let last = 1;
+  for (const s of says) {
+    const top = s.p.getBoundingClientRect().top;
+    const p = reduce ? 1 : Math.min(1, Math.max(0, (SAY.from * H - top) / ((SAY.from - SAY.to) * H)));
+    const L = s.lines.length, k = SAY.spread, full = s.cell * .72;
+    s.lines.forEach((line, i) => {
+      const u = p * (L + k) - i;                            // this line's own time, 0 → k
+      for (const { el, at } of line) {
+        const q = Math.round(ease(Math.min(1, Math.max(0, (u - at * SAY.sweep * k) / (k * (1 - SAY.sweep))))) * 100) / 100;
+        if (q === el._q) continue;
+        el._q = q;
+        el.classList.toggle('set', q >= 1);
+        el.style.setProperty('--r', (.5 + q * (full - .5)).toFixed(2) + 'px');
+        el.style.setProperty('--o', (.3 + q * .7).toFixed(2));
+        el.style.transform = q >= 1 ? '' : `translateY(${((1 - q) * .1).toFixed(3)}em)`;
+      }
+    });
+    last = p;
+  }
+  if (sayPill) {
+    const a = Math.min(1, Math.max(0, (last - .85) / .15));
+    sayPill.style.opacity = a; sayPill.style.transform = a >= 1 ? '' : `translateY(${(1 - a) * 10}px)`;
+  }
+}
+
 // --- the services band ----------------------------------------------------------
 // One big line of the services running across the page. It drifts on its
 // own; scrolling speeds it up and turns it the way the page is going.
@@ -204,6 +263,7 @@ gsap.ticker.add((time, dms) => {
   shape(B.x, B.y + Math.sin(t * .8) * .035 * u, B.s * intro.k, B.rot + Math.sin(t * .37) * .05, open);
   step(dt);
   draw(dt, Math.min(1, intro.k));
+  rollSay();
   rollWorks(dt);
   rollBand(dt);
   rollFoot(dt);
