@@ -145,6 +145,11 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 body.on-ink .top { color: var(--bg); transition: color .3s; }
 body.on-ink .tab::before { background: var(--bg); }
 body.on-ink .tab:hover, body.on-ink .tab:focus-visible, body.on-ink .drop.open .tab { color: var(--ink); }
+/* the footer's links get the menu's pill, in the light version, as the menu
+   has over the card (isolation keeps the pill above the card) */
+.foot__cols { isolation: isolate; }
+.foot .tab::before { inset: -6px -12px; background: var(--bg); }   /* 2 px shorter: the rows are 8 px apart */
+.foot .tab:hover, .foot .tab:focus-visible { color: var(--ink); }
 body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27, 0)); }
 @media (max-width: 900px) {
   .foot__panel { min-height: 0; padding: 72px calc(var(--side) - 4px) 56px; border-radius: 24px; }
