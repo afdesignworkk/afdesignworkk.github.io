@@ -17,8 +17,9 @@ main { position: relative; z-index: 2; }
 .cs-facts dt { color: #c4c4c4; }
 .cs-facts dd { margin: 4px 0 0; }
 .cs-out { display: inline-flex; align-items: center; gap: 6px;
-  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
-.cs-out:hover, .cs-out:focus-visible { background-size: 0 1px; background-position: 100% 100%; outline: none; }
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
+/* the live link: the line draws in from the left, as the footer's links do */
+.cs-out:hover, .cs-out:focus-visible { background-size: 100% 1px; outline: none; }
 .cs-out svg { transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
 .cs-out:hover svg, .cs-out:focus-visible svg { transform: translate(2px, -2px); }
 

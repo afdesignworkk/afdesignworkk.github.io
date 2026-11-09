@@ -377,9 +377,8 @@ function rollWorks(dt) {
 // paper colour to ink with the scroll (About fading with it, the projects'
 // type coming up light), and before the footer the lights come back up.
 // On the dark lies the page's dot grid again, in faint paper-coloured dots
-// as on the footer. Each time a project settles in the middle of the screen,
-// one ring of dots runs out from its card across the stage, as the hero
-// butterfly's wingbeats send rings of air through the grid; then it is still.
+// as on the footer, resting: the rings that used to run out from each project
+// as it settled are off (2026-11-10, her call), the code is kept.
 // The stage's grid is the page's at half the pitch: every other dot of it is
 // one of the page's (those rest; the ones between only show in a ring).
 const STAGE = {
@@ -434,7 +433,8 @@ function rollStage(dt) {
   if (Math.abs(f - near) < .06 && near !== settled && lt > .7) {
     settled = near;
     const q = works[near].pic.getBoundingClientRect();
-    if (!reduce) ripples.push({ age: 0, x: q.left + q.width / 2, y: q.top + q.height / 2, w: q.width / 2, h: q.height / 2 });
+    // (no ring any more: she asked for the stage to stay still while scrolling)
+    void q;
   }
   for (let k = ripples.length - 1; k >= 0; k--) { ripples[k].age += dt; if (ripples[k].age > STAGE.ripple.life) ripples.splice(k, 1); }
 

@@ -11,7 +11,9 @@ p, h1, ul, figure { margin: 0; }
 ul { padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
 .ul { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
-.ul:hover { background-size: 100% 1px; }
+/* the footer's links (email, socials, Back to top) and live sites: the line
+   draws in from the left; the pill hover is for the menu */
+.ul:hover, .ul:focus-visible { background-size: 100% 1px; outline: none; }
 
 /* the dot grid behind everything; the butterfly above the polaroids (it
    lands on one) but under the text, which stays readable as it flies past */
