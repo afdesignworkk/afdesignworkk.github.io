@@ -51,6 +51,8 @@ main { position: relative; z-index: 2; }
    large one on the left, or on the right to answer it) */
 /* each tile is a picture from her mockup, its own colour baked in */
 .st-tile { margin: 0; overflow: hidden; border-radius: 20px; background: #c4c4c4; }
+/* tiles still waiting for their pictures: her light grey */
+.st-tile:empty, .st-hero--blank { background: #eaeaea; }
 .st-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .st-pics { margin-top: 120px; }
 .st-pics--one .st-tile { aspect-ratio: 818 / 560; }
