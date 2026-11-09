@@ -90,14 +90,15 @@ if (!reduce) {
 }
 lines('.st-sec .txt p');
 
-// the rail's index: the last section whose top has passed the middle of the
-// screen is marked (Outcome stays marked to the end), and a click glides
+// the rail's index: nothing is marked over the title and the hero; the dot
+// comes in when Overview reaches the middle of the screen, then moves to each
+// section as its top passes the middle (Outcome stays marked to the end), and a click glides
 // there, 48 under the top, where the rail is held
 {
   const links = [...document.querySelectorAll('.st-toc a')], secs = links.map((a) => document.querySelector(a.hash));
   let cur = -1;
   const pick = () => {
-    const mid = innerHeight * .55; let i = 0;
+    const mid = innerHeight * .55; let i = -1;               // above Overview nothing is marked
     secs.forEach((s, j) => { if (s.getBoundingClientRect().top <= mid) i = j; });
     if (i === cur) return; cur = i;
     links.forEach((a, j) => { a.classList.toggle('on', j === i); if (j === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });

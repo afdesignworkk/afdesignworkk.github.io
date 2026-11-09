@@ -27,7 +27,7 @@ main { position: relative; z-index: 2; }
 .st-toc a::before { content: ''; flex: none; width: 0; height: 6px; margin-right: 0; border-radius: 50%; background: currentColor; transform: scale(0);
   transition: width .45s cubic-bezier(.65, 0, .35, 1), margin-right .45s cubic-bezier(.65, 0, .35, 1), transform .35s cubic-bezier(.3, 1.4, .5, 1); }
 .st-toc a:hover, .st-toc a:focus-visible { color: var(--ink); outline: none; }
-.st-toc a.on { color: #000; }
+.st-toc a.on { color: var(--ink); }
 .st-toc a.on::before { width: 6px; margin-right: 12px; transform: scale(1); transition-delay: 0s, 0s, .1s; }
 
 /* the line (70/64), and 24 under it four facts spread across the column */
