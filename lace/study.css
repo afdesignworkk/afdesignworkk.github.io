@@ -59,9 +59,9 @@ main { position: relative; z-index: 2; }
 .st-pics--flip { grid-template-columns: 292fr 502fr; }
 .st-pics--flip .st-tile:first-child { grid-column: 2; }
 
-/* sections: 64 heading, 32 under it the text (30/34) */
+/* sections: 56/60 heading, 32 under it the text (30/34) */
 .st-sec { margin-top: 120px; scroll-margin-top: 48px; }
-.st-sec h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(36px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
+.st-sec h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
 .st-sec .txt p { margin: 0; color: #000; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
 .st-sec .txt p + p { margin-top: 1.134em; }
 

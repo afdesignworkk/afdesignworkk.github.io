@@ -129,7 +129,7 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
    mouse, brings each one's second picture in in dots on hover (rollWorks and
    DOTS in lace.js). */
 .work { position: relative; z-index: 4; padding: 0 var(--side) 96px; overflow-x: clip; }
-.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(40px, 4.445vw, 64px); line-height: 1; letter-spacing: -.02em; }
+.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(36px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
 .work__list { display: grid; row-gap: 32px; justify-items: center; }
 .work__list li { width: min(818px, 100%); will-change: transform; }
 .work__item { display: block; }
