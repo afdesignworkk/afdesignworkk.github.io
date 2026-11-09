@@ -205,3 +205,14 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
   .drop__panel { left: -12px; margin-left: 0; width: min(330px, calc(100vw - 2 * var(--side) + 24px)); }
   .veil { height: 120px; }
 }
+
+/* The home loader (her storyboard 898:224, "E · Flight"; loader.js + flight.js):
+   a cream sheet over the page on the first visit of a session, the butterfly
+   flying across as the progress, Loading and the percentage 100 above the foot */
+html { scrollbar-gutter: stable; }            /* no shift when the page is released */
+html.ld-on, html.ld-on body { overflow: hidden; }
+.ld { position: fixed; inset: 0; z-index: 100; background: var(--bg); color: var(--ink); pointer-events: none; }
+.ld canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ld__name, .ld__pct { position: absolute; bottom: 100px; margin: 0; }
+.ld__name { left: var(--side); }
+.ld__pct { right: var(--side); font-variant-numeric: tabular-nums; }

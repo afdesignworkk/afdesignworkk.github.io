@@ -614,6 +614,11 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-gsap.to(intro, { k: 1, duration: 1.8, ease: 'expo.out', delay: .2 });
-gsap.from('.top, .hero .line, .hero .intro', { y: 8, duration: 1, ease: 'power2.out', stagger: .1, delay: .5 });
-gsap.from('.top', { opacity: 0, duration: 1, ease: 'power2.out', delay: .5 });
+// the intro waits for the loader (loader.js) when there is one; after the
+// Flight the butterfly is already on its perch
+(window.__loaded || Promise.resolve('first')).then((mode) => {
+  const d = mode === 'first' ? .5 : mode === 'instant' ? .1 : .3;
+  if (mode === 'instant') intro.k = 1; else gsap.to(intro, { k: 1, duration: 1.8, ease: 'expo.out', delay: d - .3 });
+  gsap.from('.top, .hero .line, .hero .intro', { y: 8, duration: 1, ease: 'power2.out', stagger: .1, delay: d });
+  gsap.from('.top', { opacity: 0, duration: 1, ease: 'power2.out', delay: d });
+});
