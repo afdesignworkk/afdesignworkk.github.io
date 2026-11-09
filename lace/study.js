@@ -102,7 +102,10 @@ lines('.st-sec .txt p');
     if (i === cur) return; cur = i;
     links.forEach((a, j) => { a.classList.toggle('on', j === i); if (j === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
   };
-  lenis.on('scroll', pick); addEventListener('resize', pick); pick();
+  // Lenis drives the wheel; the native events cover a restored scroll
+  // position, keyboard jumps and the first paint
+  lenis.on('scroll', pick); addEventListener('scroll', pick, { passive: true });
+  addEventListener('resize', pick); addEventListener('load', pick); pick();
   links.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(secs[i], { offset: -48, duration: reduce ? 0 : 1.4 }); }));
 }
 

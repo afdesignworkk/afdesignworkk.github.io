@@ -27,7 +27,7 @@ main { position: relative; z-index: 2; }
 .st-toc a::before { content: ''; flex: none; width: 0; height: 6px; margin-right: 0; border-radius: 50%; background: currentColor; transform: scale(0);
   transition: width .45s cubic-bezier(.65, 0, .35, 1), margin-right .45s cubic-bezier(.65, 0, .35, 1), transform .35s cubic-bezier(.3, 1.4, .5, 1); }
 .st-toc a:hover, .st-toc a:focus-visible { color: var(--ink); outline: none; }
-.st-toc a.on { color: var(--ink); }
+.st-toc a.on { color: #000; }
 .st-toc a.on::before { width: 6px; margin-right: 12px; transform: scale(1); transition-delay: 0s, 0s, .1s; }
 
 /* the line (70/64), and 24 under it four facts spread across the column */
@@ -48,7 +48,9 @@ main { position: relative; z-index: 2; }
 
 /* grey tiles, corners 20: one wide, or one large beside two small (the
    large one on the left, or on the right to answer it) */
-.st-tile { border-radius: 20px; background: #c4c4c4; }
+/* each tile is a picture from her mockup, its own colour baked in */
+.st-tile { margin: 0; overflow: hidden; border-radius: 20px; background: #c4c4c4; }
+.st-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .st-pics { margin-top: 120px; }
 .st-pics--one .st-tile { aspect-ratio: 818 / 560; }
 .st-pics--bento { display: grid; grid-template-columns: 502fr 292fr; grid-template-rows: 1fr 1fr; gap: 24px; aspect-ratio: 818 / 560; }
@@ -87,6 +89,6 @@ main { position: relative; z-index: 2; }
 }
 @media (max-width: 600px) {
   .st-pics--bento, .st-pics--flip { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; aspect-ratio: auto; }
-  .st-pics--bento .st-tile { aspect-ratio: 1; }
-  .st-pics--bento .st-tile:first-child { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+  .st-pics--bento .st-tile { aspect-ratio: 292 / 268; }
+  .st-pics--bento .st-tile:first-child { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 502 / 560; }
 }
