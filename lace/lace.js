@@ -222,12 +222,6 @@ gsap.ticker.add((time, dms) => {
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
 });
 
-// the menu's About scrolls there smoothly
-document.querySelector('.top a[href="#about"]').addEventListener('click', (e) => {
-  e.preventDefault();
-  lenis.scrollTo('#about', { duration: 1.6 });
-});
-
 // the Projects menu: opens on click (and on hover with a mouse), the panel
 // unrolls from the top and its rows come in one after another; Escape, a
 // click outside or leaving it closes it
