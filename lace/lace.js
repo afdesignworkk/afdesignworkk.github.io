@@ -13,6 +13,7 @@
 // the next: it rides up with the first a little, swings out to the side in
 // an arc, and lands on the next.
 import { lace, butterfly } from './field.js?v=1';
+import { lines } from './lines.js?v=2';
 
 const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -160,64 +161,12 @@ function target(ty) {
 
 const heroText = [...document.querySelectorAll('.hero .line, .hero .intro')];
 
-// --- the About statements: dots into type, line by line, as the page scrolls
-// Each word is drawn in lace dots (a dot pattern clipped to its letters).
-// While a statement's top runs from SAY.from to SAY.to of the screen, its
-// lines swell one after another from pinpricks into solid type, each line
-// settling from its left end to its right; scrolling back takes them back to
-// dots. The About me pill comes in as the last line settles.
-const SAY = { from: .92, to: .4, spread: 1.4, sweep: .35 };   // spread: lines in motion at once; sweep: lag along a line
-const says = [...about.querySelectorAll('.about__say')].map((p) => {
-  const words = p.textContent.trim().split(/\s+/);
-  p.textContent = '';
-  const w = words.map((word, i) => {
-    const el = document.createElement('span');
-    el.className = 'say__w'; el.textContent = word; el._q = -1;
-    p.append(el); if (i < words.length - 1) p.append(' ');
-    return el;
-  });
-  return { p, w, lines: [], cell: 5 };
-});
+// --- the About statements: they rise in line by line from behind a mask as
+// they come up the screen (lines.js); the About me pill follows the last line.
 const sayPill = about.querySelector('.about__text .pill');
-function sizeSay() {
-  for (const s of says) {
-    // ~8 dots across the type's height
-    s.cell = Math.max(4, Math.round(parseFloat(getComputedStyle(s.p).fontSize) / 8));
-    s.p.style.setProperty('--cell', s.cell + 'px');
-    // the lines as the text wraps now: words grouped by their top, each with
-    // where it sits along its line (0 left end, 1 right end)
-    const width = s.p.clientWidth || 1, rows = new Map();
-    for (const el of s.w) { const k = el.offsetTop; if (!rows.has(k)) rows.set(k, []); rows.get(k).push(el); }
-    s.lines = [...rows.keys()].sort((x, y) => x - y).map((k) => rows.get(k).map((el) => ({ el, at: el.offsetLeft / width })));
-  }
-}
-sizeSay(); addEventListener('resize', sizeSay); document.fonts?.ready.then(sizeSay);
-function rollSay() {
-  const H = innerHeight;
-  let last = 1;
-  for (const s of says) {
-    const top = s.p.getBoundingClientRect().top;
-    const p = reduce ? 1 : Math.min(1, Math.max(0, (SAY.from * H - top) / ((SAY.from - SAY.to) * H)));
-    const L = s.lines.length, k = SAY.spread, full = s.cell * .72;
-    s.lines.forEach((line, i) => {
-      const u = p * (L + k) - i;                            // this line's own time, 0 → k
-      for (const { el, at } of line) {
-        const q = Math.round(ease(Math.min(1, Math.max(0, (u - at * SAY.sweep * k) / (k * (1 - SAY.sweep))))) * 100) / 100;
-        if (q === el._q) continue;
-        el._q = q;
-        el.classList.toggle('set', q >= 1);
-        el.style.setProperty('--r', (.5 + q * (full - .5)).toFixed(2) + 'px');
-        el.style.setProperty('--o', (.3 + q * .7).toFixed(2));
-        el.style.transform = q >= 1 ? '' : `translateY(${((1 - q) * .1).toFixed(3)}em)`;
-      }
-    });
-    last = p;
-  }
-  if (sayPill) {
-    const a = Math.min(1, Math.max(0, (last - .85) / .15));
-    sayPill.style.opacity = a; sayPill.style.translate = a >= 1 ? '' : `0 ${(1 - a) * 10}px`;   // translate, not transform: the hover owns that
-  }
-}
+if (sayPill && !reduce) gsap.set(sayPill, { opacity: 0, translate: '0 12px' });   // translate, not transform: the hover owns that
+const says = [...about.querySelectorAll('.about__say')];
+lines(says, { after: (p) => { if (p === says[says.length - 1] && sayPill) gsap.to(sayPill, { opacity: 1, translate: '0 0px', duration: .8, ease: 'power3.out', delay: .1, clearProps: 'translate' }); } });
 
 // --- the services band ----------------------------------------------------------
 // One big line of the services running across the page. It drifts on its
@@ -265,7 +214,6 @@ gsap.ticker.add((time, dms) => {
   shape(B.x, B.y + Math.sin(t * .8) * .035 * u, B.s * intro.k, B.rot + Math.sin(t * .37) * .05, open);
   step(dt);
   draw(dt, Math.min(1, intro.k));
-  rollSay();
   rollWorks(dt);
   rollStage(dt);
   rollBand(dt);
@@ -285,6 +233,7 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
 // click outside or leaving it closes it
 {
   const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
+  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 20px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
   const rows = panel.querySelectorAll('li');
   let open = false, leave = 0;
   function set(o) {
@@ -293,16 +242,22 @@ document.querySelector('.top a[href="#about"]').addEventListener('click', (e) =>
     gsap.killTweensOf([panel, rows]);
     if (o) {
       panel.hidden = false;
-      gsap.fromTo(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0, duration: reduce ? 0 : .55, ease: 'power3.out' });
+      // one value, 0 shut … 1 open, drives the unroll both ways, so a close that
+      // interrupts an open (or the reverse) runs back from where it is
+      gsap.to(st, { p: 1, duration: reduce ? 0 : .55, ease: 'power3.out', overwrite: true, onUpdate: paint });
       gsap.fromTo(rows, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: reduce ? 0 : .4, ease: 'power2.out', stagger: .05, delay: .08 });
     } else {
-      gsap.to(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6, duration: reduce ? 0 : .3, ease: 'power2.in', onComplete: () => { panel.hidden = true; } });
+      gsap.to(st, { p: 0, duration: reduce ? 0 : .3, ease: 'power2.in', overwrite: true, onUpdate: paint, onComplete: () => { if (!open) panel.hidden = true; } });
     }
   }
-  btn.addEventListener('click', () => set(!open));
+  // with a mouse the hover already opened it: a click keeps it open instead of
+  // shutting it under the pointer; touch and keyboard toggle as before
+  btn.addEventListener('click', () => set(drop.matches(':hover') && matchMedia('(hover: hover) and (pointer: fine)').matches ? true : !open));
   const mouse = matchMedia('(hover: hover) and (pointer: fine)');
   drop.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && mouse.matches) { clearTimeout(leave); set(true); } });
   drop.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && mouse.matches) leave = setTimeout(() => set(false), 220); });
+  // landing on another tab closes it at once, so two pills never show together
+  for (const t of document.querySelectorAll('.top .tab')) if (!drop.contains(t)) t.addEventListener('pointerenter', () => { if (open) { clearTimeout(leave); set(false); } });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
   addEventListener('pointerdown', (e) => { if (open && !drop.contains(e.target)) set(false); });
 }

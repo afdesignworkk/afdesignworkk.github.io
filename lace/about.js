@@ -1,7 +1,8 @@
 // About page: smooth scroll, the top bar (clock, Projects menu), Roll
 // pills, the footer's copy button and Back to top, then the page itself: the
-// grey tiles opening up, the column drift and the chapters' dot-to-type reveal.
+// grey tiles opening up, the column drift and the chapters' lines rising in.
 
+import { lines } from './lines.js?v=2';
 const { gsap, Lenis, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,6 +25,7 @@ lenis.on('scroll', ScrollTrigger.update);
 // the Projects menu (as lace.js)
 {
   const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
+  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 20px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
   const rows = panel.querySelectorAll('li');
   let open = false, leave = 0;
   const set = (o) => {
@@ -32,16 +34,22 @@ lenis.on('scroll', ScrollTrigger.update);
     gsap.killTweensOf([panel, rows]);
     if (o) {
       panel.hidden = false;
-      gsap.fromTo(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0, duration: reduce ? 0 : .55, ease: 'power3.out' });
+      // one value, 0 shut … 1 open, drives the unroll both ways, so a close that
+      // interrupts an open (or the reverse) runs back from where it is
+      gsap.to(st, { p: 1, duration: reduce ? 0 : .55, ease: 'power3.out', overwrite: true, onUpdate: paint });
       gsap.fromTo(rows, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: reduce ? 0 : .4, ease: 'power2.out', stagger: .05, delay: .08 });
     } else {
-      gsap.to(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6, duration: reduce ? 0 : .3, ease: 'power2.in', onComplete: () => { panel.hidden = true; } });
+      gsap.to(st, { p: 0, duration: reduce ? 0 : .3, ease: 'power2.in', overwrite: true, onUpdate: paint, onComplete: () => { if (!open) panel.hidden = true; } });
     }
   };
-  btn.addEventListener('click', () => set(!open));
+  // with a mouse the hover already opened it: a click keeps it open instead of
+  // shutting it under the pointer; touch and keyboard toggle as before
+  btn.addEventListener('click', () => set(drop.matches(':hover') && matchMedia('(hover: hover) and (pointer: fine)').matches ? true : !open));
   const mouse = matchMedia('(hover: hover) and (pointer: fine)');
   drop.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && mouse.matches) { clearTimeout(leave); set(true); } });
   drop.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && mouse.matches) leave = setTimeout(() => set(false), 220); });
+  // landing on another tab closes it at once, so two pills never show together
+  for (const t of document.querySelectorAll('.top .tab')) if (!drop.contains(t)) t.addEventListener('pointerenter', () => { if (open) { clearTimeout(leave); set(false); } });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
   addEventListener('pointerdown', (e) => { if (open && !drop.contains(e.target)) set(false); });
 }
@@ -91,65 +99,9 @@ if (!reduce) {
 
 }
 
-// The chapters arrive the way the home page's About statements do (lace.js
-// rollSay): each word waits as faint pinprick dots, and as a paragraph's top
-// runs from SAY.from to SAY.to of the screen its lines swell one after another
-// into solid type, each line settling from its left end to its right;
-// scrolling back takes them back to dots. Links keep working: their words are
-// wrapped inside them.
-const SAY = { from: .92, to: .4, spread: 1.4, sweep: .35 };   // the home page's values
-const ease = (e) => e * e * e * (e * (e * 6 - 15) + 10);       // smootherstep
-function wrapWords(node, out) {
-  for (const n of [...node.childNodes]) {
-    if (n.nodeType === 3) {
-      const parts = n.textContent.split(/(\s+)/), frag = document.createDocumentFragment();
-      for (const part of parts) {
-        if (!part) continue;
-        if (/^\s+$/.test(part)) { frag.append(' '); continue; }
-        const el = document.createElement('span');
-        el.className = 'say__w'; el.textContent = part; el._q = -1;
-        frag.append(el); out.push(el);
-      }
-      n.replaceWith(frag);
-    } else if (n.nodeType === 1) wrapWords(n, out);
-  }
-  return out;
-}
-const says = [...document.querySelectorAll('.ab2-ch .txt p')].map((p) => ({ p, w: wrapWords(p, []), lines: [], cell: 5 }));
-function sizeSay() {
-  for (const s of says) {
-    s.cell = Math.max(3, Math.round(parseFloat(getComputedStyle(s.p).fontSize) / 8));   // ~8 dots across the type's height
-    s.p.style.setProperty('--cell', s.cell + 'px');
-    const box = s.p.getBoundingClientRect(), width = box.width || 1, rows = new Map();
-    for (const el of s.w) { const r = el.getBoundingClientRect(), k = Math.round(r.top - box.top); if (!rows.has(k)) rows.set(k, []); rows.get(k).push({ el, at: (r.left - box.left) / width }); }
-    s.lines = [...rows.keys()].sort((x, y) => x - y).map((k) => rows.get(k));
-    for (const { el } of s.lines.flat()) el._q = -1;
-  }
-}
-function rollSay() {
-  const H = innerHeight;
-  for (const s of says) {
-    const top = s.p.getBoundingClientRect().top;
-    const p = reduce ? 1 : Math.min(1, Math.max(0, (SAY.from * H - top) / ((SAY.from - SAY.to) * H)));
-    const L = s.lines.length, k = SAY.spread, full = s.cell * .72;
-    s.lines.forEach((line, i) => {
-      const u = p * (L + k) - i;
-      for (const { el, at } of line) {
-        const q = Math.round(ease(Math.min(1, Math.max(0, (u - at * SAY.sweep * k) / (k * (1 - SAY.sweep))))) * 100) / 100;
-        if (q === el._q) continue;
-        el._q = q;
-        el.classList.toggle('set', q >= 1);
-        el.style.setProperty('--r', (.5 + q * (full - .5)).toFixed(2) + 'px');
-        el.style.setProperty('--o', (.3 + q * .7).toFixed(2));
-        el.style.transform = q >= 1 ? '' : `translateY(${((1 - q) * .1).toFixed(3)}em)`;
-      }
-    });
-  }
-}
-// measured with the transforms off, so the lines are the real ones
-const measure = () => { for (const s of says) for (const el of s.w) el.style.transform = ''; sizeSay(); rollSay(); };
-measure(); addEventListener('resize', measure); document.fonts?.ready.then(measure);
-gsap.ticker.add(rollSay);
+// The chapters arrive the way the home page's About statements do: each
+// paragraph's lines rise in one after another from behind a mask (lines.js).
+lines('.ab2-ch .txt p');
 
 // Scroll down glides to the first chapter
 document.querySelector('[data-down]').addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo('#ch1', { offset: -140, duration: reduce ? 0 : 1.6 }); });

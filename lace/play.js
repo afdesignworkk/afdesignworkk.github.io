@@ -126,6 +126,7 @@ if (!reduce) {
 // --- the top bar: the Projects menu and the clock (as lace.js) -------------------
 {
   const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
+  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 20px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
   const rows = panel.querySelectorAll('li');
   let isOpen = false, leave = 0;
   function set(o) {
@@ -134,16 +135,22 @@ if (!reduce) {
     gsap.killTweensOf([panel, rows]);
     if (o) {
       panel.hidden = false;
-      gsap.fromTo(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0, duration: reduce ? 0 : .55, ease: 'power3.out' });
+      // one value, 0 shut … 1 open, drives the unroll both ways, so a close that
+      // interrupts an open (or the reverse) runs back from where it is
+      gsap.to(st, { p: 1, duration: reduce ? 0 : .55, ease: 'power3.out', overwrite: true, onUpdate: paint });
       gsap.fromTo(rows, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: reduce ? 0 : .4, ease: 'power2.out', stagger: .05, delay: .08 });
     } else {
-      gsap.to(panel, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6, duration: reduce ? 0 : .3, ease: 'power2.in', onComplete: () => { panel.hidden = true; } });
+      gsap.to(st, { p: 0, duration: reduce ? 0 : .3, ease: 'power2.in', overwrite: true, onUpdate: paint, onComplete: () => { if (!isOpen) panel.hidden = true; } });
     }
   }
-  btn.addEventListener('click', () => set(!isOpen));
+  // with a mouse the hover already opened it: a click keeps it open instead of
+  // shutting it under the pointer; touch and keyboard toggle as before
+  btn.addEventListener('click', () => set(drop.matches(':hover') && matchMedia('(hover: hover) and (pointer: fine)').matches ? true : !isOpen));
   const mouse = matchMedia('(hover: hover) and (pointer: fine)');
   drop.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && mouse.matches) { clearTimeout(leave); set(true); } });
   drop.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && mouse.matches) leave = setTimeout(() => set(false), 220); });
+  // landing on another tab closes it at once, so two pills never show together
+  for (const t of document.querySelectorAll('.top .tab')) if (!drop.contains(t)) t.addEventListener('pointerenter', () => { if (isOpen) { clearTimeout(leave); set(false); } });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen) { set(false); btn.focus(); } });
   addEventListener('pointerdown', (e) => { if (isOpen && !drop.contains(e.target)) set(false); });
 }

@@ -44,6 +44,9 @@ a { color: inherit; text-decoration: none; }
 .drop__panel { position: absolute; top: calc(100% + 16px); left: 50%; width: 330px; margin-left: -165px; padding: 4px 30px; border-radius: 20px;
   background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
 .drop__panel[hidden] { display: none; }
+/* a bridge over the gap between Projects and its panel, so the pointer never
+   leaves the menu on the way down */
+.drop.open::after { content: ''; position: absolute; left: -40px; right: -40px; top: 100%; height: 20px; }
 .drop__panel li + li { border-top: 1px solid rgba(247, 247, 244, .12); }
 .row { display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; height: 66px; padding-top: 16px; }
 .row .n { font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .5); font-variant-numeric: tabular-nums; }
@@ -97,13 +100,11 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .about--deck { display: grid; grid-template-columns: 421px minmax(0, 819px); align-items: start; padding-top: 120px; padding-bottom: 120px; }
 .about--deck .about__text { display: grid; row-gap: 30px; justify-items: start; }
 .about--deck .about__say { max-width: none; }
-/* the statements arrive as the page scrolls (lace.js rollSay): each word waits
-   as faint pinprick dots, and its dots swell, in reading order, until they
-   merge into solid type */
-.say__w { display: inline-block; --r: .5px; --o: .3; color: transparent;
-  background: radial-gradient(circle, rgba(27, 27, 27, var(--o)) var(--r), transparent calc(var(--r) + .7px)) 0 0 / var(--cell, 5px) var(--cell, 5px);
-  -webkit-background-clip: text; background-clip: text; }
-.say__w.set { background: none; color: var(--ink); }
+/* lines rising from behind a mask (lines.js): each word in its own clipped
+   box, a little taller than the type so descenders are never cut */
+.mw { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .06em .16em; margin: 0 -.06em -.16em; }
+.mw__in { display: inline-block; will-change: transform; }
+.mw.up .mw__in { will-change: auto; }
 .deck { position: relative; z-index: 2 !important; width: 327px; height: 360px; margin-left: 14px; }
 .deck__card { position: absolute; left: 0; top: 0; width: 327px; padding: 15px 15px 0; border: 0; background: var(--bg); cursor: pointer;
   filter: drop-shadow(0 8px 12px rgba(20, 20, 20, .07)) drop-shadow(0 1px 1px rgba(20, 20, 20, .04)); will-change: transform; }

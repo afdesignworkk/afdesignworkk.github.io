@@ -55,9 +55,5 @@ main { position: relative; z-index: 2; }
   .ab2-ch h2 { position: static; }
 }
 
-/* the chapters' words in the home page's reveal (lace.css .say__w): a link's
-   words keep the link's underline */
-.ab2-ch .txt a .say__w { color: transparent; }
-.ab2-ch .txt a .say__w.set { color: #000; }
-/* a link's underline draws in once its words have settled into type */
-.ab2-ch .txt a:has(.say__w:not(.set)) { background-size: 0 1px; }
+/* a link's underline draws in once its words have risen (lines.js) */
+.ab2-ch .txt a:has(.mw:not(.up)) { background-size: 0 1px; }
