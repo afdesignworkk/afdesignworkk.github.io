@@ -1,646 +1,94 @@
 <!DOCTYPE html>
-<html lang="en" class="playground">
+<html lang="en" class="pg">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playground — Anna Fesenko</title>
+  <meta name="description" content="Concepts, visuals and everything in between: covers, ads, logos and app concepts by Anna Fesenko.">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=18">
-  <link rel="stylesheet" href="playground.css?v=9">
-  <link rel="stylesheet" href="responsive.css?v=1">
-  <script src="responsive.js?v=1"></script>
-  <script>
-    /* Loading screen: hide the work and the title before the first paint (see
-       the loader script at the end of the body). Never under reduced motion. */
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('is-loading');
-      setTimeout(() => { if (!window.__loaderRunning) document.documentElement.classList.remove('is-loading'); }, 3000);
-    }
-  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
+  <link rel="stylesheet" href="lace/lace.css?v=51">
+  <link rel="stylesheet" href="lace/play.css?v=2">
 </head>
 <body>
 
-  <!-- 1. Top bar (same as the home page) -->
-  <header class="topbar pg-topbar">
-    <a class="topbar__brand type-mono-16 above-grid" href="index.html">AF / DESIGN</a>
-    <nav class="topbar__nav type-mono-16 above-grid">
-      <a href="index.html#about">ABOUT</a>
-      <a href="index.html#projects">PROJECTS</a>
-      <a href="index.html#contact">CONTACT</a>
-      <a href="playground.html" aria-current="page">PLAYGROUND</a>
+  <!-- Playground, in the home page's style: a cream table with the page's faint
+       dot grid, the work laid out on it at her Figma positions (337:25785),
+       dragged around as one board (lace/play.js). Hovering a piece lifts it
+       with a soft shadow and shows its line underneath (her 818:349). -->
+
+  <div class="veil on" aria-hidden="true"></div>
+  <header class="top">
+    <a class="tab" href="index.html">Anna Fesenko</a>
+    <p class="clock"><time>11:15:45 PM GMT+2</time></p>
+    <nav aria-label="Main">
+      <a class="tab" href="about.html">About</a>
+      <div class="drop">
+        <button class="drop__btn tab" type="button" aria-expanded="false" aria-controls="projects-menu">Projects</button>
+        <div class="drop__panel" id="projects-menu" hidden>
+          <ul>
+            <li><a class="row" href="#"><span class="n">01</span><span class="t">Jeff.Q Productions<small>Portfolio website</small></span><span class="y">2026</span></a></li>
+            <li><a class="row" href="case-spacebring.html"><span class="n">02</span><span class="t">Spacebring<small>Admin web app</small></span><span class="y">2025</span></a></li>
+            <li><a class="row" href="#"><span class="n">03</span><span class="t">Spacebring<small>Marketing website</small></span><span class="y">2024</span></a></li>
+            <li><span class="row soon" aria-disabled="true"><span class="n">04</span><span class="t">TalentMinted<small>Job board system</small></span><span class="y">Soon</span></span></li>
+          </ul>
+        </div>
+      </div>
+      <a class="tab" href="playground.html" aria-current="page">Playground</a>
+      <a class="tab" href="mailto:af.designworkk@gmail.com">Contact</a>
     </nav>
-    <button class="topbar__menu type-mono-16 above-grid" type="button" aria-expanded="false">MENU</button>
-    <p class="topbar__status type-mono-16 above-grid">
-      <span class="topbar__dot">
-        <img src="assets/status-dot.svg" width="9" height="9" alt="">
-        <span class="topbar__dot-ring"></span>
-      </span>
-      OPEN TO WORK
-    </p>
   </header>
 
-  <main>
-    <!-- 2. The board: work under the grid lines, its title over them.
-         Each piece: data-full is the large image the full-size view shows,
-         data-note and data-size are the line and the pixel size under it. -->
-    <div class="pg-layer pg-layer--work">
-      <img class="pg-piece pg-piece--coworker" src="assets/playground/coworker.png" width="500" height="281" alt="Spacebring live stream cover: Meet your new coworker" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/coworker.png" data-note="YouTube cover system for Spacebring webinars (2026)" data-size="1920x1080">
-      <img class="pg-piece pg-piece--nibble-wonders" src="assets/playground/nibble-wonders.png" width="350" height="438" alt="Nibble ad: Unlock math's hidden wonders" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/nibble-wonders.png" data-note="Meta ad campaign for Nibble's marketing design course (2025)" data-size="1080x1350">
-      <img class="pg-piece pg-piece--contracts" src="assets/playground/contracts.png" width="500" height="281" alt="Spacebring cover: Introduction to contracts and eSignature" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/contracts.png" data-note="YouTube cover system for Spacebring product introductions (2026)" data-size="1920x1080">
-      <img class="pg-piece pg-piece--logo-moon" src="assets/playground/logo-moon.png" width="230" height="230" alt="Logo concept: an orange crescent" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/logo-moon.png" data-note="Mobile app logo concept for a UI/UX course (2023)" data-size="1080x1080">
-      <img class="pg-piece pg-piece--cinema" src="assets/playground/cinema.png" width="500" height="281" alt="Cinema app concept: three phone screens" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/cinema.png" data-note="Mobile app design concept for a cinema ticket booking app (2023)" data-size="1920x1080">
-      <img class="pg-piece pg-piece--nibble-color" src="assets/playground/nibble-color.png" width="350" height="438" alt="Nibble ad: From confusion to color, your math journey" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/nibble-color.png" data-note="Meta ad campaign for Nibble's final course project (2025)" data-size="1080x1350">
-      <img class="pg-piece pg-piece--logo-gl" src="assets/playground/logo-gl.png" width="230" height="230" alt="Logo concept: GL" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/logo-gl.png" data-note="Logo concept for a first self-initiated project (2022)" data-size="1080x1080">
-      <img class="pg-piece pg-piece--anan" src="assets/playground/anan.png" width="500" height="281" alt="AN·AN Pilates Studio brand banner" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/anan.png" data-note="Banner concept for a pilates studio launch (2024)" data-size="1920x1080">
-      <img class="pg-piece pg-piece--valentines" src="assets/playground/valentines.png" width="350" height="350" alt="Spacebring post: Happy Valentine's Day" draggable="false" tabindex="0" role="button"
-        data-full="assets/playground/full/valentines.png" data-note="Social media posts for Spacebring (2026)" data-size="1080x1080">
-    </div>
+  <main class="board" aria-label="Playground">
+    <div class="board__dots" aria-hidden="true"></div>
+    <div class="board__layer">
+      <h1 class="board__title"><span>Concepts, visuals, and</span> <span>everything in between</span></h1>
+      <p class="board__hint">Drag to look around</p>
 
-    <div class="pg-layer pg-layer--text">
-      <h1 class="pg-title type-display-72">Concepts, visuals, and <br>everything in between.</h1>
-      <p class="pg-hint type-mono-16">Drag anywhere to look around</p>
+      <!-- each piece at its place on her frame: x, y, width, height -->
+      <figure class="piece" style="--x: 394; --y: -159; --w: 350; --h: 437.5">
+        <img src="assets/playground/nibble-wonders.png" width="350" height="438" alt="Nibble ad: Unlock math's hidden wonders" draggable="false">
+        <figcaption class="piece__cap">Meta ad campaign for Nibble's marketing design course (2025)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 968; --y: 62; --w: 500; --h: 281.25">
+        <img src="assets/playground/contracts.png" width="500" height="281" alt="Spacebring cover: Introduction to contracts and eSignature" draggable="false">
+        <figcaption class="piece__cap">YouTube cover system for Spacebring product introductions (2026)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: -330; --y: 111; --w: 500; --h: 281.25">
+        <img src="assets/playground/coworker.png" width="500" height="281" alt="Spacebring live stream cover: Meet your new coworker" draggable="false">
+        <figcaption class="piece__cap">YouTube cover system for Spacebring webinars (2026)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 1591; --y: 397; --w: 230; --h: 230">
+        <img src="assets/playground/logo-moon.png" width="230" height="230" alt="Logo concept: an orange crescent" draggable="false">
+        <figcaption class="piece__cap">Mobile app logo concept for a UI/UX course (2023)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 1692; --y: -109; --w: 500; --h: 281.25">
+        <img src="assets/playground/cinema.png" width="500" height="281" alt="Cinema app concept: three phone screens" draggable="false">
+        <figcaption class="piece__cap">Mobile app design concept for a cinema ticket booking app (2023)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: -554; --y: 617; --w: 350; --h: 437.5">
+        <img src="assets/playground/nibble-color.png" width="350" height="438" alt="Nibble ad: From confusion to color, your math journey" draggable="false">
+        <figcaption class="piece__cap">Meta ad campaign for Nibble's final course project (2025)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 20; --y: 680; --w: 230; --h: 230">
+        <img src="assets/playground/logo-gl.png" width="230" height="230" alt="Logo concept: GL" draggable="false">
+        <figcaption class="piece__cap">Logo concept for a first self-initiated project (2022)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 474; --y: 802; --w: 500; --h: 281.25">
+        <img src="assets/playground/anan.png" width="500" height="281" alt="AN·AN Pilates Studio brand banner" draggable="false">
+        <figcaption class="piece__cap">Banner concept for a pilates studio launch (2024)</figcaption>
+      </figure>
+      <figure class="piece" style="--x: 1198; --y: 725; --w: 350; --h: 350">
+        <img src="assets/playground/valentines.png" width="350" height="350" alt="Spacebring post: Happy Valentine's Day" draggable="false">
+        <figcaption class="piece__cap">Social media posts for Spacebring (2026)</figcaption>
+      </figure>
     </div>
   </main>
 
-  <!-- 3. Grid overlay, fixed to the viewport (same as the home page) -->
-  <img class="grid-overlay" src="assets/grid-overlay.svg?v=5" width="1440" height="2765" alt="" aria-hidden="true">
-
-  <!-- 4. Full-size view of a piece -->
-  <div class="pg-view" role="dialog" aria-modal="true" aria-label="Work, full size" hidden>
-    <div class="pg-view__frame">
-      <button class="pg-view__close type-body-16" type="button"><span>CLOSE</span><span>X</span></button>
-      <img class="pg-view__image" alt="">
-      <p class="pg-view__note type-body-16"></p>
-      <p class="pg-view__size type-mono-16"></p>
-    </div>
-  </div>
-
-  <!-- 5. Custom cursor (mouse and trackpad only) -->
-  <canvas class="cursor-trail" aria-hidden="true"></canvas>
-  <span class="cursor-invert" aria-hidden="true"></span>
-  <span class="cursor-tint" aria-hidden="true"></span>
-  <span class="cursor-label type-body-16" aria-hidden="true">VIEW FULL SIZE</span>
-
-<script>
-/* Loading screen ("grid first"), the home page's: the page draws its own grid
-   — the three lines, the rows, then a circle at each crossing — while a count
-   runs in the hint's slot. Once the page has loaded (at most 6s in) the count
-   rolls over into the hint, the top bar and the title rise in and the work
-   fades up: 3.4s in all. It runs only when the <head> script set
-   html.is-loading. */
-(function(){
-  const root = document.documentElement;
-  if (!root.classList.contains('is-loading')) return;
-  window.__loaderRunning = true;
-
-  const clamp = x => Math.min(Math.max(x, 0), 1);
-  const seg = (t, start, dur) => clamp((t - start) / dur);
-  const outCubic = x => 1 - Math.pow(1 - x, 3);
-  const inOutCubic = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-  const outExpo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
-  const outBack = x => 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2);
-  // Mostly smooth, with small steps as chunks arrive.
-  const loading = t => {
-    const x = seg(t, 0.2, 1.8);
-    return x >= 1 ? 1 : 0.8 * inOutCubic(x) + 0.2 * Math.floor(x * 6) / 6;
-  };
-  // Moves an element by y while clipping it to its own box, like a mask.
-  const slide = (el, y) => {
-    el.style.transform = y ? `translateY(${y}px)` : '';
-    el.style.clipPath = y ? `inset(${-y}px -8px ${y}px -8px)` : '';
-  };
-  const block = e => { e.preventDefault(); e.stopPropagation(); };
-  const KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' '];
-  const blockKeys = e => { if (KEYS.includes(e.key)) block(e); };
-
-  const topbar = [document.querySelector('.topbar__brand'), ...document.querySelectorAll('.topbar__nav a'), document.querySelector('.topbar__status'), document.querySelector('.topbar__menu')];
-  const work = document.querySelector('.pg-layer--work');
-  const title = document.querySelector('.pg-title');
-  const hint = document.querySelector('.pg-hint');
-  const text = title.innerHTML;
-  const NS = 'http://www.w3.org/2000/svg';
-  let grid, count, lineInners, lines, rows, dots;
-
-  try {
-    // Grid with the same geometry as grid-overlay.svg, rows down to the bottom
-    // of the screen: in design pixels on the 1440 page (scaled with it), or,
-    // in the compact layout, the window's own grid (responsive.css).
-    const S = RS.compact ? 1 : RS.s;
-    const W = RS.compact ? document.documentElement.clientWidth : 1440, H = innerHeight / S;
-    grid = document.createElementNS(NS, 'svg');
-    const attrs = (el, list) => { for (const k in list) el.setAttribute(k, list[k]); return el; };
-    const shape = (tag, list) => grid.appendChild(attrs(document.createElementNS(NS, tag), list));
-    attrs(grid, {class: 'loader-grid', width: W * S, height: innerHeight, viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true'});
-    const COLS = RS.compact ? RS.gridColumns(W) : [83, 720, 1356];
-    lines = COLS.map(x => shape('rect', {class: 'loader-v', x, y: 0, width: 1, height: H, fill: '#ABABAB'}));
-    rows = [];
-    dots = [];
-    for (let k = 0; 277 + 279 * k < H; k++) {
-      rows.push(shape('rect', {class: 'loader-h', x: 0, y: 277 + 279 * k, width: W, height: 1, fill: '#ABABAB'}));
-      COLS.forEach((x, col) => dots.push({row: k, col, el: shape('circle', {cx: x + 0.5, cy: 277.5 + 279 * k, r: 4, fill: 'none', stroke: '#ABABAB'})}));
-    }
-    document.body.append(grid);
-
-    // Count in the hint's slot.
-    count = document.createElement('span');
-    count.className = 'loader-count type-mono-16 above-grid';
-    count.setAttribute('aria-hidden', 'true');
-    document.body.append(count);
-    // In the compact layout the hint is elsewhere: the count takes its place.
-    if (RS.compact) {
-      const r = hint.getBoundingClientRect();
-      Object.assign(count.style, {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px'});
-    }
-
-    // Title: one mask per line, so each rises on its own — the lines as the
-    // title is written, or in the compact layout, where they run on, the
-    // lines as they fall.
-    title.textContent = '';
-    let parts = text.split(/<br\s*\/?>/i);
-    if (RS.compact) {
-      const words = text.replace(/<br\s*\/?>/gi, ' ').split(/\s+/).filter(Boolean)
-        .map(word => Object.assign(document.createElement('span'), {textContent: word}));
-      words.forEach((word, i) => { if (i) title.append(' '); title.append(word); });
-      parts = [];
-      let top = null;
-      for (const word of words) {
-        if (word.offsetTop !== top) { parts.push([]); top = word.offsetTop; }
-        parts[parts.length - 1].push(word.textContent);
-      }
-      parts = parts.map(line => line.join(' '));
-      title.textContent = '';
-    }
-    lineInners = parts.map(part => {
-      const line = Object.assign(document.createElement('span'), {className: 'loader-line'});
-      const inner = Object.assign(document.createElement('span'), {className: 'loader-line__inner', innerHTML: part});
-      line.append(inner);
-      title.append(line);
-      return inner;
-    });
-
-    render(0);
-    for (const el of [title, hint]) el.style.visibility = 'visible';
-  } catch (err) {
-    finish();
-    throw err;
-  }
-
-  // The board stays where it is until the work is there to move.
-  addEventListener('wheel', block, {capture: true, passive: false});
-  addEventListener('touchmove', block, {capture: true, passive: false});
-  addEventListener('pointerdown', block, true);
-  addEventListener('keydown', blockKeys, true);
-
-  let loaded = document.readyState === 'complete';
-  addEventListener('load', () => { loaded = true; }, {once: true});
-  const started = performance.now();
-  let t = 0, last = started;
-  requestAnimationFrame(function frame(now){
-    t += Math.min(Math.max((now - last) / 1000, 0), 0.1);  // a slow frame can't skip the animation
-    last = now;
-    if (!loaded && now - started < 6000) t = Math.min(t, 1.8);  // hold near the end of the count until the page has loaded
-    render(t);
-    if (t < 3.4) requestAnimationFrame(frame);
-    else finish();
-  });
-
-  function render(t){
-    lines.forEach((el, i) => { el.style.transform = `scaleY(${outCubic(seg(t, 0.05 + i * 0.12, 0.8))})`; });
-    rows.forEach((el, i) => { el.style.transform = `scaleX(${outCubic(seg(t, 0.35 + i * 0.14, 0.85))})`; });
-    dots.forEach(({row, col, el}) => {
-      const x = seg(t, 0.75 + row * 0.14 + col * 0.06, 0.35);
-      el.style.transform = `scale(${x ? outBack(x) : 0})`;
-    });
-
-    count.textContent = `LOADING ${String(Math.round(loading(t) * 100)).padStart(3, '0')}%`;
-    const roll = inOutCubic(seg(t, 2.1, 0.45));
-    slide(count, -20 * roll);
-    slide(hint, 20 * (1 - roll));
-
-    topbar.forEach((el, i) => {
-      const x = outCubic(seg(t, 2.25 + i * 0.06, 0.5));
-      el.style.opacity = x;
-      el.style.transform = `translateY(${10 * (1 - x)}px)`;
-    });
-    work.style.opacity = outCubic(seg(t, 2.3, 0.5));
-    lineInners.forEach((el, i) => {
-      el.style.transform = `translateY(${105 * (1 - outExpo(seg(t, 2.35 + i * 0.12, 0.9)))}%)`;
-    });
-  }
-
-  function finish(){
-    if (grid) grid.remove();
-    if (count) count.remove();
-    title.innerHTML = text;
-    for (const el of [...topbar, hint]) {
-      el.style.opacity = '';
-      el.style.transform = '';
-      el.style.clipPath = '';
-    }
-    work.style.opacity = '';
-    for (const el of [title, hint]) el.style.visibility = '';
-    removeEventListener('wheel', block, true);
-    removeEventListener('touchmove', block, true);
-    removeEventListener('pointerdown', block, true);
-    removeEventListener('keydown', blockKeys, true);
-    root.classList.remove('is-loading');
-  }
-})();
-</script>
-
-<script>
-/* Full-size view (Figma node 356:23071). A black screen rises over the page in
-   the footer's 12 vertical bars (in order from the left, power2.inOut, 0.42s each,
-   0.035s apart) with CLOSE X at the top right, the piece centred, and a line
-   about it and its pixel size along the bottom. The board's small image shows
-   at once and the large one replaces it when it has loaded. CLOSE or Esc drops
-   the bars back; the arrow keys step through the board while it's open. */
-(function(){
-  const root = document.documentElement;
-  const view = document.querySelector('.pg-view');
-  const image = view.querySelector('.pg-view__image');
-  const note = view.querySelector('.pg-view__note');
-  const size = view.querySelector('.pg-view__size');
-  const close = view.querySelector('.pg-view__close');
-  const pieces = [...document.querySelectorAll('.pg-piece')];
-  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const SLOT = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], DUR = 0.42, EACH = 0.035, SPAN = DUR + EACH * 11;
-  const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
-  const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-  let index = 0, anim = 0, opener = null;   // opener: the piece to focus again, when opened from the keyboard
-
-  // The covered part: 12 columns, each risen from the bottom by its own progress.
-  function bars(t){
-    const W = innerWidth, H = innerHeight, bw = W / 12, pts = [];
-    for (let i = 0; i < 12; i++) {
-      const y = H * (1 - ease(clamp((t - EACH * SLOT[i]) / DUR, 0, 1)));
-      pts.push(`${bw * i}px ${y}px`, `${bw * (i + 1)}px ${y}px`);
-    }
-    return `polygon(0px ${H}px, ${pts.join(', ')}, ${W}px ${H}px)`;
-  }
-  // Runs the bars from one point of the sequence to another over `seconds`.
-  function play(from, to, seconds, done){
-    const id = ++anim;
-    let start = null;
-    view.style.clipPath = bars(from);
-    requestAnimationFrame(function step(now){
-      if (id !== anim) return;
-      if (start === null) start = now;
-      const p = REDUCED ? 1 : clamp((now - start) / 1000 / seconds, 0, 1);
-      view.style.clipPath = bars(from + (to - from) * p);
-      if (p < 1) return requestAnimationFrame(step);
-      view.style.clipPath = '';
-      if (done) done();
-    });
-  }
-  const refresh = () => dispatchEvent(new Event('pg:refresh'));
-
-  // The piece is centred in the mockup's box: 1030 wide on the page (205 in
-  // from each side) and 160 clear of the top and bottom, with its 4px corners
-  // scaled up with it.
-  function place(){
-    const box = pieces[index].getBoundingClientRect();   // fractional, so the ratio is exact
-    const ratio = box.width / box.height;
-    // (In the compact layout: the window less its gutters, 72 clear of the
-    // top for CLOSE and 128 of the bottom for the note and the size.)
-    const s = RS.s, g = RS.gutter(innerWidth);
-    const [left, top, maxW, maxH] = RS.compact
-      ? [g, 72, innerWidth - 2 * g, Math.max(innerHeight - 200, 120)]
-      : [205 * s, 160 * s, 1030 * s, Math.max(innerHeight - 320 * s, 120)];
-    const w = Math.min(maxW, maxH * ratio), h = w / ratio;
-    Object.assign(image.style, {
-      width: w + 'px', height: h + 'px',
-      left: left + (maxW - w) / 2 + 'px', top: top + (maxH - h) / 2 + 'px',
-      borderRadius: 4 * w / box.width + 'px'
-    });
-  }
-  addEventListener('resize', place);
-
-  function show(i){
-    index = (i + pieces.length) % pieces.length;
-    const piece = pieces[index];
-    image.src = piece.src;
-    image.alt = piece.alt;
-    note.textContent = piece.dataset.note;
-    size.textContent = piece.dataset.size;
-    place();
-    const full = new Image();
-    full.onload = () => { if (pieces[index] === piece) image.src = full.src; };
-    full.src = piece.dataset.full;
-  }
-  function open(piece, fromKeyboard){
-    if (root.classList.contains('pg-view-open')) return;
-    opener = fromKeyboard ? piece : null;
-    show(pieces.indexOf(piece));
-    root.classList.add('pg-view-open');
-    view.hidden = false;
-    close.focus({preventScroll: true});
-    play(0, SPAN, 0.75, refresh);
-    refresh();
-  }
-  function shut(){
-    if (!root.classList.contains('pg-view-open')) return;
-    root.classList.remove('pg-view-open');
-    play(SPAN, 0, 0.55, () => {
-      view.hidden = true;
-      if (opener) opener.focus({preventScroll: true});
-      refresh();
-    });
-  }
-
-  close.addEventListener('click', shut);
-  addEventListener('keydown', e => {
-    if (!root.classList.contains('pg-view-open')) {
-      const piece = e.target.closest && e.target.closest('.pg-piece');
-      if (piece && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(piece, true); }
-      return;
-    }
-    if (e.key === 'Escape') shut();
-    if (e.key === 'ArrowRight') show(index + 1);
-    if (e.key === 'ArrowLeft') show(index - 1);
-  });
-
-  let swipe = null;
-  view.addEventListener('pointerdown', e => { swipe = {x: e.clientX, y: e.clientY}; });
-  view.addEventListener('pointerup', e => {
-    if (!swipe || !root.classList.contains('pg-view-open')) return;
-    const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y;
-    swipe = null;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
-  });
-  window.__view = {open, shut, show, get index(){ return index; }};
-})();
-</script>
-
-<script>
-/* The board. Press anywhere and drag to move the work and its title together;
-   let go and it glides on and slows down. The trackpad (or mouse wheel) and
-   the arrow keys move it the same way. It can go as far as the outermost
-   pieces plus the page's 100px margin (clear of the top bar at the top);
-   past that it pulls against the drag and springs back when released. The
-   grid lines don't move. A click on a piece (pressed and let go without
-   moving, while the board is still) opens it full size. */
-(function(){
-  const root = document.documentElement;
-  const layers = document.querySelectorAll('.pg-layer');
-  const pieces = [...document.querySelectorAll('.pg-piece')];
-  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const EDGE = 100, TOP = 104;          // room kept around the work: sides and bottom, top
-  const DECAY = 0.32, SPRING = 0.12;    // glide and spring-back, seconds
-  const PULL = 0.35, MAX_SPEED = 4000;  // drag past the edge, px/s
-  const CLICK = 6, STILL = 60;          // a click moves less than this (px); the board is still below this (px/s)
-  const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
-  const view = document.querySelector('.pg-view');
-  const viewOpen = () => !view.hidden;   // open, or still closing
-
-  let lim, box;
-  function limits(){
-    // The work's extent in page coordinates (the layers sit at the page's top
-    // left), and the room kept around it, at the page's scale.
-    box = {
-      x0: Math.min(...pieces.map(p => p.offsetLeft)),
-      x1: Math.max(...pieces.map(p => p.offsetLeft + p.offsetWidth)),
-      y0: Math.min(...pieces.map(p => p.offsetTop)),
-      y1: Math.max(...pieces.map(p => p.offsetTop + p.offsetHeight))
-    };
-    const s = RS.s, edge = EDGE * s;
-    const left = layers[0].getBoundingClientRect().left + px;   // page's left edge on screen
-    const top = layers[0].getBoundingClientRect().top + py;     // and its top (0 but in the compact layout)
-    lim = {
-      x0: Math.min(0, left + box.x0 - edge),
-      x1: Math.max(0, left + box.x1 + edge - innerWidth),
-      y0: Math.min(0, top + box.y0 - TOP * s),
-      y1: Math.max(0, top + box.y1 + edge - innerHeight)
-    };
-  }
-
-  let px = 0, py = 0, vx = 0, vy = 0, shownX = null, shownY = null, drag = null;
-  limits();
-  addEventListener('resize', limits);
-
-  // Past an edge the board only follows part of the move.
-  const follow = (p, d, a, b) => (p < a && d < 0) || (p > b && d > 0) ? d * PULL : d;
-  const moveBy = (dx, dy) => {
-    px += follow(px, dx, lim.x0, lim.x1);
-    py += follow(py, dy, lim.y0, lim.y1);
-  };
-
-  addEventListener('pointerdown', e => {
-    if (e.button !== 0 || viewOpen() || e.target.closest('a, button')) return;
-    const still = Math.hypot(vx, vy) < STILL;
-    drag = {id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, t: e.timeStamp, moved: 0,
-      piece: still ? e.target.closest('.pg-piece') : null};
-    vx = vy = 0;
-    try { e.target.setPointerCapture(e.pointerId); } catch (err) { /* synthetic pointers */ }
-  });
-  addEventListener('pointermove', e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    const dt = Math.max((e.timeStamp - drag.t) / 1000, 0.004);
-    moveBy(-dx, -dy);
-    vx = clamp(0.25 * vx + 0.75 * (-dx / dt), -MAX_SPEED, MAX_SPEED);
-    vy = clamp(0.25 * vy + 0.75 * (-dy / dt), -MAX_SPEED, MAX_SPEED);
-    drag.x = e.clientX; drag.y = e.clientY; drag.t = e.timeStamp;
-    drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy));
-    if (drag.moved >= CLICK && !root.classList.contains('pg-grabbing')) {
-      root.classList.add('pg-grabbing');
-      dispatchEvent(new Event('pg:refresh'));
-    }
-  });
-  const release = e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const d = drag;
-    drag = null;
-    if (root.classList.contains('pg-grabbing')) {
-      root.classList.remove('pg-grabbing');
-      dispatchEvent(new Event('pg:refresh'));
-    }
-    if (d.moved < CLICK) {
-      vx = vy = 0;
-      if (d.piece && e.type === 'pointerup') window.__view.open(d.piece);
-    } else if (REDUCED || e.timeStamp - d.t > 90) {
-      vx = vy = 0;   // held still before letting go, so no glide
-    }
-  };
-  addEventListener('pointerup', release);
-  addEventListener('pointercancel', release);
-
-  // Trackpad and wheel: each step speeds the board up by what it would travel
-  // while slowing down, so the move eases out like the home page's scrolling.
-  addEventListener('wheel', e => {
-    if (e.ctrlKey) return;   // pinch zoom
-    e.preventDefault();
-    if (viewOpen()) return;
-    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
-    const dx = e.deltaX * unit * 0.8, dy = e.deltaY * unit * 0.8;
-    if (REDUCED) { px = clamp(px + dx, lim.x0, lim.x1); py = clamp(py + dy, lim.y0, lim.y1); return; }
-    vx = clamp(vx + dx / DECAY, -MAX_SPEED, MAX_SPEED);
-    vy = clamp(vy + dy / DECAY, -MAX_SPEED, MAX_SPEED);
-  }, {passive: false});
-
-  const KEYS = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]};
-  addEventListener('keydown', e => {
-    const k = KEYS[e.key];
-    if (!k || viewOpen()) return;
-    e.preventDefault();
-    const step = 240;
-    if (REDUCED) { px = clamp(px + k[0] * step, lim.x0, lim.x1); py = clamp(py + k[1] * step, lim.y0, lim.y1); return; }
-    vx = k[0] * step / DECAY || vx;
-    vy = k[1] * step / DECAY || vy;
-  });
-
-  let last = performance.now();
-  requestAnimationFrame(function frame(now){
-    const dt = Math.min(Math.max(now - last, 0), 50) / 1000;
-    last = now;
-    if (!drag) {
-      px += vx * dt; py += vy * dt;
-      const decay = Math.exp(-dt / DECAY);
-      vx *= decay; vy *= decay;
-      if (Math.abs(vx) < 1) vx = 0;
-      if (Math.abs(vy) < 1) vy = 0;
-      const bx = clamp(px, lim.x0, lim.x1), by = clamp(py, lim.y0, lim.y1);
-      const spring = REDUCED ? 1 : 1 - Math.exp(-dt / SPRING);
-      if (bx !== px) { px += (bx - px) * spring; vx *= decay * decay; if (Math.abs(bx - px) < 0.1) px = bx; }
-      if (by !== py) { py += (by - py) * spring; vy *= decay * decay; if (Math.abs(by - py) < 0.1) py = by; }
-    }
-    if (px !== shownX || py !== shownY) {
-      const at = `translate3d(${(-px).toFixed(2)}px, ${(-py).toFixed(2)}px, 0)`;
-      layers.forEach(layer => { layer.style.transform = at; });
-      shownX = px; shownY = py;
-      dispatchEvent(new Event('pg:refresh'));   // the work moved under the pointer
-    }
-    requestAnimationFrame(frame);
-  });
-
-  window.__board = {get pos(){ return {px, py, vx, vy}; }, get lim(){ return lim; }, get box(){ return box; }};
-})();
-</script>
-
-<script>
-/* Custom cursor (mouse and trackpad only), the home page's: a 12px blue
-   circle eases after the pointer with a snake-like tail that curls after it
-   while the mouse moves and slides back into it when the mouse stops. Over a
-   link or button it turns into the inverted circle, in blue: a white circle
-   in difference mode with a blue circle in lighten mode on top, so the page
-   under it turns blue and its dark text turns white; on the black full-size
-   view only the blue circle is used, as on the home page's footer. Over a
-   piece (unless the board is being dragged) the circle is bigger and reads
-   VIEW FULL SIZE, like the case studies' VIEW PROJECT. What sits under the
-   pointer is re-checked when the mouse moves and whenever the board or the
-   view changes (pg:refresh), since the work also glides under a still
-   pointer. */
-(function(){
-  if (!matchMedia('(pointer: fine)').matches) return;
-  const root = document.documentElement;
-  const canvas = document.querySelector('.cursor-trail');
-  const ctx = canvas.getContext('2d');
-  const invert = document.querySelector('.cursor-invert');
-  const tint = document.querySelector('.cursor-tint');
-  const label = document.querySelector('.cursor-label');
-  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const LAG = REDUCED ? 0 : 0.045;                         // head follow, seconds
-  const POINTS = REDUCED ? 0 : 20, GAP = 6, CHASE = 0.028; // tail points, max px apart, follow seconds
-  const HEAD = 6, TIP = 1.5;                               // radius at the head and at the tail's tip
-  const tail = [];
-  let x = 0, y = 0, tx = 0, ty = 0, shown = false, check = false;
-  let fade = 1, fadeTo = 1, dirty = true, dpr = 1, last = performance.now();
-  root.classList.add('has-cursor');
-
-  function resize(){
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    canvas.width = innerWidth * dpr;
-    canvas.height = innerHeight * dpr;
-    dirty = true;
-  }
-  resize();
-  addEventListener('resize', resize);
-  addEventListener('mousemove', e => {
-    tx = e.clientX; ty = e.clientY; check = true;
-    if (!shown) {
-      x = tx; y = ty; shown = true;
-      tail.length = 0;
-      for (let i = 0; i < POINTS; i++) tail.push({x, y});
-    }
-  }, {passive: true});
-  addEventListener('pg:refresh', () => { check = true; });
-  root.addEventListener('mouseleave', () => {
-    shown = false; dirty = true;
-    invert.className = 'cursor-invert';
-    tint.className = 'cursor-tint';
-    label.classList.remove('cursor-label--visible');
-  });
-
-  function draw(){
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    if (!shown || fade < 0.01) return;
-    ctx.globalAlpha = fade;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = ctx.fillStyle = '#2030d4';
-    let px = x, py = y;
-    tail.forEach((p, i) => {
-      ctx.lineWidth = 2 * (HEAD + (TIP - HEAD) * (i + 1) / POINTS);
-      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(p.x, p.y); ctx.stroke();
-      px = p.x; py = p.y;
-    });
-    ctx.beginPath(); ctx.arc(x, y, HEAD, 0, Math.PI * 2); ctx.fill();
-  }
-
-  function frame(now){
-    const dt = Math.min(now - last, 100) / 1000;
-    last = now;
-    if (shown) {
-      const k = LAG ? 1 - Math.exp(-dt / LAG) : 1;
-      const moving = Math.abs(tx - x) > 0.05 || Math.abs(ty - y) > 0.05;
-      x += (tx - x) * k; y += (ty - y) * k;
-      const chase = 1 - Math.exp(-dt / CHASE);
-      let px = x, py = y, spread = 0;
-      tail.forEach(p => {
-        p.x += (px - p.x) * chase; p.y += (py - p.y) * chase;
-        const dx = p.x - px, dy = p.y - py, d = Math.hypot(dx, dy);
-        if (d > GAP) { p.x = px + dx / d * GAP; p.y = py + dy / d * GAP; }
-        spread = Math.max(spread, d);
-        px = p.x; py = p.y;
-      });
-      const at = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-      if (moving || check) { invert.style.transform = tint.style.transform = label.style.transform = at; }
-      if (check) {
-        check = false;
-        const el = document.elementFromPoint(tx, ty);
-        const open = root.classList.contains('pg-view-open');
-        const piece = !open && !root.classList.contains('pg-grabbing') && !!(el && el.closest('.pg-piece'));
-        const link = !piece && !!(el && el.closest('a[href], button'));
-        const size = piece ? ' cursor--project' : link ? ' cursor--link' : '';
-        // Lightening black with the blue gives blue and keeps white text white,
-        // so on the black view the white difference circle is left out.
-        const dark = !!(el && el.closest('.pg-view'));
-        invert.className = 'cursor-invert' + (dark ? '' : size);
-        tint.className = 'cursor-tint' + size;
-        label.classList.toggle('cursor-label--visible', piece);
-        fadeTo = piece || link ? 0 : 1;
-      }
-      const fk = REDUCED ? 1 : 1 - Math.exp(-dt / 0.08);
-      fade += (fadeTo - fade) * fk;
-      dirty = dirty || moving || spread > 0.1 || Math.abs(fadeTo - fade) > 0.005;
-    }
-    if (dirty) { draw(); dirty = false; }
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-})();
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script type="module" src="lace/play.js?v=2"></script>
 </body>
 </html>

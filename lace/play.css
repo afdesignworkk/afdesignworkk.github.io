@@ -1,0 +1,46 @@
+/* Playground, in the home page's style (lace.css gives the tokens, the type,
+   the top bar, the Projects menu and the pills). One screen that never
+   scrolls: the board is dragged instead (lace/play.js). Board coordinates are
+   her Figma frame's (337:25785), in px at 1440 wide, times --u. */
+
+html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+.pg body { touch-action: none; user-select: none; -webkit-user-select: none; }
+
+.top a.tab:first-child { color: inherit; }
+
+/* the table: the home page's resting dot grid (same pitch, dot and fade
+   towards the edges), moved with the board */
+.board { position: fixed; inset: 0; overflow: hidden; cursor: grab; }
+.pg.grabbing .board, .pg.grabbing .piece { cursor: grabbing; }
+.board__dots { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(20, 20, 20, .16) var(--dot, 1.1px), transparent calc(var(--dot, 1.1px) + .5px)) 0 0 / var(--pitch, 17px) var(--pitch, 17px);
+  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%);
+  mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%); }
+.board__layer { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+
+.board__title { position: absolute; left: calc(206px * var(--u)); top: calc(456px * var(--u)); width: calc(1029px * var(--u)); margin: 0;
+  font-weight: 500; font-size: calc(70px * var(--u)); line-height: .914; letter-spacing: -.02em; text-align: center; }
+.board__title > span { display: block; }
+.board__hint { position: absolute; left: calc(420px * var(--u)); top: calc(600px * var(--u)); width: calc(600px * var(--u)); margin: 0;
+  text-align: center; color: var(--mute); }
+
+/* a piece: the work with soft corners, flat on the table; on hover it lifts
+   a little, a soft shadow comes up under it and its line appears underneath
+   (her 818:349). On touch a tap shows the line (play.js adds .is-on). */
+.piece { position: absolute; left: calc(var(--x) * 1px * var(--u)); top: calc(var(--y) * 1px * var(--u));
+  width: calc(var(--w) * 1px * var(--u)); height: calc(var(--h) * 1px * var(--u)); margin: 0; }
+.piece img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; pointer-events: none;
+  box-shadow: 0 16px 40px -12px rgba(20, 20, 20, 0); transition: transform .5s cubic-bezier(.3, 1.2, .5, 1), box-shadow .5s; }
+.piece__cap { position: absolute; left: 0; right: 0; top: calc(100% + 16px); pointer-events: none;
+  opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .45s cubic-bezier(.3, 1.2, .5, 1); }
+.piece.is-on img { transform: translateY(-6px); box-shadow: 0 16px 40px -12px rgba(20, 20, 20, .2); }
+.piece.is-on .piece__cap { opacity: 1; transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .pg:not(.grabbing) .piece:hover img { transform: translateY(-6px); box-shadow: 0 16px 40px -12px rgba(20, 20, 20, .2); }
+  .pg:not(.grabbing) .piece:hover .piece__cap { opacity: 1; transform: none; }
+}
+
+@media (max-width: 759px) {
+  .board__title { font-size: 34px; line-height: 1; }
+  .veil { height: 130px; }                       /* the menu runs to two lines here */
+}
