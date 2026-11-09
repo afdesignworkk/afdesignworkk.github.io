@@ -26,6 +26,7 @@ const P = { x: -1e4, y: -1e4, on: false };
 
 function size() {
   W = box.clientWidth; dpr = Math.min(devicePixelRatio, 2);
+  if (!W) return;                                // not laid out yet: the fonts-ready call sizes it
   c = W < 760 ? 6 : 8.5;                         // the page dot grid's half pitch
   cols = Math.ceil(W / c);
   // the type fills the width; its lower part runs off the page
