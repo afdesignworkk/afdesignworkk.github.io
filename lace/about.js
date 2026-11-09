@@ -1,4 +1,4 @@
-// About page: smooth scroll, the top bar (clock, Projects menu, veil), Roll
+// About page: smooth scroll, the top bar (clock, Projects menu), Roll
 // pills, the footer's copy button and Back to top, then the page itself: the
 // grey tiles opening up, the column drift and the chapters' dot-to-type reveal.
 
@@ -12,9 +12,6 @@ gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 lenis.on('scroll', ScrollTrigger.update);
 
-// the veil under the menu once the page has moved
-const veil = document.querySelector('.veil');
-lenis.on('scroll', ({ scroll }) => veil.classList.toggle('on', scroll > 40));
 
 // Odesa clock
 {

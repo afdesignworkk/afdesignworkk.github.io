@@ -19,11 +19,12 @@ a { color: inherit; text-decoration: none; }
 .bg { z-index: 0; }
 .gl { z-index: 3; }
 
-/* a soft fade under the menu, once the page moves, so text never runs into it */
+/* a soft fade under the menu (the playground only: the board moves under a
+   menu that stays; on the other pages the menu scrolls away with the page) */
 .veil { position: fixed; z-index: 5; top: 0; left: 0; right: 0; height: 112px; pointer-events: none; opacity: 0;
   background: linear-gradient(var(--bg) 50%, rgba(247, 247, 244, 0)); transition: opacity .4s; }
 .veil.on { opacity: 1; }
-.top { position: fixed; z-index: 6; top: 48px; left: var(--side); right: var(--side); display: flex; justify-content: space-between; }
+.top { position: absolute; z-index: 6; top: 48px; left: var(--side); right: var(--side); display: flex; justify-content: space-between; }
 .clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .top nav { display: flex; gap: 30px; }
 
@@ -167,7 +168,12 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
   pointer-events: none; color: var(--ink); }
 .pill { border: 0; font: inherit; letter-spacing: inherit; cursor: pointer; }
 .pill .go { color: var(--ink); }
-.foot__row { isolation: isolate; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 160px; }
+.foot__row { isolation: isolate; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 120px; margin-bottom: 120px; }
+/* under the row, her name in the butterfly's lace dots across the column, its
+   last row of dots at the very foot of the page (mark.js; her 732:246) */
+.foot { padding-bottom: 0 !important; }
+.foot__mark { position: relative; width: 100%; overflow: hidden; }
+.foot__mark canvas { display: block; }
 .foot__row p { margin: 0; }
 .foot__social { display: flex; gap: 30px; }
 /* over the dark stage the menu turns light */
@@ -178,7 +184,7 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
 @media (max-width: 900px) {
   .foot { padding: 120px var(--side) 40px; }
   .foot__email { margin-top: 20px; }
-  .foot__row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "social social" "status status" "c top"; row-gap: 20px; margin-top: 96px; }
+  .foot__row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "social social" "status status" "c top"; row-gap: 20px; margin-top: 96px; margin-bottom: 64px; }
   .foot__social { grid-area: social; gap: 24px; } .foot__status { grid-area: status; } .foot__c { grid-area: c; } .foot__top { grid-area: top; }
 }
 

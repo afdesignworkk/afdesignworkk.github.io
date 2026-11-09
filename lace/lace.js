@@ -158,7 +158,7 @@ function target(ty) {
   };
 }
 
-const heroText = [...document.querySelectorAll('.hero .line, .hero .intro')], veil = document.querySelector('.veil');
+const heroText = [...document.querySelectorAll('.hero .line, .hero .intro')];
 
 // --- the About statements: dots into type, line by line, as the page scrolls
 // Each word is drawn in lace dots (a dot pattern clipped to its letters).
@@ -270,7 +270,6 @@ gsap.ticker.add((time, dms) => {
   rollStage(dt);
   rollBand(dt);
   rollFoot();
-  veil.classList.toggle('on', ty > 40);
   // the hero's text fades as it nears the menu, so the two never overlap
   for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
 });
@@ -477,8 +476,6 @@ function rollStage(dt) {
     workSec.style.setProperty('--lt', sstep((lt - .25) / .5));         // the type turns from ink to paper round the middle
     const fade = r.top < H ? 1 - sstep((lt - .2) / .65) : 1;
     about.style.opacity = fade; gl.style.opacity = fade;               // the butterfly perched there goes with it
-    const v = paper.map((p, j) => Math.round(p + (ink[j] - p) * lt));
-    veil.style.background = lt > 0 ? `linear-gradient(rgb(${v}) 50%, rgba(${v}, 0))` : '';
   }
   if (lt <= 0) return;
   if (SF.pc !== F.cols) sizeField();
