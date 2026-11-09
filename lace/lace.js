@@ -96,7 +96,7 @@ function placePerch() {
 placePerch(); addEventListener('resize', placePerch);
 
 // deck: the trip photos as a stack of prints. Clicking the top one throws it
-// off to the side and slips it under the others; the rest move up a place.
+// off to the left and slips it under the others; the rest move up a place.
 const deck = about.querySelector('.deck');
 if (deck) {
   const cards = [...deck.querySelectorAll('.deck__card')].reverse();     // top first
@@ -113,7 +113,7 @@ if (deck) {
     const top = cards[0];
     if (!top.contains(e.target) || gsap.isTweening(top)) return;
     shown = (shown + 1) % cards.length;
-    gsap.to(top, { x: 260, y: -30, rotation: 16, duration: reduce ? 0 : .32, ease: 'power2.in', onComplete: () => { cards.push(cards.shift()); lay(); cards[0].focus({ preventScroll: true }); } });
+    gsap.to(top, { x: -260, y: -30, rotation: -16, duration: reduce ? 0 : .32, ease: 'power2.in', onComplete: () => { cards.push(cards.shift()); lay(); cards[0].focus({ preventScroll: true }); } });
   });
 }
 
