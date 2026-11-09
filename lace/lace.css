@@ -80,19 +80,17 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .pill .go { display: grid; place-items: center; overflow: hidden; width: 20px; height: 20px; border-radius: 16px; background: var(--bg); color: var(--ink); }
 .pill .go svg { display: block; overflow: visible; }
 /* the pills' hover (lace.js adds .is-on): the label rolls up and a copy of it
-   (its shadow, 20 px down) rolls in; the icon swells a touch, and About me's
-   arrow runs out to the right and back in from the left */
+   (its shadow, 20 px down) rolls in; the icon swells a touch and runs out to
+   the right and back in from the left (About me's arrow, Copy email's sheets
+   as one piece, not once they have turned into the tick) */
 .pill [data-label] i { text-shadow: 0 20px currentColor; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
 .pill.is-on [data-label] i { transform: translateY(-20px); }
 .pill .go { transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
 .pill.is-on .go { transform: scale(1.15); }
-.pill:not(.foot__copy).is-on .go svg { animation: pill-run .6s cubic-bezier(.65, 0, .35, 1); }
+.pill:not(.copied).is-on .go svg { animation: pill-run .6s cubic-bezier(.65, 0, .35, 1); }
 @keyframes pill-run { 45% { transform: translateX(12px); } 46% { transform: translateX(-12px); } 100% { transform: none; } }
-/* Copy email: on hover its two sheets slide apart, a copy being peeled off;
-   once copied they give way to a tick */
+/* Copy email: once copied its two sheets give way to a tick */
 .cp-a, .cp-b { transition: transform .4s cubic-bezier(.3, 1.4, .5, 1), opacity .2s; }
-.foot__copy:hover .cp-a, .foot__copy:focus-visible .cp-a { transform: translate(1px, 1px); }
-.foot__copy:hover .cp-b, .foot__copy:focus-visible .cp-b { transform: translate(-1px, -1px); }
 .cp-ok { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .1s; }
 .copied .cp-a, .copied .cp-b { opacity: 0; transform: scale(.6); transform-origin: 6px 6px; }
 .copied .cp-ok { stroke-dashoffset: 0; transition: stroke-dashoffset .45s .12s cubic-bezier(.65, 0, .35, 1); }
