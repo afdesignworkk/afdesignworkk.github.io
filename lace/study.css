@@ -44,15 +44,18 @@ main { position: relative; z-index: 2; }
 .cs-out:hover svg, .cs-out:focus-visible svg { transform: translate(2px, -2px); }
 
 /* the hero: Jeff's home page on his pink, 64 under the facts */
-.st-hero { display: grid; place-items: center; margin: 64px 0 0; aspect-ratio: 818 / 560; border-radius: 20px; background: #ff9fd0; }
+.st-hero { display: grid; place-items: center; margin: 64px 0 0; aspect-ratio: 818 / 560; border-radius: 16px; background: #ff9fd0; }
 .st-hero img { display: block; width: 75.2%; height: auto; }
+/* a hero exported whole from her mockup, its own colour baked in */
+.st-hero--full { display: block; overflow: hidden; background: none; }
+.st-hero--full img { width: 100%; height: 100%; object-fit: cover; }
 
-/* grey tiles, corners 20: one wide, or one large beside two small (the
+/* tiles, corners 16 (her 2026-11-10 change): one wide, or one large beside two small (the
    large one on the left, or on the right to answer it) */
 /* each tile is a picture from her mockup, its own colour baked in */
-.st-tile { margin: 0; overflow: hidden; border-radius: 20px; background: #c4c4c4; }
+.st-tile { margin: 0; overflow: hidden; border-radius: 16px; background: #c4c4c4; }
 /* tiles still waiting for their pictures: her light grey */
-.st-tile:empty, .st-hero--blank { background: #eaeaea; }
+.st-tile:empty { background: #eaeaea; }
 .st-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .st-pics { margin-top: 120px; }
 .st-pics--one .st-tile { aspect-ratio: 818 / 560; }
