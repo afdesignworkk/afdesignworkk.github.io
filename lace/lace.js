@@ -278,7 +278,6 @@ const RIDE = {
   dwell: .2, follow: .5,                                   // how long a card holds, how softly the list follows
   enter: { at: .7, distance: 610, depth: -560, tip: 81, grow: .19, duration: .7, stagger: .1 },
   blur: { zone: .15, max: 16, speed: 16 },
-  parallax: { amount: 20 },
 };
 const workSec = document.querySelector('.work'), workList = workSec.querySelector('.work__list');
 const works = [...workList.children].map((li) => ({ li, shot: li.querySelector('.work__shot'), pic: li.querySelector('.work__pic'), cap: li.querySelector('.work__cap') }));
@@ -360,7 +359,6 @@ function rollWorks(dt) {
     const ly = Math.sin(ang) / bend, lz = (1 - Math.cos(ang)) / bend;
     const m = clamp(o / mid, -1.5, 1.5), tip = RIDE.tip * Math.tanh(m * 6) * (1 - RIDE.focus.straight * near);
     const home = rows[i] - y + cardH / 2;
-    shot.style.setProperty('--py', `${(-m * RIDE.parallax.amount).toFixed(2)}px`);
     const k = enter.t < 0 ? 0 : clamp((enter.t - i * E.stagger) / E.duration, 0, 1), go = out3(k), left = 1 - go;
     const grow = out3(clamp(k / E.grow, 0, 1));
     li.style.visibility = go <= 0 ? 'hidden' : '';

@@ -134,7 +134,7 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .work__list li { width: min(818px, 100%); will-change: transform; }
 .work__item { display: block; }
 .work__pic { position: relative; display: block; aspect-ratio: 818 / 560; border-radius: 16px; background: #c4c4c4; overflow: hidden; }
-.work__shot { position: absolute; inset: 0; transform: translateY(var(--py, 0)) scale(1.1); }
+.work__shot { position: absolute; inset: 0; }
 .work__shot img, .work__dots { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .work__shot img { object-fit: cover; }
 .work__dots { pointer-events: none; }
