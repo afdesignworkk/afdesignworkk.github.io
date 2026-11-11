@@ -70,8 +70,32 @@ main { position: relative; z-index: 2; }
 .st-sec .txt p { margin: 0; color: #000; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
 .st-sec .txt p + p { margin-top: 1.134em; }
 
-/* the footer, 120 under the last pictures */
-.st-page .foot { padding-top: 120px; }
+/* next project (her 868:1071): a hairline 100 under the last pictures, 24
+   under it "Next project" over the name, and an ink disc with a caret on the
+   right; the whole row is the link. Hover rolls the name up like the pills
+   and runs the caret through the disc. */
+.st-next { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 100px; padding-top: 24px; border-top: 1px solid #ebe9e3; }
+.st-next__t { display: grid; gap: 4px; min-width: 0; }
+.st-next__k { color: var(--mute); }
+.st-next__n { display: block; height: 1.134em; overflow: hidden; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
+.st-next__n i { display: block; font-style: normal; text-shadow: 0 1.134em currentColor; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
+.st-next__go { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--bg); overflow: hidden;
+  transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+.st-next__go svg { display: block; overflow: visible; }
+.st-next:focus-visible { outline: none; }
+@media (hover: hover) {
+  .st-next:hover .st-next__n i { transform: translateY(-1.134em); }
+  .st-next:hover .st-next__go { transform: scale(1.08); }
+  .st-next:hover .st-next__go svg { animation: next-run .6s cubic-bezier(.65, 0, .35, 1); }
+}
+.st-next:focus-visible .st-next__n i { transform: translateY(-1.134em); }
+.st-next:focus-visible .st-next__go { transform: scale(1.08); }
+@keyframes next-run { 45% { transform: translateX(28px); } 46% { transform: translateX(-28px); } 100% { transform: none; } }
+.reduce .st-next__n i, .reduce .st-next__go { transition: none; }
+.reduce .st-next__go svg { animation: none !important; }
+
+/* the footer, 160 under the next project */
+.st-page .foot { padding-top: 160px; }
 
 /* below 1280 the margin is too narrow for the rail: All projects moves above
    the title and the index goes (the headings carry the way) */
@@ -91,9 +115,15 @@ main { position: relative; z-index: 2; }
   .st-sec h2 { margin-bottom: 20px; }
   .st-pics { margin-top: 48px; }
   .st-pics--bento { gap: 12px; }
+  .st-next { margin-top: 72px; }
+  .st-next__go { width: 40px; height: 40px; }
+  .st-next__go svg { width: 24px; height: 24px; }
   .st-page .foot { padding-top: 96px; }
 }
 @media (max-width: 600px) {
+  /* a long name wraps on a phone, so it does not roll there */
+  .st-next__n { height: auto; }
+  .st-next__n i { text-shadow: none; transform: none !important; }
   .st-pics--bento, .st-pics--flip { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; aspect-ratio: auto; }
   .st-pics--bento .st-tile { aspect-ratio: 292 / 268; }
   .st-pics--bento .st-tile:first-child { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 502 / 560; }
