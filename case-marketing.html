@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spacebring marketing website — Anna Fesenko</title>
+  <meta name="description" content="Case study: designing the Spacebring marketing website after its rebrand, more than 20 pages and the component library they are built from.">
+  <link rel="canonical" href="https://afdesignworkk.github.io/case-marketing.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Anna Fesenko">
+  <meta property="og:title" content="Spacebring marketing website — Anna Fesenko">
+  <meta property="og:description" content="Case study: designing the Spacebring marketing website after its rebrand, more than 20 pages and the component library they are built from.">
+  <meta property="og:url" content="https://afdesignworkk.github.io/case-marketing.html">
+  <meta property="og:image" content="https://afdesignworkk.github.io/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Anna Fesenko, UI/UX designer: a butterfly in lace dots beside the line Taste in every detail, care in every flow">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico?v=2" sizes="any">
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
+  <link rel="stylesheet" href="lace/lace.css?v=60">
+  <link rel="stylesheet" href="lace/study.css?v=10">
+</head>
+<body class="st-page">
+
+  <!-- The Spacebring marketing website case study, from her Figma frame
+       1057:18189, on the same layout as the other cases: a rail with All
+       projects and the section index, one centred column with the line,
+       four facts, picture tiles, four sections, and the home footer. -->
+
+  <div class="dots" aria-hidden="true"></div>
+  <header class="top">
+    <a class="tab" href="index.html">Anna Fesenko</a>
+    <p class="clock"><time>11:15:45 PM GMT+2</time></p>
+    <nav aria-label="Main">
+      <a class="tab" href="about.html">About</a>
+      <div class="drop">
+        <button class="drop__btn tab" type="button" aria-expanded="false" aria-controls="projects-menu">Projects</button>
+        <div class="drop__panel" id="projects-menu" hidden>
+          <ul>
+            <li><a class="row" href="case-jeff.html"><span class="n">01</span><span class="t">Jeff.Q Productions<small>Portfolio website</small></span><span class="y">2026</span></a></li>
+            <li><a class="row" href="case-spacebring.html"><span class="n">02</span><span class="t">Spacebring<small>Admin web app</small></span><span class="y">2025</span></a></li>
+            <li><a class="row" href="case-marketing.html" aria-current="page"><span class="n">03</span><span class="t">Spacebring<small>Marketing website</small></span><span class="y">2024</span></a></li>
+            <li><span class="row soon" aria-disabled="true"><span class="n">04</span><span class="t">TalentMinted<small>Job board system</small></span><span class="y">Soon</span></span></li>
+          </ul>
+        </div>
+      </div>
+      <a class="tab" href="playground.html">Playground</a>
+      <a class="tab" href="mailto:af.designworkk@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main class="st">
+    <!-- the rail: back to the work, and where you are in the story -->
+    <aside class="st-rail" aria-label="Case study">
+      <a class="pill st-back" href="index.html#work"><span class="go"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M9.5 6h-7M5.5 3L2.5 6l3 3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-label>All projects</span></a>
+      <ol class="st-toc">
+        <li><a href="#s1">Overview</a></li>
+        <li><a href="#s2">Challenge</a></li>
+        <li><a href="#s3">Approach</a></li>
+        <li><a href="#s4">Outcome</a></li>
+      </ol>
+    </aside>
+
+    <div class="st-main">
+      <header class="st-top">
+        <h1>Designing the Spacebring website after its rebrand</h1>
+        <dl class="st-facts">
+          <div><dt>Role</dt><dd>UI/UX designer</dd></div>
+          <div><dt>Scope</dt><dd>Website, component library</dd></div>
+          <div><dt>Year</dt><dd>2024 – 2026</dd></div>
+          <div><dt>Live website</dt><dd><a class="cs-out" href="https://www.spacebring.com" target="_blank" rel="noopener">Visit the site <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3.5 8.5L8.5 3.5M4.5 3.5h4v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></a></dd></div>
+        </dl>
+      </header>
+      <figure class="st-hero st-hero--full"><img src="assets/case-marketing/hero.webp" alt="The Spacebring home page in the new brand on a mint and lavender gradient: Coworking space software for superior member service, with the admin app below and customer logos along the bottom" width="1636" height="1120" decoding="async"></figure>
+
+      <section class="st-sec" id="s1" aria-labelledby="h-s1">
+        <h2 id="h-s1">Overview</h2>
+        <div class="txt">
+          <p>Spacebring is a coworking management platform that helps operators run bookings, billing, access control and community from one place. Its website is where operators first meet the product, compare it with other tools and book a demo.</p>
+          <p>As a UI/UX designer, I designed the website after Spacebring’s rebrand: more than 20 pages, the images on them, a component library to build them from, and layouts for tablet and phone. I worked closely with developers and the marketing team, and after launch I kept extending the site and the library as the product grew.</p>
+        </div>
+      </section>
+      <div class="st-pics st-pics--one"><figure class="st-tile"><img src="assets/case-marketing/stories.webp" alt="Two customer stories pages side by side: a list of coworking customers by region and size, a wall of reviews, and story cards with photos of their spaces" width="1636" height="1120" loading="lazy" decoding="async"></figure></div>
+
+      <section class="st-sec" id="s2" aria-labelledby="h-s2">
+        <h2 id="h-s2">Challenge</h2>
+        <div class="txt">
+          <p>The rebrand gave Spacebring a new look, but only one page was designed in it: the home page. A home page answers few questions. It doesn’t show how a pricing table, a long feature page, a form or a blog should look. The rest of the site needed all of those answers quickly, and they had to hold up for every page that came after.</p>
+          <p>The blog was the hardest part. The marketing team had a clear idea of how it should work and which sections it needed. My job was to give them that while making it feel like part of the same website, not a separate one.</p>
+        </div>
+      </section>
+
+      <section class="st-sec" id="s3" aria-labelledby="h-s3">
+        <h2 id="h-s3">Approach</h2>
+        <div class="txt">
+          <p>I designed sections, not pages. Each part of the home page became a component, and every new section I needed was added to the same library. That way more than 20 pages could be put together from one set of parts instead of being drawn one by one.</p>
+          <p>For the blog, I started from what the marketing team needed, then built those sections from the library’s type, spacing and components. They got the structure they asked for, and the blog stayed consistent with the rest of the site.</p>
+          <p>Images followed one style with four kinds, each picked for what a section had to explain: product screenshots to show the real interface, cropped close-ups to point at one feature, diagrams to explain how parts of the product connect, collages to set the mood of a page.</p>
+        </div>
+      </section>
+      <div class="st-pics st-pics--one"><figure class="st-tile"><img src="assets/case-marketing/blog.webp" alt="Two views of the Spacebring blog: operator guides with a featured article, news and research sections, interviews, and a newsletter sign-up" width="1636" height="1120" loading="lazy" decoding="async"></figure></div>
+
+      <section class="st-sec" id="s4" aria-labelledby="h-s4">
+        <h2 id="h-s4">Outcome</h2>
+        <div class="txt">
+          <p>The website launched with more than 20 pages, all built from one library and all in the new brand.</p>
+          <p>The library is still in use today. New pages are put together from existing sections, and the site has stayed consistent while it kept growing.</p>
+        </div>
+      </section>
+      <div class="st-pics st-pics--one"><figure class="st-tile"><img src="assets/case-marketing/apps.webp" alt="The Downloads page with the Spacebring, Reception and Room Display apps, beside the Integrations page with cards for payment, calendar and access tools" width="1636" height="1120" loading="lazy" decoding="async"></figure></div>
+      <a class="st-next" href="case-jeff.html"><span class="st-next__t"><span class="st-next__k">Next project</span><span class="st-next__n"><i>Jeff.Q Productions portfolio website</i></span></span><span class="st-next__go" aria-hidden="true"><svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path d="M9 4.5l7.5 7.5L9 19.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+  </main>
+
+  <footer class="foot" id="contact">
+    <h2 class="foot__say">Have a project in mind? I’d love to hear about it.</h2>
+    <a class="foot__email ul" href="mailto:af.designworkk@gmail.com">af.designworkk@gmail.com</a>
+    <button class="pill foot__copy" type="button" data-copy="af.designworkk@gmail.com"><span data-label>Copy email</span><span class="go" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><rect class="cp-a" x="3.5" y="3.5" width="6.5" height="6.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path class="cp-b" d="M2 8V3a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path class="cp-ok" d="M2.6 6.3l2.2 2.2 4.6-4.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span></button>
+    <div class="foot__row">
+      <p class="foot__c">© 2026 Anna Fesenko</p>
+      <ul class="foot__social"><li><a class="ul" href="https://www.linkedin.com/in/anna-fesenko-79b015271/" target="_blank" rel="noopener">LinkedIn</a></li><li><a class="ul" href="https://www.instagram.com/ai_annae21/" target="_blank" rel="noopener">Instagram</a></li><li><a class="ul" href="https://github.com/afdesignworkk" target="_blank" rel="noopener">GitHub</a></li></ul>
+      <p class="foot__status">Available worldwide</p>
+      <a class="ul foot__top" href="#">Back to top</a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script type="module" src="lace/study.js?v=3"></script>
+  <script type="module" src="lace/mark.js?v=2"></script>
+</body>
+</html>
