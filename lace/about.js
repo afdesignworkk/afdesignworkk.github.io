@@ -84,15 +84,16 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
 
 // The opening: her twelve cream tiles, set where her frame has them, are one
 // real size at four depths (the big ones near, the small ones far). They come
-// in out of the depth, lean a few degrees with the mouse, and as the page
-// scrolls you move forward through them: each grows, slides outward and
-// fades as it passes; her line stays in the middle.
+// in out of the depth and lean a few degrees with the mouse. The screen
+// holds while you scroll and you move forward through the room: each tile
+// grows, slides outward and fades as it passes you, until her line is alone
+// in the middle; then the page goes on.
 {
-  const top = document.querySelector('.ab3-top'), room = top.querySelector('.ab3-room'), title = top.querySelector('h1'), hint = top.querySelector('.ab3-hint');
+  const sec = document.querySelector('.ab3-top'), top = sec.querySelector('.ab3-stage'), room = top.querySelector('.ab3-room'), title = top.querySelector('h1'), hint = top.querySelector('.ab3-hint');
   const cam = document.createElement('div'); cam.className = 'ab3-cam';
   const tiles = [...room.querySelectorAll('.ab3-tile')];
   cam.append(...tiles); room.append(cam);
-  const F = 1000, NEAR = 187, TRAVEL = 1300;
+  const F = 1000, NEAR = 187, TRAVEL = 1500;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const smooth = (v) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
   let ts = [];
@@ -130,12 +131,13 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
     const rx = gsap.quickTo(cam, 'rotationX', { duration: 1.6, ease: 'power3.out' }), ry = gsap.quickTo(cam, 'rotationY', { duration: 1.6, ease: 'power3.out' });
     addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; ry((e.clientX / innerWidth - .5) * 6); rx(-(e.clientY / innerHeight - .5) * 4); });
     const render = (time) => {
-      const r = top.getBoundingClientRect();
+      const r = sec.getBoundingClientRect();
       if (r.bottom < 0) return;
-      const p = clamp(-r.top / r.height, 0, 1);
+      // through the room over the first 85% of the hold; the last of it is her line alone
+      const p = clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1), f = clamp(p / .85, 0, 1);
       ts.forEach((t, i) => {
         const e = 1 - Math.pow(1 - clamp(intro.t * 1.5 - i * .04, 0, 1), 3);
-        const z = t.z + TRAVEL * p - (1 - e) * 900;
+        const z = t.z + TRAVEL * f - (1 - e) * 900;
         const o = OP * e * (z > 250 ? clamp(1 - (z - 250) / 450, 0, 1) : 1);
         place(t, z, o, Math.sin(time * .35 + t.ph) * 4, Math.cos(time * .28 + t.ph * 1.3) * 4);
       });

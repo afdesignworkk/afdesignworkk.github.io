@@ -10,9 +10,13 @@
 main { position: relative; z-index: 2; }
 .foot { z-index: 2; }
 
-/* the opening: one screen; the tiles sit in a 3D room (about.js places them
-   from her frame and carries you forward through them as you scroll) */
-.ab3-top { position: relative; height: 100svh; min-height: 640px; max-height: 1100px; overflow: hidden; }
+/* the opening: the screen holds while the scroll carries you forward through
+   the room (the section is tall so it has room to); the tiles sit in 3D
+   (about.js places them from her frame), then her line is left alone and
+   the page goes on */
+.ab3-top { position: relative; height: 240svh; }
+.ab3-stage { position: sticky; top: 0; height: 100svh; min-height: 560px; overflow: hidden; }
+.reduce .ab3-top { height: auto; }
 .ab3-room { position: absolute; inset: 0; perspective: 1000px; }
 .ab3-cam { position: absolute; inset: 0; transform-style: preserve-3d; }
 /* her tiles: #f1efe9, corners 16, 97% */
