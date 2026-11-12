@@ -22,12 +22,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
   <link rel="stylesheet" href="lace/lace.css?v=61">
-  <link rel="stylesheet" href="lace/about.css?v=2">
+  <link rel="stylesheet" href="lace/about.css?v=3">
 </head>
-<body class="ab2">
+<body class="ab3-page">
 
-  <!-- About, from her Figma frame about-page (830:489): the line and intro,
-       six grey tiles, three chapters and the home footer. -->
+  <!-- About, from her Figma frame about-page (830:489, 2026-11-12 revision):
+       the opening (her line in the middle of a room of tiles set at four
+       depths; the scroll carries you forward through them), the three
+       chapters in one centred column, and the home footer. -->
 
   <div class="dots" aria-hidden="true"></div>
   <header class="top">
@@ -51,32 +53,28 @@
     </nav>
   </header>
 
-  <main>
-    <section class="ab2-top" aria-label="Intro">
-      <h1>The story behind the screens</h1>
-      <div class="ab2-side">
-        <p>Not just the projects you see here, but the journey, lessons, and little things that shaped me as a designer.</p>
-        <p class="ab2-row"><span>Designing since 2022</span><a href="#ch1" data-down>Scroll down</a></p>
+  <main class="ab3">
+    <section class="ab3-top" aria-label="Intro">
+      <div class="ab3-room" aria-hidden="true">
+        <figure class="ab3-tile" data-x="100" data-y="551" data-w="187" data-h="240"></figure>
+        <figure class="ab3-tile" data-x="1153" data-y="109" data-w="187" data-h="240"></figure>
+        <figure class="ab3-tile" data-x="205" data-y="137" data-w="142" data-h="182"></figure>
+        <figure class="ab3-tile" data-x="447" data-y="569" data-w="105" data-h="135"></figure>
+        <figure class="ab3-tile" data-x="888" data-y="127" data-w="105" data-h="135"></figure>
+        <figure class="ab3-tile" data-x="507" data-y="161" data-w="105" data-h="135"></figure>
+        <figure class="ab3-tile" data-x="682" data-y="686" data-w="76" data-h="98"></figure>
+        <figure class="ab3-tile" data-x="682" data-y="116" data-w="76" data-h="98"></figure>
+        <figure class="ab3-tile" data-x="150" data-y="386" data-w="76" data-h="98"></figure>
+        <figure class="ab3-tile" data-x="1214" data-y="416" data-w="76" data-h="98"></figure>
+        <figure class="ab3-tile" data-x="828" data-y="604" data-w="105" data-h="135"></figure>
+        <figure class="ab3-tile" data-x="1093" data-y="581" data-w="142" data-h="182"></figure>
       </div>
+      <h1>The story behind<br> the screens</h1>
+      <p class="ab3-hint" aria-hidden="true">Scroll to step in</p>
     </section>
 
-    <div class="ab2-gal" aria-label="Photos">
-      <div class="ab2-col">
-        <figure class="ab2-tile ab2-tile--tall" aria-hidden="true"></figure>
-        <figure class="ab2-tile ab2-tile--short" aria-hidden="true"></figure>
-      </div>
-      <div class="ab2-col">
-        <figure class="ab2-tile ab2-tile--short" aria-hidden="true"></figure>
-        <figure class="ab2-tile ab2-tile--tall" aria-hidden="true"></figure>
-      </div>
-      <div class="ab2-col">
-        <figure class="ab2-tile ab2-tile--tall" aria-hidden="true"></figure>
-        <figure class="ab2-tile ab2-tile--short" aria-hidden="true"></figure>
-      </div>
-    </div>
-
-    <section class="ab2-ch" id="ch1" aria-labelledby="h1-beginning">
-      <h2 id="h1-beginning">The beginning</h2>
+    <section class="ab3-ch" id="ch1" aria-labelledby="h-beginning">
+      <h2 id="h-beginning">The beginning</h2>
       <div class="txt">
         <p>There’ll be no story about how I was super creative as a kid and that’s why I became a designer.</p>
         <p>After school, I went to study Computer Science. It felt like the right direction, because I loved taking my PC apart and figuring out how things worked. But during my first year, I realized I didn’t enjoy writing code nearly as much as I’d expected.</p>
@@ -85,8 +83,8 @@
       </div>
     </section>
 
-    <section class="ab2-ch" aria-labelledby="h1-first">
-      <h2 id="h1-first">First experience</h2>
+    <section class="ab3-ch" aria-labelledby="h-first">
+      <h2 id="h-first">First experience</h2>
       <div class="txt">
         <p>My first job came in 2023, while I was still at university, when I joined the Spacebring team as a designer.</p>
         <p>I genuinely thought I knew a lot about design. Turns out… not even close. Real knowledge comes from practice, and at Spacebring I worked on things no course had ever covered.</p>
@@ -95,8 +93,8 @@
       </div>
     </section>
 
-    <section class="ab2-ch" aria-labelledby="h1-outside">
-      <h2 id="h1-outside">Outside of work</h2>
+    <section class="ab3-ch" aria-labelledby="h-outside">
+      <h2 id="h-outside">Outside of work</h2>
       <div class="txt">
         <p>I’m a traveler at heart. It’s what makes me feel most alive. I love exploring new cultures, trying food I’ve never had before, and meeting people from completely different parts of the world.</p>
         <p>My little old Samsung digital camera comes with me everywhere. I love the grainy, imperfect photos it takes. They always feel a bit more real than the ones on my phone.</p>
@@ -120,7 +118,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="lace/about.js?v=6"></script>
+  <script type="module" src="lace/about.js?v=7"></script>
   <script type="module" src="lace/mark.js?v=2"></script>
 </body>
 </html>

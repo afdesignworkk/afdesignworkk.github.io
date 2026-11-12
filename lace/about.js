@@ -1,6 +1,6 @@
-// About page: smooth scroll, the top bar (clock, Projects menu), Roll
-// pills, the footer's copy button and Back to top, then the page itself: the
-// grey tiles opening up, the column drift and the chapters' lines rising in.
+// About page (her 830:489, 2026-11-12): smooth scroll, the top bar (clock,
+// Projects menu), Roll pills, the footer's copy button and Back to top, then
+// the page itself: the opening room of tiles and the chapters' lines rising in.
 
 import { lines } from './lines.js?v=2';
 const { gsap, Lenis, ScrollTrigger } = window;
@@ -82,29 +82,71 @@ for (const b of document.querySelectorAll('[data-copy]')) {
 }
 document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(0, { duration: reduce ? 0 : 2 }); });
 
-// the line and intro come in out of a soft blur, one after another; then the
-// six grey tiles (her Figma placeholders) open up from the bottom edge,
-// top row first (after her reference, 21st.dev "Animated Gallery")
-const tiles = [...document.querySelectorAll('.ab2-tile')];
-const order = [0, 2, 4, 1, 3, 5].map((i) => tiles[i]);           // the top row first, then the bottom
-if (!reduce) {
-  gsap.from('.ab2-top h1, .ab2-side > *', { opacity: 0, y: 20, filter: 'blur(10px)', duration: 1, ease: 'power3.out', stagger: .12, delay: .1, clearProps: 'filter' });
-  gsap.fromTo(order, { clipPath: 'inset(100% 0% 0% 0% round 20px)' }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', duration: 1.1, ease: 'power3.inOut', stagger: .1, delay: .35, clearProps: 'clipPath' });
-
-  // as the page moves, the middle column drifts down against the outer two
-  const cols = document.querySelectorAll('.ab2-col');
-  const st = { trigger: '.ab2-gal', start: 'top 80%', end: 'bottom top', scrub: .6 };
-  gsap.fromTo([cols[0], cols[2]], { y: 0 }, { y: -60, ease: 'none', scrollTrigger: st });
-  gsap.fromTo(cols[1], { y: 0 }, { y: 70, ease: 'none', scrollTrigger: { ...st } });
-
+// The opening: her twelve cream tiles, set where her frame has them, are one
+// real size at four depths (the big ones near, the small ones far). They come
+// in out of the depth, lean a few degrees with the mouse, and as the page
+// scrolls you move forward through them: each grows, slides outward and
+// fades as it passes; her line stays in the middle.
+{
+  const top = document.querySelector('.ab3-top'), room = top.querySelector('.ab3-room'), title = top.querySelector('h1'), hint = top.querySelector('.ab3-hint');
+  const cam = document.createElement('div'); cam.className = 'ab3-cam';
+  const tiles = [...room.querySelectorAll('.ab3-tile')];
+  cam.append(...tiles); room.append(cam);
+  const F = 1000, NEAR = 187, TRAVEL = 1300;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const smooth = (v) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
+  let ts = [];
+  const lay = () => {
+    const W = top.offsetWidth, H = top.offsetHeight, phone = W < 700;
+    const kx = W / 1440 * (phone ? 1.3 : 1), ky = H / 900, ks = phone ? .5 : Math.min(W / 1440, H / 900);
+    // the clear space her line needs (its lines, not its box), plus air
+    const g = document.createRange(); g.selectNodeContents(title);
+    const tr = top.getBoundingClientRect(), lines = [...g.getClientRects()].map((r) => ({ l: r.left - tr.left - 16, r: r.right - tr.left + 16, t: r.top - tr.top - 16, b: r.bottom - tr.top + 16 }));
+    ts = tiles.map((el, i) => {
+      const w = +el.dataset.w, h = +el.dataset.h;
+      const sx = (+el.dataset.x + w / 2 - 720) * kx, sy = (+el.dataset.y + h / 2 - 450) * ky;   // its centre, from the middle
+      const sw = w * ks, sh = h * ks;
+      const hit = lines.some((l) => W / 2 + sx + sw / 2 > l.l && W / 2 + sx - sw / 2 < l.r && H / 2 + sy + sh / 2 > l.t && H / 2 + sy - sh / 2 < l.b);
+      el.style.display = hit ? 'none' : '';
+      const z = F * (1 - NEAR / w), k = (F - z) / F;                       // depth from its size
+      el.style.width = `${(sw * k).toFixed(1)}px`; el.style.height = `${(sh * k).toFixed(1)}px`;
+      el.style.borderRadius = `${(Math.max(10, 16 * ks) * k).toFixed(1)}px`;
+      return { el, x: sx * k, y: sy * k, z, ph: i * 1.7, hit };
+    }).filter((t) => !t.hit);
+  };
+  lay(); addEventListener('resize', lay);
+  const place = (t, z, o, dx = 0, dy = 0) => {
+    t.el.style.opacity = o.toFixed(3);
+    t.el.style.visibility = o <= .002 ? 'hidden' : '';
+    t.el.style.transform = `translate(-50%, -50%) translate3d(${(t.x + dx).toFixed(1)}px, ${(t.y + dy).toFixed(1)}px, ${z.toFixed(1)}px)`;
+  };
+  const OP = .974;
+  if (reduce) {
+    for (const t of ts) place(t, t.z, OP);
+  } else {
+    const intro = { t: 0 };
+    gsap.to(intro, { t: 1, duration: 2.4, ease: 'power2.out', delay: .1 });
+    gsap.from(title, { opacity: 0, filter: 'blur(10px)', duration: 1.4, ease: 'power3.out', delay: .35, clearProps: 'filter' });
+    const rx = gsap.quickTo(cam, 'rotationX', { duration: 1.6, ease: 'power3.out' }), ry = gsap.quickTo(cam, 'rotationY', { duration: 1.6, ease: 'power3.out' });
+    addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; ry((e.clientX / innerWidth - .5) * 6); rx(-(e.clientY / innerHeight - .5) * 4); });
+    const render = (time) => {
+      const r = top.getBoundingClientRect();
+      if (r.bottom < 0) return;
+      const p = clamp(-r.top / r.height, 0, 1);
+      ts.forEach((t, i) => {
+        const e = 1 - Math.pow(1 - clamp(intro.t * 1.5 - i * .04, 0, 1), 3);
+        const z = t.z + TRAVEL * p - (1 - e) * 900;
+        const o = OP * e * (z > 250 ? clamp(1 - (z - 250) / 450, 0, 1) : 1);
+        place(t, z, o, Math.sin(time * .35 + t.ph) * 4, Math.cos(time * .28 + t.ph * 1.3) * 4);
+      });
+      hint.style.opacity = ((1 - smooth(p / .08)) * smooth((intro.t - .5) / .5)).toFixed(3);
+    };
+    gsap.ticker.add(render); render(0);
+  }
 }
 
 // The chapters arrive the way the home page's About statements do: each
 // paragraph's lines rise in one after another from behind a mask (lines.js).
-lines('.ab2-ch .txt p');
-
-// Scroll down glides to the first chapter
-document.querySelector('[data-down]').addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo('#ch1', { offset: -140, duration: reduce ? 0 : 1.6 }); });
-  
+lines('.ab3-ch .txt p');
 
 addEventListener('load', () => ScrollTrigger.refresh());
