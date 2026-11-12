@@ -40,8 +40,6 @@ main { position: relative; z-index: 2; }
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
 /* the live link: the line draws in from the left, as the footer's links do */
 .cs-out:hover, .cs-out:focus-visible { background-size: 100% 1px; outline: none; }
-.cs-out svg { transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
-.cs-out:hover svg, .cs-out:focus-visible svg { transform: translate(2px, -2px); }
 
 /* the hero: Jeff's home page on his pink, 64 under the facts */
 .st-hero { display: grid; place-items: center; margin: 64px 0 0; aspect-ratio: 818 / 560; border-radius: 16px; background: #ff9fd0; }
