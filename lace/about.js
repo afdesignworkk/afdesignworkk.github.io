@@ -82,7 +82,7 @@ for (const b of document.querySelectorAll('[data-copy]')) {
 }
 document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(0, { duration: reduce ? 0 : 2 }); });
 
-// The opening: her twelve cream tiles, set where her frame has them, are one
+// The opening: her twelve photo tiles, set where her frame has them, are one
 // real size at four depths (the big ones near, the small ones far). They come
 // in out of the depth and lean a few degrees with the mouse. The screen
 // holds while you scroll and you move forward through the room: each tile
@@ -126,7 +126,9 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
     for (const t of ts) place(t, t.z, OP);
   } else {
     const intro = { t: 0 };
-    gsap.to(intro, { t: 1, duration: 2.4, ease: 'power2.out', delay: .1 });
+    // wait until her photos are ready (at most 2.5 s) so no tile flies in empty
+    const ready = Promise.all(tiles.map((t) => t.querySelector('img')?.decode().catch(() => {})));
+    Promise.race([ready, new Promise((r) => setTimeout(r, 2500))]).then(() => gsap.to(intro, { t: 1, duration: 2.4, ease: 'power2.out', delay: .1 }));
     gsap.from(title, { opacity: 0, filter: 'blur(10px)', duration: 1.4, ease: 'power3.out', delay: .35, clearProps: 'filter' });
     const rx = gsap.quickTo(cam, 'rotationX', { duration: 1.6, ease: 'power3.out' }), ry = gsap.quickTo(cam, 'rotationY', { duration: 1.6, ease: 'power3.out' });
     addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; ry((e.clientX / innerWidth - .5) * 6); rx(-(e.clientY / innerHeight - .5) * 4); });
