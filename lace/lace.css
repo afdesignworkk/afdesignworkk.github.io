@@ -106,9 +106,10 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .mw__in { display: inline-block; will-change: transform; }
 .mw.up .mw__in { will-change: auto; }
 .deck { position: relative; z-index: 2 !important; width: 327px; height: 360px; margin-left: 14px; }
-.deck__card { position: absolute; left: 0; top: 0; width: 327px; padding: 15px 15px 0; border: 0; background: var(--bg); cursor: pointer;
+.deck__card { position: absolute; left: 0; top: 0; width: 327px; padding: 15px 15px 0; border: 0; border-radius: 8px; background: var(--bg); cursor: pointer;
   filter: drop-shadow(0 8px 12px rgba(20, 20, 20, .07)) drop-shadow(0 1px 1px rgba(20, 20, 20, .04)); will-change: transform; }
-.deck__photo { display: block; aspect-ratio: 1006 / 848; background: #c4c4c4; }
+.deck__photo { display: block; aspect-ratio: 1006 / 848; border-radius: 4px; overflow: hidden; background: #ebe9e3; }
+.deck__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .deck__cap { display: block; padding: 19px 2px 22px; text-align: left; font: inherit; font-size: 15px; line-height: 20px; color: var(--mute); }
 
 
