@@ -15,11 +15,12 @@ if (btn && nav) {
     gsap.killTweensOf([nav, ...parts()]);
     if (o) {
       top.classList.add('menu-open');
+      gsap.set(nav, { opacity: 1 });   // opened during the page's entrance: the fade-in it just cut short must not leave the panel see-through
       if (reduce) return;
-      gsap.fromTo(nav, { clipPath: 'inset(0% 0% 100% 0% round 20px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', y: 0, duration: .55, ease: 'power3.out', clearProps: 'clipPath,transform' });
+      gsap.fromTo(nav, { clipPath: 'inset(0% 0% 100% 0% round 16px)', y: -6 }, { clipPath: 'inset(0% 0% 0% 0% round 16px)', y: 0, duration: .55, ease: 'power3.out', clearProps: 'clipPath,transform' });
       gsap.fromTo(parts(), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .4, ease: 'power2.out', stagger: .04, delay: .08, clearProps: 'opacity,transform' });
     } else if (reduce) top.classList.remove('menu-open');
-    else gsap.to(nav, { clipPath: 'inset(0% 0% 100% 0% round 20px)', duration: .3, ease: 'power2.in', onComplete: () => { if (!open) top.classList.remove('menu-open'); gsap.set(nav, { clearProps: 'clipPath' }); } });
+    else gsap.to(nav, { clipPath: 'inset(0% 0% 100% 0% round 16px)', duration: .3, ease: 'power2.in', onComplete: () => { if (!open) top.classList.remove('menu-open'); gsap.set(nav, { clearProps: 'clipPath' }); } });
   };
   btn.addEventListener('click', () => set(!open));
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });

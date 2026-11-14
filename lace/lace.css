@@ -44,7 +44,7 @@ a { color: inherit; text-decoration: none; }
   transition: transform .4s cubic-bezier(.3, 1.3, .5, 1), opacity .25s; }
 .tab:hover, .tab:focus-visible, .drop.open .tab { color: var(--bg); outline: none; }
 .tab:hover::before, .tab:focus-visible::before, .drop.open .tab::before { transform: none; opacity: 1; }
-.drop__panel { position: absolute; top: calc(100% + 16px); left: 50%; width: 330px; margin-left: -165px; padding: 4px 30px; border-radius: 20px;
+.drop__panel { position: absolute; top: calc(100% + 16px); left: 50%; width: 330px; margin-left: -165px; padding: 4px 30px; border-radius: 16px;
   background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
 .drop__panel[hidden] { display: none; }
 /* a bridge over the gap between Projects and its panel, so the pointer never
@@ -224,22 +224,25 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
 @media (max-width: 600px) {
   :root { --side: 24px; }
   .top { top: 50px; flex-direction: row; align-items: center; }
-  .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+  .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: #000; cursor: pointer; }   /* her icon colour (1157:12656) */
   .burger span { grid-area: 1 / 1; width: 16.5px; height: 1.5px; border-radius: 1px; background: currentColor; transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
   .burger span:nth-child(1) { transform: translateY(-6px); } .burger span:nth-child(3) { transform: translateY(6px); }
   .top.menu-open .burger span:nth-child(1) { transform: rotate(45deg); }
   .top.menu-open .burger span:nth-child(2) { opacity: 0; }
   .top.menu-open .burger span:nth-child(3) { transform: rotate(-45deg); }
-  /* the menu: an ink panel under the bar, the pages large, then the projects */
-  .top nav { display: none; position: absolute; top: calc(100% + 16px); right: 0; width: calc(100vw - 2 * var(--side)); flex-direction: column; gap: 0;
-    padding: 8px 24px 12px; border-radius: 20px; background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
+  /* the menu (her 1157:12656): an ink panel under the bar, the pages large,
+     Projects open with its four rows under it */
+  .top nav { display: none; position: absolute; top: calc(100% + 26px); right: 0; width: calc(100vw - 2 * var(--side)); flex-direction: column; gap: 0;
+    padding: 8px 24px 12px; border-radius: 16px; background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
   .top.menu-open nav { display: flex; }
-  .top nav > .tab { padding: 12px 0 14px; font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -.02em; color: var(--bg); }
+  .top nav > .tab, .top nav .drop__btn { padding: 16px 0; font-weight: 500; font-size: 28px; line-height: 30px; letter-spacing: -.02em; color: var(--bg); }
   .top nav > .tab + .tab, .top nav > .drop + .tab { border-top: 1px solid rgba(247, 247, 244, .12); }
   .top nav .tab::before { display: none; }
   .top nav > .tab[aria-current] { color: rgba(247, 247, 244, .5); }
-  .drop { order: 9; margin-top: 12px; border-top: 1px solid rgba(247, 247, 244, .12); }
-  .drop__btn { display: block; padding: 16px 0 0; pointer-events: none; font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .5); }
+  .drop { border-top: 1px solid rgba(247, 247, 244, .12); }
+  .drop__btn { display: flex; align-items: center; gap: 8px; pointer-events: none; }
+  .drop__btn::after { content: ''; width: 18px; height: 18px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M3.375 6.75 9 12.375l5.625-5.625' fill='none' stroke='%23f7f7f4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 18px no-repeat; }
+  .drop__panel .row { height: 68px; }
   .drop__panel, .drop__panel[hidden] { display: block; position: static; width: auto; margin: 0; padding: 0; background: none; box-shadow: none; clip-path: none !important; transform: none !important; }
   .drop.open::after { display: none; }
   .drop__panel li { opacity: 1 !important; transform: none !important; }

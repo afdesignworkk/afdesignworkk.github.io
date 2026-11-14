@@ -4,7 +4,7 @@
 
 import { lines } from './lines.js?v=3';
 import { enter } from './enter.js?v=5';
-import './menu.js?v=1';
+import './menu.js?v=2';
 const { gsap, Lenis, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,7 +27,7 @@ lenis.on('scroll', ScrollTrigger.update);
 // the Projects menu (as lace.js)
 {
   const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
-  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 20px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
+  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 16px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
   const rows = panel.querySelectorAll('li');
   let open = false, leave = 0;
   const set = (o) => {

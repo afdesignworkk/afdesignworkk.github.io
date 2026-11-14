@@ -5,7 +5,7 @@
 // trail of lace; over Back home it flies down and perches on the pill.
 
 import { enter } from './enter.js?v=5';
-import './menu.js?v=1';
+import './menu.js?v=2';
 import { butterfly, lace } from './field.js?v=1';
 const { gsap } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -21,7 +21,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // the Projects menu (as lace.js)
 {
   const drop = document.querySelector('.drop'), btn = drop.querySelector('.drop__btn'), panel = drop.querySelector('.drop__panel');
-  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 20px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
+  const st = { p: 0 }, paint = () => { panel.style.clipPath = `inset(0% 0% ${((1 - st.p) * 100).toFixed(2)}% 0% round 16px)`; panel.style.transform = `translateY(${(-6 * (1 - st.p)).toFixed(2)}px)`; };
   const rows = panel.querySelectorAll('li');
   let open = false, leave = 0;
   const set = (o) => {
