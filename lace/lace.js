@@ -15,7 +15,7 @@
 import { lace, butterfly } from './field.js?v=1';
 import { lines } from './lines.js?v=3';
 import { enter as enterPage } from './enter.js?v=5';
-import './menu.js?v=2';
+import './menu.js?v=3';
 
 const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

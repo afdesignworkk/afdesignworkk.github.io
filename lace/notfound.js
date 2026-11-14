@@ -5,7 +5,7 @@
 // trail of lace; over Back home it flies down and perches on the pill.
 
 import { enter } from './enter.js?v=5';
-import './menu.js?v=2';
+import './menu.js?v=3';
 import { butterfly, lace } from './field.js?v=1';
 const { gsap } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

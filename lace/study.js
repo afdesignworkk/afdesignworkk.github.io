@@ -6,7 +6,7 @@
 
 import { lines } from './lines.js?v=3';
 import { enter } from './enter.js?v=5';
-import './menu.js?v=2';
+import './menu.js?v=3';
 const { gsap, Lenis, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
