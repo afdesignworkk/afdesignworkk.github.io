@@ -260,7 +260,8 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
      one under another */
   .foot { padding-top: 120px; }
   .foot__say { font-size: 16px; line-height: 20px; }
-  .foot__email { margin-top: 16px; }
+  .foot__email { margin-top: 16px; font-size: 28px; line-height: 30px; }
+  .foot__ghost { font-size: 28px; line-height: 30px; }
   .foot__row { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; margin-top: 120px; margin-bottom: 120px; }
   .foot__c { order: 1; } .foot__social { order: 2; } .foot__status { order: 3; } .foot__top { order: 4; }
 }

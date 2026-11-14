@@ -129,4 +129,19 @@ main { position: relative; z-index: 2; }
   .st-pics--bento, .st-pics--flip { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; aspect-ratio: auto; }
   .st-pics--bento .st-tile { aspect-ratio: 292 / 268; }
   .st-pics--bento .st-tile:first-child { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 502 / 560; }
+  /* her phone case (1146:12551): 72 between blocks, 40/34 headings with 32
+     under them, 20/24 text, corners 16, 16 between pictures; the answering
+     group shows its two small pictures above the large one */
+  .st { padding-top: 142px; }
+  .st-facts { row-gap: 24px; }
+  .st-hero { margin-top: 72px; border-radius: 16px; }
+  .st-tile { border-radius: 16px; }
+  .st-sec h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
+  .st-sec .txt p { line-height: 1.2; }
+  .st-sec .txt p + p { margin-top: 1.2em; }
+  .st-pics { margin-top: 72px; }
+  .st-pics--bento { gap: 16px; }
+  .st-pics--flip .st-tile:first-child { order: 1; }
+  .st-next__n { line-height: 1.2; }
+  .st-page .foot { padding-top: 120px; }
 }
