@@ -37,9 +37,16 @@ lvhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100lvh;visi
 document.body.append(lvhProbe);
 const fullH = () => Math.max(innerHeight, lvhProbe.offsetHeight || 0);
 const onWidth = (fn) => { let w = innerWidth, h = fullH(); addEventListener('resize', () => { if (innerWidth === w && fullH() === h) return; w = innerWidth; h = fullH(); fn(); }); };
+// the hero butterfly's width (and so the page's dot pitch): on phones and
+// tablets the column, up to 460 (her 1131:10079; lace.css .hero --bw), on
+// wider screens her desktop size
+function heroW(W, H) {
+  const side = Math.min(100, Math.max(24, 24 + 76 * (W - 402) / 1038));
+  return W <= 900 ? Math.min(W - 2 * side, 460) : Math.min(W * .472, H * .756);
+}
 function size() {
-  const W = innerWidth, H = fullH(), dpr = Math.min(devicePixelRatio, 2), phone = W < 760;
-  const bw = W <= 600 ? W - 48 : phone ? W * .94 : Math.min(W * .472, H * .756);   // the hero butterfly's width: 40 cells (phone: the column, her 1131:10079)
+  const W = innerWidth, H = fullH(), dpr = Math.min(devicePixelRatio, 2);
+  const bw = heroW(W, H);   // the hero butterfly's width: 40 cells
   const c = bw / 40, cols = Math.ceil(W / c) + 1, rows = Math.ceil(H / c) + 1;
   Object.assign(F, { W, H, dpr, bw, c, cols, rows, x: (W - cols * c) / 2, y: (H - rows * c) / 2,
     cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), sw: new Float32Array(cols * rows) });
@@ -373,7 +380,7 @@ function rollWorks(dt) {
   const E = RIDE.enter;
   if (enter.t < 0 && rows[0] - y < H * E.at) gsap.to(enter, { t: E.duration + E.stagger * (n - 1), duration: E.duration + E.stagger * (n - 1), ease: 'none', startAt: { t: 0 } });
 
-  const space = pitch + (innerWidth < 1024 ? RIDE.phoneGap : RIDE.gap), spread = Math.max(.05, RIDE.focus.spread) * space;
+  const space = pitch + RIDE.phoneGap + (RIDE.gap - RIDE.phoneGap) * Math.min(1, Math.max(0, (innerWidth - 600) / 424)), spread = Math.max(.05, RIDE.focus.spread) * space;
   const shrink = 1 - 1 / Math.max(1, RIDE.focus.scale);
   const push = (r) => r - RIDE.focus.push * (cardH / space) * shrink * (r - Math.sqrt(Math.PI) / 2 * spread * erf(r / spread));
   const bend = RIDE.curve * Math.PI / Math.max(1, H);

@@ -3,10 +3,16 @@
    bottom, the hero intro from the 58.33 % column. */
 :root {
   --bg: #f7f7f4; --ink: #1b1b1b; --mute: #737373; --font: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --side: clamp(20px, 6.945vw, 100px); --line: rgba(27, 27, 27, .1);
+  /* one scale for every size (2026-11-14): from her phone frames (402 wide)
+     to her desktop frames (1440) the sizes slide from one to the other, and
+     past 1440 the whole page grows on with the screen, up to 1920 (a third
+     larger). --gx: the width past 1440; --px: one of her desktop pixels. */
+  --gx: clamp(0px, 100vw - 1440px, 480px); --px: calc(1px + var(--gx) / 1440);
+  --side: calc(clamp(24px, 24px + 76 * (100vw - 402px) / 1038, 100px) + var(--gx) * 100 / 1440); --line: rgba(27, 27, 27, .1);
 }
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/20px var(--font); letter-spacing: -.02em; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: 400 calc(16px + var(--gx) / 240)/calc(20px + var(--gx) / 192) var(--font);   /* 16/20, 18/22.5 at 1920 */
+  letter-spacing: -.02em; -webkit-font-smoothing: antialiased; }
 p, h1, ul, figure { margin: 0; }
 ul { padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
@@ -27,7 +33,7 @@ a { color: inherit; text-decoration: none; }
 .veil { position: fixed; z-index: 5; top: 0; left: 0; right: 0; height: 112px; pointer-events: none; opacity: 0;
   background: linear-gradient(var(--bg) 50%, rgba(247, 247, 244, 0)); transition: opacity .4s; }
 .veil.on { opacity: 1; }
-.top { position: absolute; z-index: 6; top: 48px; left: var(--side); right: var(--side); display: flex; justify-content: space-between; }
+.top { position: absolute; z-index: 6; top: calc(clamp(48px, 50px - 2 * (100vw - 402px) / 1038, 50px) + var(--gx) * 48 / 1440); left: var(--side); right: var(--side); display: flex; justify-content: space-between; }
 .clock { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .top nav { display: flex; gap: 30px; }
 
@@ -67,15 +73,15 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 /* hero */
 .hero { position: relative; height: 100svh; min-height: 640px; }
 .hero .perch { left: 50%; top: 45.1%; }
-.line { position: absolute; z-index: 4; left: var(--side); bottom: 48px; max-width: 9.03em; font-weight: 500; font-size: clamp(36px, 4.861vw, 70px); line-height: .914; letter-spacing: -.02em; }
-.intro { position: absolute; z-index: 4; left: calc(58.33% - 3px); right: var(--side); bottom: 52px; max-width: 503px; }
+.line { position: absolute; z-index: 4; left: var(--side); bottom: calc(48 * var(--px)); max-width: 9.03em; font-weight: 500; font-size: clamp(40px, 4.861vw, 93.33px); line-height: .914; letter-spacing: -.02em; }
+.intro { position: absolute; z-index: 4; left: calc(58.33% - 3px); right: var(--side); bottom: calc(52 * var(--px)); max-width: calc(503 * var(--px)); }
 
 /* About, her mockup (732:246): a stack of prints on the left you flip
    through (grey until the photos are chosen), two statements and the About
    me pill on the right; the butterfly lands on the stack ([data-perch-on]). */
 .about { position: relative; padding: 150px var(--side) 160px; overflow-x: clip; }
 .about > :not(.perch) { position: relative; z-index: 4; }
-.about__say { font-weight: 500; font-size: clamp(28px, 2.78vw, 40px); line-height: 1.1; letter-spacing: -.02em; max-width: 19em; }
+.about__say { font-weight: 500; font-size: clamp(28px, 2.78vw, 53.33px); line-height: 1.1; letter-spacing: -.02em; max-width: 19em; }
 .pill { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px;
   border-radius: 50px; background: var(--ink); color: var(--bg); }
 .pill [data-label] { display: inline-block; white-space: nowrap; height: 20px; line-height: 20px; overflow: hidden; vertical-align: top; }
@@ -102,7 +108,7 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .copied .cp-a, .copied .cp-b { opacity: 0; transform: scale(.6); transform-origin: 6px 6px; }
 .copied .cp-ok { stroke-dashoffset: 0; transition: stroke-dashoffset .45s .12s cubic-bezier(.65, 0, .35, 1); }
 
-.about--deck { display: grid; grid-template-columns: 421px minmax(0, 819px); align-items: start; padding-top: 120px; padding-bottom: 120px; }
+.about--deck { display: grid; grid-template-columns: clamp(341px, 29.24vw, 561px) minmax(0, calc(819 * var(--px))); align-items: start; padding-top: calc(120 * var(--px)); padding-bottom: calc(120 * var(--px)); }
 .about--deck .about__text { display: grid; row-gap: 30px; justify-items: start; }
 .about--deck .about__say { max-width: none; }
 /* lines rising from behind a mask (lines.js): each word in its own clipped
@@ -123,12 +129,12 @@ html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
 /* Services: one grey line of type running across the page, 72 px under the
    hero (her frame 732:246: 64/72 Medium, dots between the words; #c4c4c4,
    the grey of the empty project cards, so it can be read; lace.js moves it) */
-.band { position: relative; z-index: 4; padding: 72px 0 0; color: #c4c4c4; }
+.band { position: relative; z-index: 4; padding: calc(72 * var(--px)) 0 0; color: #c4c4c4; }
 .band__run { overflow: hidden; }
-.band__line { white-space: nowrap; font-weight: 500; font-size: 64px; line-height: 72px; letter-spacing: -.02em; }
-.band__track { display: inline-flex; align-items: center; gap: 24px; padding-right: 24px; will-change: transform; }
-.band__sep { display: inline-grid; place-items: center; width: 70px; height: 45px; fill: currentColor; }
-.band__sep svg { width: 45px; height: 45px; }
+.band__line { white-space: nowrap; font-weight: 500; font-size: calc(clamp(40px, 40px + 24 * (100vw - 402px) / 1038, 64px) + var(--gx) * 64 / 1440); line-height: calc(clamp(45px, 45px + 27 * (100vw - 402px) / 1038, 72px) + var(--gx) * 72 / 1440); letter-spacing: -.02em; }
+.band__track { display: inline-flex; align-items: center; gap: .375em; padding-right: .375em; will-change: transform; }
+.band__sep { display: inline-grid; place-items: center; width: 1.094em; height: .703em; fill: currentColor; }
+.band__sep svg { width: .703em; height: .703em; }
 .band__say { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 /* Selected projects: the heading centred, then three wide cards (818 × 530,
@@ -137,9 +143,9 @@ html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
    mouse, brings each one's second picture in in dots on hover (rollWorks and
    DOTS in lace.js). */
 .work { position: relative; z-index: 4; padding: 0 var(--side) 96px; overflow-x: clip; }
-.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
-.work__list { display: grid; row-gap: 36px; justify-items: center; }
-.work__list li { width: min(818px, 100%); will-change: transform; }
+.work__h { margin: 0 auto calc(48 * var(--px)); max-width: calc(608 * var(--px)); text-align: center; font-weight: 500; font-size: calc(clamp(40px, 40px + 16 * (100vw - 402px) / 1038, 56px) + var(--gx) * 56 / 1440); line-height: calc(clamp(34px, 34px + 26 * (100vw - 402px) / 1038, 60px) + var(--gx) * 60 / 1440); letter-spacing: -.02em; }
+.work__list { display: grid; row-gap: calc(clamp(30px, 30px + 6 * (100vw - 402px) / 1038, 36px) + var(--gx) * 36 / 1440); justify-items: center; }
+.work__list li { width: min(calc(818 * var(--px)), 100%); will-change: transform; }
 .work__item { display: block; }
 .work__pic { position: relative; display: block; aspect-ratio: 818 / 560; border-radius: 16px; background: #ebe9e3; overflow: hidden; }
 .work__shot { position: absolute; inset: 0; }
@@ -155,7 +161,7 @@ html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
    of them running out from each project as it settles */
 .stage { position: fixed; inset: 0; z-index: 3; background: var(--ink); opacity: 0; visibility: hidden; pointer-events: none; overflow: hidden; }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.work { --lt: 0; color: color-mix(in srgb, var(--bg) calc(var(--lt) * 100%), var(--ink)); padding-top: 200px; padding-bottom: 200px; }
+.work { --lt: 0; color: color-mix(in srgb, var(--bg) calc(var(--lt) * 100%), var(--ink)); padding-top: calc(clamp(120px, 120px + 80 * (100vw - 402px) / 1038, 200px) + var(--gx) * 200 / 1440); padding-bottom: calc(clamp(120px, 120px + 80 * (100vw - 402px) / 1038, 200px) + var(--gx) * 200 / 1440); }
 .haze { position: fixed; z-index: 1; left: 0; right: 0; display: none; overflow: hidden; pointer-events: none; }
 .haze__zone { position: absolute; left: 0; right: 0; }
 .haze__layer { position: absolute; inset: 0; }
@@ -165,19 +171,19 @@ html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
    it always fills it), a copy pill, and one row of small print spread across
    the foot. It comes in as the lights come back up after the projects. */
 .foot { position: relative; z-index: 4; container-type: inline-size; display: flex; flex-direction: column; align-items: flex-start;
-  padding: 176px var(--side) 100px; }
-.foot__say { margin: 0; max-width: 900px; font-weight: 500; font-size: clamp(26px, 2.778vw, 40px); line-height: 1.1; letter-spacing: -.02em; }
-.foot__email { margin-top: 30px; font-weight: 500; font-size: 8.72cqi; line-height: 1; letter-spacing: -.03em; white-space: nowrap;
+  padding: calc(clamp(120px, 120px + 56 * (100vw - 402px) / 1038, 176px) + var(--gx) * 176 / 1440) var(--side) 100px; }
+.foot__say { margin: 0; max-width: calc(900 * var(--px)); font-weight: 500; font-size: calc(clamp(16px, 16px + 24 * (100vw - 402px) / 1038, 40px) + var(--gx) * 40 / 1440); line-height: calc(clamp(20px, 20px + 24 * (100vw - 402px) / 1038, 44px) + var(--gx) * 44 / 1440); letter-spacing: -.02em; }
+.foot__email { margin-top: calc(clamp(16px, 16px + 14 * (100vw - 402px) / 1038, 30px) + var(--gx) * 30 / 1440); font-weight: 500; font-size: min(8.72cqi, calc(clamp(28px, 28px + 80 * (100vw - 402px) / 1038, 108px) + var(--gx) * 108 / 1440)); line-height: 1; letter-spacing: -.03em; white-space: nowrap;
   padding-bottom: .1em; margin-bottom: -.1em; background-size: 0 max(2px, .03em); }
 .foot__email:hover, .foot__email:focus-visible { background-size: 100% max(2px, .03em); outline: none; }
 .foot__copy { margin-top: 24px; }
 /* clicking Copy email lifts a faint copy of the address off it, rising and
    softening away (lace.js) */
-.foot__ghost { position: absolute; z-index: 1; margin: 0; font-weight: 500; font-size: 8.72cqi; line-height: 1; letter-spacing: -.03em; white-space: nowrap;
+.foot__ghost { position: absolute; z-index: 1; margin: 0; font-weight: 500; font-size: min(8.72cqi, calc(clamp(28px, 28px + 80 * (100vw - 402px) / 1038, 108px) + var(--gx) * 108 / 1440)); line-height: 1; letter-spacing: -.03em; white-space: nowrap;
   pointer-events: none; color: var(--ink); }
 .pill { border: 0; font: inherit; letter-spacing: inherit; cursor: pointer; }
 .pill .go { color: var(--ink); }
-.foot__row { isolation: isolate; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 120px; margin-bottom: 120px; }
+.foot__row { isolation: isolate; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: calc(120 * var(--px)); margin-bottom: calc(120 * var(--px)); }
 /* under the row, her name in the butterfly's lace dots across the column, its
    last row of dots at the very foot of the page (mark.js; her 732:246) */
 .foot { padding-bottom: 0 !important; }
@@ -191,22 +197,20 @@ body.on-ink .tab::before { background: var(--bg); }
 body.on-ink .tab:hover, body.on-ink .tab:focus-visible, body.on-ink .drop.open .tab { color: var(--ink); }
 body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27, 0)); }
 @media (max-width: 900px) {
-  .foot { padding: 120px var(--side) 40px; }
-  .foot__email { margin-top: 20px; }
-  .foot__row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "social social" "status status" "c top"; row-gap: 20px; margin-top: 96px; margin-bottom: 64px; }
+  .foot__row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "social social" "status status" "c top"; row-gap: 20px; }
   .foot__social { grid-area: social; gap: 24px; } .foot__status { grid-area: status; } .foot__c { grid-area: c; } .foot__top { grid-area: top; }
 }
 
-@media (max-width: 1240px) {
-  .about--deck { grid-template-columns: 380px minmax(0, 1fr); }
-}
+/* below 900 (tablets and phones) the hero stacks as on her phone frame
+   (1131:10079): the butterfly at the top, as wide as the column up to 460,
+   the line and the intro under it */
 @media (max-width: 900px) {
-  .top { top: 24px; } .top nav { gap: 14px; } .clock { display: none; }
-  .line { bottom: auto; top: 66svh; }
-  .intro { left: var(--side); bottom: 28px; }
-  .about { padding-top: 110px; }
+  .top nav { gap: 14px; } .clock { display: none; }
+  .hero { --bw: min(100vw - 2 * var(--side), 460px); height: auto; min-height: 0; padding: calc(217px + var(--bw) * .774) var(--side) 0; }
+  .hero .perch { top: calc(145px + var(--bw) * .387); }
+  .line, .intro { position: relative; left: auto; right: auto; top: auto; bottom: auto; }
+  .intro { margin: 24px 0 0; }
   .about--deck { grid-template-columns: minmax(0, 1fr); row-gap: 72px; }
-  .work { padding-top: 120px; padding-bottom: 140px; }
   .deck { margin-left: 0; }
 }
 @media (max-width: 520px) {                       /* four links: the menu takes its own line under the name */
@@ -222,8 +226,7 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
    footer's small print stacked. */
 .burger { display: none; }
 @media (max-width: 600px) {
-  :root { --side: 24px; }
-  .top { top: 50px; flex-direction: row; align-items: center; }
+  .top { flex-direction: row; align-items: center; }
   .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
   .burger span { grid-area: 1 / 1; width: 16.5px; height: 1.5px; border-radius: 1px; background: currentColor; transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
   .burger span:nth-child(1) { transform: translateY(-6px); } .burger span:nth-child(3) { transform: translateY(6px); }
@@ -249,25 +252,12 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
   .drop__panel li { opacity: 1 !important; transform: none !important; }
   .veil { height: 120px; }
 
-  /* home: the butterfly full width at the top, the line and intro under it */
-  .hero { height: auto; min-height: 0; padding: 491px var(--side) 0; }
-  .hero .perch { top: 282px; }
-  .line, .intro { position: relative; left: auto; right: auto; top: auto; bottom: auto; }
-  .line { max-width: none; font-size: min(40px, 9.95vw); line-height: .85; }   /* 40/34 at 402, two lines on narrower phones too */
-  .intro { max-width: none; margin: 24px 0 0; }
-  .band__line { font-size: 40px; line-height: 45px; }
-  .about { padding-top: 120px; padding-bottom: 120px; }
-  .work { padding-top: 120px; padding-bottom: 120px; }
-  .work__h { font-size: 40px; line-height: 34px; }
-  .work__list { row-gap: 30px; }
+  /* home: the line across the column, 40/34 */
+  .line { max-width: none; font-size: min(40px, 9.95vw); line-height: .85; }   /* two lines on narrower phones too */
+  .intro { max-width: none; }
 
-  /* the footer: a small line, the email, Copy email, then the small print
-     one under another */
-  .foot { padding-top: 120px; }
-  .foot__say { font-size: 16px; line-height: 20px; }
-  .foot__email { margin-top: 16px; font-size: 28px; line-height: 30px; }
-  .foot__ghost { font-size: 28px; line-height: 30px; }
-  .foot__row { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; margin-top: 120px; margin-bottom: 120px; }
+  /* the footer's small print one under another */
+  .foot__row { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
   .foot__c { order: 1; } .foot__social { order: 2; } .foot__status { order: 3; } .foot__top { order: 4; }
 }
 

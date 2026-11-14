@@ -71,9 +71,9 @@ const cv = document.querySelector('.nf-fly canvas'), ctx = cv.getContext('2d');
 const mask = document.createElement('canvas'), m = mask.getContext('2d', { willReadFrequently: true });
 const S = 4, F = {};
 function size() {
-  const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio, 2), c = W < 700 ? 8 : 10;
+  const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio, 2), t = Math.min(1, Math.max(0, (W - 600) / 300)), c = 8 + 2 * t;
   const cols = Math.ceil(W / c) + 1, rows = Math.ceil(H / c) + 1;
-  Object.assign(F, { W, H, dpr, c, cols, rows, x: (W - cols * c) / 2, y: (H - rows * c) / 2, cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), u: Math.min(W, H) * (W < 700 ? .17 : .14) });
+  Object.assign(F, { W, H, dpr, c, cols, rows, x: (W - cols * c) / 2, y: (H - rows * c) / 2, cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), u: Math.min(W, H) * (.17 - .03 * t) });
   cv.width = W * dpr; cv.height = H * dpr; mask.width = cols * S; mask.height = rows * S;
 }
 size(); addEventListener('resize', size);

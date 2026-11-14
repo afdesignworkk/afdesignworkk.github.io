@@ -103,8 +103,11 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
   const smooth = (v) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
   let ts = [];
   const lay = () => {
-    const W = top.offsetWidth, H = top.offsetHeight, phone = W < 700;
-    const kx = W / 1440 * (phone ? 1.3 : 1), ky = H / 900, ks = phone ? .5 : Math.min(W / 1440, H / 900);
+    const W = top.offsetWidth, H = top.offsetHeight;
+    // narrow screens spread the tiles a little wider (1.3×) and keep them at half
+    // size at least; the two blend between 700 and 1100 so nothing jumps
+    const wide = Math.min(1, Math.max(0, (1100 - W) / 400));
+    const kx = W / 1440 * (1 + .3 * wide), ky = H / 900, ks = W <= 700 ? .5 : Math.max(.5, Math.min(W / 1440, H / 900));
     // the clear space her line needs (its lines, not its box), plus air
     const g = document.createRange(); g.selectNodeContents(title);
     const tr = top.getBoundingClientRect(), lines = [...g.getClientRects()].map((r) => ({ l: r.left - tr.left - 16, r: r.right - tr.left + 16, t: r.top - tr.top - 16, b: r.bottom - tr.top + 16 }));
@@ -116,7 +119,7 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
       el.style.display = hit ? 'none' : '';
       const z = F * (1 - NEAR / w), k = (F - z) / F;                       // depth from its size
       el.style.width = `${(sw * k).toFixed(1)}px`; el.style.height = `${(sh * k).toFixed(1)}px`;
-      el.style.borderRadius = `${((W <= 600 ? 12 : Math.max(8, 12 * ks)) * k).toFixed(1)}px`;   // her corners: 12 (830:489; on a phone too, 1151:12650)
+      el.style.borderRadius = `${(Math.max(12, 12 * ks) * k).toFixed(1)}px`;   // her corners: 12 (830:489; on a phone too, 1151:12650)
       return { el, x: sx * k, y: sy * k, z, ph: i * 1.7, hit };
     }).filter((t) => !t.hit);
   };

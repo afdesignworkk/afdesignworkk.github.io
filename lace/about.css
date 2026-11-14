@@ -23,37 +23,27 @@ main { position: relative; z-index: 2; }
 .ab3-tile { position: absolute; left: 50%; top: 50%; margin: 0; overflow: hidden; background: #ebe9e3; opacity: 0; will-change: transform, opacity; }
 .ab3-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* her line, 70/64, centred in the screen, over the room */
-.ab3-top h1 { position: absolute; z-index: 2; left: 50%; top: 50%; width: min(608px, calc(100% - 2 * var(--side))); margin: 0; transform: translate(-50%, -50%);
-  text-align: center; font-weight: 500; font-size: clamp(40px, 4.861vw, 70px); line-height: .914; letter-spacing: -.02em; }
-.ab3-hint { position: absolute; z-index: 2; left: 50%; bottom: 48px; margin: 0; transform: translateX(-50%); color: var(--mute); white-space: nowrap; }
+.ab3-top h1 { position: absolute; z-index: 2; left: 50%; top: 50%; width: min(calc(608 * var(--px)), calc(100% - 2 * var(--side))); margin: 0; transform: translate(-50%, -50%);
+  text-align: center; font-weight: 500; font-size: clamp(40px, 4.861vw, 93.33px); line-height: .914; letter-spacing: -.02em; }
+.ab3-hint { position: absolute; z-index: 2; left: 50%; bottom: calc(48 * var(--px)); margin: 0; transform: translateX(-50%); color: var(--mute); white-space: nowrap; }
 
 /* chapters: one column, 818 wide; the heading 32 over the text, 100 between
    chapters, 52 under the opening */
-.ab3-ch { position: relative; z-index: 2; width: min(818px, calc(100% - 2 * var(--side))); margin: 100px auto 0; }
-.ab3-top + .ab3-ch { margin-top: 52px; }
-.ab3-ch h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
-.ab3-ch .txt p { margin: 0; color: var(--ink); font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
-.ab3-ch .txt p + p { margin-top: 1.134em; }
+.ab3-ch { position: relative; z-index: 2; width: min(calc(818 * var(--px)), calc(100% - 2 * var(--side))); margin: calc(clamp(72px, 72px + 28 * (100vw - 402px) / 1038, 100px) + var(--gx) * 100 / 1440) auto 0; }
+.ab3-top + .ab3-ch { margin-top: calc(clamp(20px, 20px + 32 * (100vw - 402px) / 1038, 52px) + var(--gx) * 52 / 1440); }
+.ab3-ch h2 { margin: 0 0 calc(32 * var(--px)); font-weight: 500; font-size: calc(clamp(40px, 40px + 16 * (100vw - 402px) / 1038, 56px) + var(--gx) * 56 / 1440); line-height: calc(clamp(34px, 34px + 26 * (100vw - 402px) / 1038, 60px) + var(--gx) * 60 / 1440); letter-spacing: -.02em; }
+.ab3-ch .txt p { margin: 0; color: var(--ink); font-size: calc(clamp(20px, 20px + 10 * (100vw - 402px) / 1038, 30px) + var(--gx) * 30 / 1440); line-height: calc(clamp(24px, 24px + 10 * (100vw - 402px) / 1038, 34px) + var(--gx) * 34 / 1440); letter-spacing: -.02em; }
+.ab3-ch .txt p + p { margin-top: calc(clamp(24px, 24px + 10 * (100vw - 402px) / 1038, 34px) + var(--gx) * 34 / 1440); }
 .ab3-ch .txt a { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
 .ab3-ch .txt a:hover { background-size: 0 1px; background-position: 100% 100%; }
 /* a link's underline draws in once its words have risen (lines.js) */
 .ab3-ch .txt a:has(.mw:not(.up)) { background-size: 0 1px; }
 
 /* footer, 160 under the last chapter */
-.ab3-page .foot { padding-top: 160px; }
+.ab3-page .foot { padding-top: calc(clamp(120px, 120px + 40 * (100vw - 402px) / 1038, 160px) + var(--gx) * 160 / 1440); }
 
-@media (max-width: 900px) {
-  .ab3-ch { margin-top: 72px; }
-  .ab3-top + .ab3-ch { margin-top: 40px; }
-  .ab3-ch h2 { margin-bottom: 20px; }
-  .ab3-page .foot { padding-top: 96px; }
-}
-/* phone (her 1151:12650): the chapters in the case studies' phone style */
+
+/* phone (her 1151:12650): her line 40/36 */
 @media (max-width: 600px) {
-  .ab3-top h1 { line-height: 36px; }   /* 40/36, as the Playground's line */
-  .ab3-top + .ab3-ch { margin-top: 20px; }
-  .ab3-ch h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
-  .ab3-ch .txt p { line-height: 1.2; }
-  .ab3-ch .txt p + p { margin-top: 1.2em; }
-  .ab3-page .foot { padding-top: 120px; }
+  .ab3-top h1 { line-height: 36px; }
 }

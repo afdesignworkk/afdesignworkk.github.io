@@ -27,7 +27,7 @@ const P = { x: -1e4, y: -1e4, on: false };
 function size() {
   W = box.clientWidth; dpr = Math.min(devicePixelRatio, 2);
   if (!W) return;                                // not laid out yet: the fonts-ready call sizes it
-  c = W < 760 ? Math.max(3, W / 118) : 8.5;      // the page dot grid's half pitch; smaller screens: her desktop wordmark scaled to the column (her 1131:10079)
+  c = Math.max(3, Math.min(8.5, W / 118));       // the page dot grid's half pitch; narrower columns: her desktop wordmark scaled to the column (her 1131:10079)
   cols = Math.ceil(W / c);
   // the type fills the width; its lower part runs off the page
   m.setTransform(1, 0, 0, 1, 0, 0); m.filter = 'none'; m.letterSpacing = '-3px';  // measure at 100 px with the drawn tracking (−.03 em)

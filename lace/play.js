@@ -18,10 +18,14 @@ const B = { u: 1, x: 0, y: 0, vx: 0, vy: 0, minX: 0, maxX: 0, minY: 0, maxY: 0, 
 const FRAME = { cx: 720, cy: 520 };            // the frame point that starts in the middle of the screen
 const PAD = 100;                                // Figma px kept round the outermost pieces
 function size() {
-  const W = innerWidth, H = innerHeight, phone = W < 760;
-  B.u = phone ? .6 : Math.min(1.2, Math.max(.7, W / 1440));
+  const W = innerWidth, H = innerHeight;
+  // the board's scale: her phone frame's .6 at 402, sliding to her desktop's 1
+  // at 1440, then growing with the screen up to 1920
+  B.u = W <= 402 ? .6 : W <= 1440 ? .6 + .4 * (W - 402) / 1038 : Math.min(1.333, W / 1440);
   root.style.setProperty('--u', B.u);
-  const bw = phone ? W * .94 : Math.min(W * .472, H * .756);
+  // the home page's dot pitch (its hero butterfly is 40 cells: lace.js heroW)
+  const side = Math.min(100, Math.max(24, 24 + 76 * (W - 402) / 1038));
+  const bw = W <= 900 ? Math.min(W - 2 * side, 460) : Math.min(W * .472, H * .756);
   B.pitch = bw / 40;
   dots.style.setProperty('--pitch', `${B.pitch}px`);
   dots.style.setProperty('--dot', `${(B.pitch * .065).toFixed(2)}px`);
@@ -44,7 +48,9 @@ function paint() {
   dots.style.backgroundPosition = `${B.x}px ${B.y}px`;
 }
 size(); home(); paint();
-addEventListener('resize', () => { const cx = (innerWidth / 2 - B.x) / B.u, cy = (innerHeight / 2 - B.y) / B.u; size(); B.x = innerWidth / 2 - cx * B.u; B.y = innerHeight / 2 - cy * B.u; paint(); });
+// a resize (or a turned tablet) keeps the same spot of the board in the middle
+let lastW = innerWidth, lastH = innerHeight;
+addEventListener('resize', () => { const cx = (lastW / 2 - B.x) / B.u, cy = (lastH / 2 - B.y) / B.u; size(); lastW = innerWidth; lastH = innerHeight; B.x = innerWidth / 2 - cx * B.u; B.y = innerHeight / 2 - cy * B.u; paint(); });
 
 // --- dragging -----------------------------------------------------------------
 // Drag (mouse or touch) with a little inertia when let go; past the edges the

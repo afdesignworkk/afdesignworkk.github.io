@@ -11,7 +11,7 @@
 main { position: relative; z-index: 2; }
 .foot { z-index: 2; }
 
-.st { display: grid; grid-template-columns: minmax(0, 1fr) min(818px, 100%) minmax(0, 1fr); padding: 164px var(--side) 0; }
+.st { display: grid; grid-template-columns: minmax(0, 1fr) min(calc(818 * var(--px)), 100%) minmax(0, 1fr); padding: calc(clamp(142px, 142px + 22 * (100vw - 402px) / 1038, 164px) + var(--gx) * 164 / 1440) var(--side) 0; }
 .st-main { grid-column: 2; min-width: 0; }
 
 /* the rail: All projects level with the title, the index level with the
@@ -20,7 +20,7 @@ main { position: relative; z-index: 2; }
 .st-back { padding: 8px 12px 8px 10px; }
 .st-back.is-run .go svg { animation: pill-back .7s cubic-bezier(.65, 0, .35, 1) !important; }
 @keyframes pill-back { 50% { transform: translateX(-18px); } 50.01% { transform: translateX(18px); } 100% { transform: none; } }
-.st-toc { margin: 116px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.st-toc { margin: calc(116 * var(--px)) 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .st-toc a { display: inline-flex; align-items: center; color: var(--mute); transition: color .35s; }
 /* where you are: the word turns ink and a 6 px dot opens in front of it,
    the same dot as the Projects menu */
@@ -31,9 +31,9 @@ main { position: relative; z-index: 2; }
 .st-toc a.on::before { width: 6px; margin-right: 12px; transform: scale(1); transition-delay: 0s, 0s, .1s; }
 
 /* the line (70/64), and 24 under it four facts spread across the column */
-.st-top h1 { margin: 0; font-weight: 500; font-size: clamp(40px, 4.861vw, 70px); line-height: .914; letter-spacing: -.02em; }
+.st-top h1 { margin: 0; font-weight: 500; font-size: clamp(40px, 4.861vw, 93.33px); line-height: .914; letter-spacing: -.02em; }
 /* her columns: 104, 172, 104, 104 with even gaps between them */
-.st-facts { display: grid; grid-template-columns: 104fr 172fr 104fr 104fr; column-gap: 13.61%; margin: 24px 0 0; white-space: nowrap; }
+.st-facts { display: grid; grid-template-columns: 104fr 172fr 104fr 104fr; column-gap: 13.61%; margin: calc(24 * var(--px)) 0 0; white-space: nowrap; }
 .st-facts dt { color: var(--mute); }
 .st-facts dd { margin: 4px 0 0; }
 .cs-out { display: inline-flex; align-items: center; gap: 6px;
@@ -42,7 +42,7 @@ main { position: relative; z-index: 2; }
 .cs-out:hover, .cs-out:focus-visible { background-size: 100% 1px; outline: none; }
 
 /* the hero: Jeff's home page on his pink, 64 under the facts */
-.st-hero { display: grid; place-items: center; margin: 64px 0 0; aspect-ratio: 818 / 560; border-radius: 16px; background: #ff9fd0; }
+.st-hero { display: grid; place-items: center; margin: calc(clamp(64px, 72px - 8 * (100vw - 402px) / 1038, 72px) + var(--gx) * 64 / 1440) 0 0; aspect-ratio: 818 / 560; border-radius: 16px; background: #ff9fd0; }
 .st-hero img { display: block; width: 75.2%; height: auto; }
 /* a hero exported whole from her mockup, its own colour baked in */
 .st-hero--full { display: block; overflow: hidden; background: none; }
@@ -54,33 +54,33 @@ main { position: relative; z-index: 2; }
 .st-tile { margin: 0; overflow: hidden; border-radius: 16px; background: #ebe9e3; }
 /* tiles still waiting for their pictures: her light grey */
 .st-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.st-pics { margin-top: 120px; }
+.st-pics { margin-top: calc(clamp(72px, 72px + 48 * (100vw - 402px) / 1038, 120px) + var(--gx) * 120 / 1440); }
 .st-pics--one .st-tile { aspect-ratio: 818 / 560; }
-.st-pics--bento { display: grid; grid-template-columns: 502fr 292fr; grid-template-rows: 1fr 1fr; gap: 24px; aspect-ratio: 818 / 560; }
+.st-pics--bento { display: grid; grid-template-columns: 502fr 292fr; grid-template-rows: 1fr 1fr; gap: calc(clamp(16px, 16px + 8 * (100vw - 402px) / 1038, 24px) + var(--gx) * 24 / 1440); aspect-ratio: 818 / 560; }
 .st-pics--bento .st-tile:first-child { grid-row: 1 / 3; }
 .st-pics--flip { grid-template-columns: 292fr 502fr; }
 .st-pics--flip .st-tile:first-child { grid-column: 2; }
 
 /* sections: 56/60 heading, 32 under it the text (30/34) */
-.st-sec { margin-top: 120px; scroll-margin-top: 48px; }
-.st-sec h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
-.st-sec .txt p { margin: 0; color: var(--ink); font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
-.st-sec .txt p + p { margin-top: 1.134em; }
+.st-sec { margin-top: calc(clamp(72px, 72px + 48 * (100vw - 402px) / 1038, 120px) + var(--gx) * 120 / 1440); scroll-margin-top: 48px; }
+.st-sec h2 { margin: 0 0 calc(32 * var(--px)); font-weight: 500; font-size: calc(clamp(40px, 40px + 16 * (100vw - 402px) / 1038, 56px) + var(--gx) * 56 / 1440); line-height: calc(clamp(34px, 34px + 26 * (100vw - 402px) / 1038, 60px) + var(--gx) * 60 / 1440); letter-spacing: -.02em; }
+.st-sec .txt p { margin: 0; color: var(--ink); font-size: calc(clamp(20px, 20px + 10 * (100vw - 402px) / 1038, 30px) + var(--gx) * 30 / 1440); line-height: calc(clamp(24px, 24px + 10 * (100vw - 402px) / 1038, 34px) + var(--gx) * 34 / 1440); letter-spacing: -.02em; }
+.st-sec .txt p + p { margin-top: calc(clamp(24px, 24px + 10 * (100vw - 402px) / 1038, 34px) + var(--gx) * 34 / 1440); }
 
 /* next project (her 868:1071): a hairline 100 under the last pictures, 24
    under it "Next project" over the name, and an ink disc with a caret on the
    right; the whole row is the link. Hover rolls the name up like the pills
    and runs the caret through the disc. */
-.st-next { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 100px; padding-top: 24px; border-top: 1px solid #ebe9e3; }
+.st-next { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: calc(clamp(72px, 72px + 28 * (100vw - 402px) / 1038, 100px) + var(--gx) * 100 / 1440); padding-top: 24px; border-top: 1px solid #ebe9e3; }
 .st-next__t { display: grid; gap: 4px; min-width: 0; }
 .st-next__k { color: var(--mute); }
-.st-next__n { display: block; height: 1.134em; overflow: hidden; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
+.st-next__n { display: block; height: 1.134em; overflow: hidden; font-size: calc(clamp(20px, 20px + 10 * (100vw - 402px) / 1038, 30px) + var(--gx) * 30 / 1440); line-height: 1.134; letter-spacing: -.02em; }
 .st-next__n i { display: block; font-style: normal; text-shadow: 0 1.134em currentColor; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
-.st-next__go { flex: none; position: relative; display: grid; place-items: center; width: 48px; height: 48px; color: var(--bg); clip-path: circle(54% at 50% 50%); }
+.st-next__go { flex: none; position: relative; display: grid; place-items: center; width: calc(clamp(40px, 40px + 8 * (100vw - 402px) / 1038, 48px) + var(--gx) * 48 / 1440); height: calc(clamp(40px, 40px + 8 * (100vw - 402px) / 1038, 48px) + var(--gx) * 48 / 1440); color: var(--bg); clip-path: circle(54% at 50% 50%); }
 /* the disc is drawn behind the arrow, so only the disc swells and the arrow
    stays sharp */
 .st-next__go::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--ink); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
-.st-next__go svg { position: relative; display: block; overflow: visible; }
+.st-next__go svg { position: relative; display: block; overflow: visible; width: calc(clamp(24px, 24px + 5 * (100vw - 402px) / 1038, 29px) + var(--gx) * 29 / 1440); height: calc(clamp(24px, 24px + 5 * (100vw - 402px) / 1038, 29px) + var(--gx) * 29 / 1440); }
 .st-next:focus-visible { outline: none; }
 @media (hover: hover) {
   .st-next:hover .st-next__n i { transform: translateY(-1.134em); }
@@ -96,7 +96,7 @@ main { position: relative; z-index: 2; }
 .reduce .st-next__go svg { animation: none !important; }
 
 /* the footer, 160 under the next project */
-.st-page .foot { padding-top: 160px; }
+.st-page .foot { padding-top: calc(clamp(120px, 120px + 40 * (100vw - 402px) / 1038, 160px) + var(--gx) * 160 / 1440); }
 
 /* below 1280 the margin is too narrow for the rail: All projects moves above
    the title and the index goes (the headings carry the way) */
@@ -107,18 +107,8 @@ main { position: relative; z-index: 2; }
   .st-toc { display: none; }
 }
 @media (max-width: 900px) {
-  .st { padding-top: 130px; }
   .st-facts { grid-template-columns: 1fr 1fr; gap: 20px 24px; white-space: normal; }
-  .st-hero { margin-top: 40px; }
   .st-hero:not(.st-hero--full) img { width: 84%; }   /* a whole-mockup hero keeps filling its tile */
-  .st-sec { margin-top: 72px; }
-  .st-sec h2 { margin-bottom: 20px; }
-  .st-pics { margin-top: 48px; }
-  .st-pics--bento { gap: 12px; }
-  .st-next { margin-top: 72px; }
-  .st-next__go { width: 40px; height: 40px; }
-  .st-next__go svg { width: 24px; height: 24px; }
-  .st-page .foot { padding-top: 96px; }
 }
 @media (max-width: 600px) {
   /* a long name wraps on a phone, so it does not roll there */
@@ -130,15 +120,7 @@ main { position: relative; z-index: 2; }
   /* her phone case (1146:12551): 72 between blocks, 40/34 headings with 32
      under them, 20/24 text, corners 16, 16 between pictures; the answering
      group shows its two small pictures above the large one */
-  .st { padding-top: 142px; }
   .st-facts { row-gap: 24px; }
-  .st-hero { margin-top: 72px; }
-  .st-sec h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
-  .st-sec .txt p { line-height: 1.2; }
-  .st-sec .txt p + p { margin-top: 1.2em; }
-  .st-pics { margin-top: 72px; }
-  .st-pics--bento { gap: 16px; }
   .st-pics--flip .st-tile:first-child { order: 1; }
   .st-next__n { line-height: 1.2; }
-  .st-page .foot { padding-top: 120px; }
 }

@@ -38,10 +38,6 @@ html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
   .pg:not(.grabbing) .piece:hover .piece__cap { opacity: 1; transform: none; }
 }
 
-@media (max-width: 759px) {
-  .board__title { font-size: 34px; line-height: 1; }
-  .veil { height: 130px; }                       /* the menu runs to two lines here */
-}
 /* phone (her 1151:12697): the line 40/36 in the 354 px column, wrapping by
    itself and 42 px higher than before, the hint 16 px under it, the pieces'
    corners 8 */
