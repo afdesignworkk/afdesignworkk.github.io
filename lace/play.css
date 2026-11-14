@@ -27,7 +27,7 @@ html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
    (her 818:349). On touch a tap shows the line (play.js adds .is-on). */
 .piece { position: absolute; left: calc(var(--x) * 1px * var(--u)); top: calc(var(--y) * 1px * var(--u));
   width: calc(var(--w) * 1px * var(--u)); height: calc(var(--h) * 1px * var(--u)); margin: 0; }
-.piece img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; pointer-events: none;
+.piece img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; pointer-events: none;   /* her 818:349: 16 */
   box-shadow: 0 16px 40px -12px rgba(20, 20, 20, 0); transition: transform .5s cubic-bezier(.3, 1.2, .5, 1), box-shadow .5s; }
 .piece__cap { position: absolute; left: 0; right: 0; top: calc(100% + 16px); pointer-events: none;
   opacity: 0; transform: translateY(-6px); transition: opacity .3s, transform .45s cubic-bezier(.3, 1.2, .5, 1); }
@@ -41,4 +41,13 @@ html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 @media (max-width: 759px) {
   .board__title { font-size: 34px; line-height: 1; }
   .veil { height: 130px; }                       /* the menu runs to two lines here */
+}
+/* phone (her 1151:12697): the line 40/36 in the 354 px column, wrapping by
+   itself and 42 px higher than before, the hint 16 px under it, the pieces'
+   corners 8 */
+@media (max-width: 600px) {
+  .board__title { left: calc(720px * var(--u) - 177px); top: calc(456px * var(--u) - 42px); width: 354px; font-size: 40px; line-height: 36px; }
+  .board__title > span { display: inline; }
+  .board__hint { top: calc(456px * var(--u) + 82px); }
+  .piece img { border-radius: 8px; }
 }
