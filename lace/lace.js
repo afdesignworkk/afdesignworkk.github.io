@@ -540,7 +540,10 @@ for (const pic of document.querySelectorAll('.work__pic[data-hover]')) {
 // CSS, on .is-on). Mouse and keyboard focus only: on touch a tap just goes.
 for (const pill of document.querySelectorAll('.pill')) {
   for (const l of pill.querySelectorAll('[data-label]')) l.innerHTML = `<i>${l.textContent}</i>`;
-  const on = () => pill.classList.add('is-on'), off = () => pill.classList.remove('is-on');
+  // the icon's run (.is-run, .7 s) always plays to the end, even if the pointer leaves halfway
+  let run = 0;
+  const on = () => { pill.classList.add('is-on'); if (run) return; pill.classList.add('is-run'); run = setTimeout(() => { pill.classList.remove('is-run'); run = 0; }, 750); };
+  const off = () => pill.classList.remove('is-on');
   pill.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') on(); });
   pill.addEventListener('pointerleave', off);
   pill.addEventListener('focus', () => { if (pill.matches(':focus-visible')) on(); });

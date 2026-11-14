@@ -18,8 +18,8 @@ main { position: relative; z-index: 2; }
    facts; held 48 from the top once the bar has scrolled away */
 .st-rail { grid-column: 1; grid-row: 1; position: sticky; top: 48px; align-self: start; display: grid; justify-items: start; }
 .st-back { padding: 8px 12px 8px 10px; }
-.st-back.is-on .go svg { animation: pill-back .6s cubic-bezier(.65, 0, .35, 1) !important; }
-@keyframes pill-back { 45% { transform: translateX(-12px); } 46% { transform: translateX(12px); } 100% { transform: none; } }
+.st-back.is-run .go svg { animation: pill-back .7s cubic-bezier(.65, 0, .35, 1) !important; }
+@keyframes pill-back { 50% { transform: translateX(-18px); } 50.01% { transform: translateX(18px); } 100% { transform: none; } }
 .st-toc { margin: 116px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .st-toc a { display: inline-flex; align-items: center; color: var(--mute); transition: color .35s; }
 /* where you are: the word turns ink and a 6 px dot opens in front of it,
@@ -77,19 +77,23 @@ main { position: relative; z-index: 2; }
 .st-next__k { color: var(--mute); }
 .st-next__n { display: block; height: 1.134em; overflow: hidden; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
 .st-next__n i { display: block; font-style: normal; text-shadow: 0 1.134em currentColor; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
-.st-next__go { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--bg); overflow: hidden;
-  transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
-.st-next__go svg { display: block; overflow: visible; }
+.st-next__go { flex: none; position: relative; display: grid; place-items: center; width: 48px; height: 48px; color: var(--bg); clip-path: circle(54% at 50% 50%); }
+/* the disc is drawn behind the arrow, so only the disc swells and the arrow
+   stays sharp */
+.st-next__go::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--ink); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1); }
+.st-next__go svg { position: relative; display: block; overflow: visible; }
 .st-next:focus-visible { outline: none; }
 @media (hover: hover) {
   .st-next:hover .st-next__n i { transform: translateY(-1.134em); }
-  .st-next:hover .st-next__go { transform: scale(1.08); }
-  .st-next:hover .st-next__go svg { animation: next-run .6s cubic-bezier(.65, 0, .35, 1); }
+  .st-next:hover .st-next__go::before { transform: scale(1.08); }
 }
+/* the arrow's run (.is-run, study.js) leaves the disc completely before it
+   comes back in, and always plays to the end */
+.st-next.is-run .st-next__go svg { animation: next-run .7s cubic-bezier(.65, 0, .35, 1); }
 .st-next:focus-visible .st-next__n i { transform: translateY(-1.134em); }
-.st-next:focus-visible .st-next__go { transform: scale(1.08); }
-@keyframes next-run { 45% { transform: translateX(28px); } 46% { transform: translateX(-28px); } 100% { transform: none; } }
-.reduce .st-next__n i, .reduce .st-next__go { transition: none; }
+.st-next:focus-visible .st-next__go::before { transform: scale(1.08); }
+@keyframes next-run { 50% { transform: translateX(36px); } 50.01% { transform: translateX(-36px); } 100% { transform: none; } }
+.reduce .st-next__n i, .reduce .st-next__go::before { transition: none; }
 .reduce .st-next__go svg { animation: none !important; }
 
 /* the footer, 160 under the next project */
