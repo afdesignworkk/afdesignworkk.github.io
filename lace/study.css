@@ -111,7 +111,7 @@ main { position: relative; z-index: 2; }
   .st { padding-top: 130px; }
   .st-facts { grid-template-columns: 1fr 1fr; gap: 20px 24px; white-space: normal; }
   .st-hero { margin-top: 40px; border-radius: 12px; }
-  .st-hero img { width: 84%; }
+  .st-hero:not(.st-hero--full) img { width: 84%; }   /* a whole-mockup hero keeps filling its tile */
   .st-tile { border-radius: 12px; }
   .st-sec { margin-top: 72px; }
   .st-sec h2 { margin-bottom: 20px; }

@@ -18,6 +18,7 @@ a { color: inherit; text-decoration: none; }
 /* the dot grid behind everything; the butterfly above the polaroids (it
    lands on one) but under the text, which stays readable as it flies past */
 .bg, .gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+@supports (height: 100lvh) { .bg, .gl, .stage { bottom: auto; height: 100lvh; } }   /* the phone's address bar never stretches them */
 .bg { z-index: 0; }
 .gl { z-index: 3; }
 

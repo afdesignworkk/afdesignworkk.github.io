@@ -30,8 +30,15 @@ const bg = document.querySelector('.bg'), bctx = bg.getContext('2d');
 const mask = document.createElement('canvas'), m = mask.getContext('2d', { willReadFrequently: true });
 const F = { W: 0, H: 0, dpr: 1, bw: 0, c: 10, cols: 0, rows: 0, x: 0, y: 0, cur: null, tgt: null, sw: null };
 
+// the screen's full height with the phone's address bar hidden (100lvh), so
+// the bar showing or hiding never resizes the canvases
+const lvhProbe = Object.assign(document.createElement('div'), { ariaHidden: 'true' });
+lvhProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100lvh;visibility:hidden;pointer-events:none';
+document.body.append(lvhProbe);
+const fullH = () => Math.max(innerHeight, lvhProbe.offsetHeight || 0);
+const onWidth = (fn) => { let w = innerWidth, h = fullH(); addEventListener('resize', () => { if (innerWidth === w && fullH() === h) return; w = innerWidth; h = fullH(); fn(); }); };
 function size() {
-  const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio, 2), phone = W < 760;
+  const W = innerWidth, H = fullH(), dpr = Math.min(devicePixelRatio, 2), phone = W < 760;
   const bw = W <= 600 ? W - 48 : phone ? W * .94 : Math.min(W * .472, H * .756);   // the hero butterfly's width: 40 cells (phone: the column, her 1131:10079)
   const c = bw / 40, cols = Math.ceil(W / c) + 1, rows = Math.ceil(H / c) + 1;
   Object.assign(F, { W, H, dpr, bw, c, cols, rows, x: (W - cols * c) / 2, y: (H - rows * c) / 2,
@@ -39,7 +46,7 @@ function size() {
   for (const cv of [gl, bg]) { cv.width = W * dpr; cv.height = H * dpr; }
   mask.width = cols * S; mask.height = rows * S;
 }
-size(); addEventListener('resize', size);
+size(); onWidth(size);
 
 // paint the butterfly at (x, y) on screen, `s` times the hero size
 function shape(x, y, s, rot, open) {
@@ -69,9 +76,11 @@ function draw(dt, fade) {
   bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.fillStyle = '#141414';
   for (let k = rings.length - 1; k >= 0; k--) { rings[k].age += dt; if (rings[k].age > 3.2) rings.splice(k, 1); }
   const ku = 1 - Math.pow(.7, dt * 60), kd = 1 - Math.pow(.95, dt * 60), reach = Math.hypot(W, H) * .6;
+  const every = Math.max(1, Math.round(17 / c));        // on a phone the cells are small: every other one keeps the page's 17 px grid
   for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
     const n = j * cols + i;
     if (cur[n] > .03) { sw[n] = 0; continue; }          // the butterfly draws here
+    if (every > 1 && (i % every || j % every)) continue;
     const px = x + (i + .5) * c, py = y + (j + .5) * c;
     let tgt = 0;
     for (const r of rings) {
@@ -81,7 +90,7 @@ function draw(dt, fade) {
     sw[n] += (tgt - sw[n]) * (tgt > sw[n] ? ku : kd);
     const v = sw[n], dc = Math.hypot(px - W / 2, py - H * .45);
     bctx.globalAlpha = Math.min(1, (.16 + v * .5) * (1 - .55 * Math.min(1, dc / reach)) * fade);
-    bctx.beginPath(); bctx.arc(px, py, c * (.065 + v * .16), 0, 6.2832); bctx.fill();
+    bctx.beginPath(); bctx.arc(px, py, c * every * (.065 + v * .16), 0, 6.2832); bctx.fill();
   }
   bctx.globalAlpha = 1;
 }
@@ -142,7 +151,7 @@ function measure() {
     return { x, y, s: +el.dataset.scale || .5, settle };
   });
 }
-measure(); addEventListener('resize', measure); addEventListener('load', () => { placePerch(); measure(); });
+measure(); onWidth(measure); addEventListener('load', () => { placePerch(); measure(); });
 
 const ease = (e) => e * e * e * (e * (e * 6 - 15) + 10);  // smootherstep
 function target(ty) {
@@ -299,7 +308,7 @@ function measureWorks() {
   works.forEach((w, i) => { w.li.style.transform = keep[i]; });
   cardH = works[0].li.offsetHeight; pitch = rows[1] - rows[0];
 }
-addEventListener('resize', measureWorks);
+onWidth(measureWorks);
 new ResizeObserver(measureWorks).observe(workList);
 
 // the blur at the screen's edges: six layers a side, each blurring twice as
@@ -331,8 +340,24 @@ function setHaze(amount, top, bottom, zoneH) {
   }
 }
 
+// on a phone the drum is off: the cards keep their places in the page and
+// each rises in once as it comes up (moving them every frame on top of the
+// phone's own scroll stutters)
+const calm = matchMedia('(max-width: 600px)');
+let calmOn = false;
+const calmIO = new IntersectionObserver((list) => {
+  for (const e of list) if (e.isIntersecting) { calmIO.unobserve(e.target); gsap.to(e.target, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', clearProps: 'transform' }); }
+}, { rootMargin: '0px 0px -10% 0px' });
 function rollWorks(dt) {
   if (reduce) return;
+  if (calm.matches) {
+    if (!calmOn) {
+      calmOn = true; workList.style.perspective = ''; setHaze(0, 0, 0, 0);
+      for (const { li } of works) { li.style.transform = ''; li.style.visibility = ''; gsap.set(li, { opacity: 0, y: 40 }); calmIO.observe(li); }
+    }
+    return;
+  }
+  if (calmOn) { calmOn = false; for (const { li } of works) { calmIO.unobserve(li); gsap.set(li, { clearProps: 'opacity' }); } measureWorks(); }
   if (!rows.length) measureWorks();
   const y = lenis.scroll, H = innerHeight, mid = H / 2, n = works.length;
   if (lastY !== null) vel += (Math.abs(y - lastY) / Math.max(dt, .001) - vel) * Math.min(1, dt * 12);
@@ -397,14 +422,14 @@ stage.append(field);
 
 let SF = { cols: 0, rows: 0, c: 0, x: 0, y: 0, pc: 0, cur: null };
 function sizeField() {
-  const dpr = Math.min(devicePixelRatio, 2), W = innerWidth, H = innerHeight;
+  const dpr = Math.min(devicePixelRatio, 2), W = innerWidth, H = fullH();
   field.width = Math.round(W * dpr); field.height = Math.round(H * dpr);
   fq.setTransform(dpr, 0, 0, dpr, 0, 0);
   const c = F.c / 2, cols = F.cols * 2, rows = F.rows * 2;
   SF = { cols, rows, c, x: F.x - c / 2, y: F.y - c / 2, pc: F.cols, cur: new Float32Array(cols * rows) };
   field._rest = false;                                    // the canvas is blank again: draw the grid next frame
 }
-sizeField(); addEventListener('resize', () => requestAnimationFrame(sizeField));
+sizeField(); onWidth(() => requestAnimationFrame(sizeField));
 
 const ripples = [], workHead = workSec.querySelector('.work__h');
 let stageInk = false, lastLt = -1, settled = -1, ltS = 0;
@@ -462,9 +487,10 @@ function rollStage(dt) {
 
   // draw: the resting grid and the lit dots, in paper, in a few strengths
   fq.clearRect(0, 0, W, H);
-  const LV = 8, paths = Array.from({ length: LV }, () => new Path2D()), pc = c * 2;
+  const every = Math.max(1, Math.round(17 / F.c));      // on a phone, every other page dot keeps the 17 px grid
+  const LV = 8, paths = Array.from({ length: LV }, () => new Path2D()), pc = c * 2 * every;
   for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-    const v = cur[j * cols + i], own = i & j & 1;         // own: one of the page's dots (odd row, odd column)
+    const v = cur[j * cols + i], own = (i & j & 1) && !((i >> 1) % every) && !((j >> 1) % every);   // own: one of the page's dots (odd row, odd column)
     if (v < .02 && !own) continue;                        // between them: only when lit
     const px = ox + (i + .5) * c, py = oy + (j + .5) * c, rr = (own ? pc * Dt.r : 0) + c * Dt.grow * 1.6 * v;
     if (rr < .25) continue;
