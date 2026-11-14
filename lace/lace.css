@@ -137,11 +137,11 @@ html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
    mouse, brings each one's second picture in in dots on hover (rollWorks and
    DOTS in lace.js). */
 .work { position: relative; z-index: 4; padding: 0 var(--side) 96px; overflow-x: clip; }
-.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(36px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
+.work__h { margin: 0 auto 48px; max-width: 608px; text-align: center; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
 .work__list { display: grid; row-gap: 36px; justify-items: center; }
 .work__list li { width: min(818px, 100%); will-change: transform; }
 .work__item { display: block; }
-.work__pic { position: relative; display: block; aspect-ratio: 818 / 560; border-radius: 16px; background: #c4c4c4; overflow: hidden; }
+.work__pic { position: relative; display: block; aspect-ratio: 818 / 560; border-radius: 16px; background: #ebe9e3; overflow: hidden; }
 .work__shot { position: absolute; inset: 0; }
 .work__shot img, .work__dots { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .work__shot img { object-fit: cover; }
@@ -224,7 +224,7 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
 @media (max-width: 600px) {
   :root { --side: 24px; }
   .top { top: 50px; flex-direction: row; align-items: center; }
-  .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: #000; cursor: pointer; }   /* her icon colour (1157:12656) */
+  .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
   .burger span { grid-area: 1 / 1; width: 16.5px; height: 1.5px; border-radius: 1px; background: currentColor; transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
   .burger span:nth-child(1) { transform: translateY(-6px); } .burger span:nth-child(3) { transform: translateY(6px); }
   .top.menu-open .burger span:nth-child(1) { transform: rotate(45deg); }

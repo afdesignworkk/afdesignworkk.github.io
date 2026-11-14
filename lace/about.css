@@ -4,7 +4,7 @@
    (56/60 heading, 30/34 text, 818 wide at 1440); the home footer. */
 
 .dots { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(circle, rgba(20, 20, 20, .16) 1.1px, transparent 1.6px) 0 0 / 17px 17px;
+  background: radial-gradient(circle, rgba(27, 27, 27, .16) 1.1px, transparent 1.6px) 0 0 / 17px 17px;
   -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%);
   mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%); }
 main { position: relative; z-index: 2; }
@@ -19,8 +19,8 @@ main { position: relative; z-index: 2; }
 .reduce .ab3-top { height: auto; }
 .ab3-room { position: absolute; inset: 0; perspective: 1000px; }
 .ab3-cam { position: absolute; inset: 0; transform-style: preserve-3d; }
-/* her tiles: #f1efe9, corners 12 (set in about.js), 97% */
-.ab3-tile { position: absolute; left: 50%; top: 50%; margin: 0; overflow: hidden; background: #f1efe9; opacity: 0; will-change: transform, opacity; }
+/* her tiles: the site's light grey, corners 12 (set in about.js), 97% */
+.ab3-tile { position: absolute; left: 50%; top: 50%; margin: 0; overflow: hidden; background: #ebe9e3; opacity: 0; will-change: transform, opacity; }
 .ab3-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* her line, 70/64, centred in the screen, over the room */
 .ab3-top h1 { position: absolute; z-index: 2; left: 50%; top: 50%; width: min(608px, calc(100% - 2 * var(--side))); margin: 0; transform: translate(-50%, -50%);
@@ -32,7 +32,7 @@ main { position: relative; z-index: 2; }
 .ab3-ch { position: relative; z-index: 2; width: min(818px, calc(100% - 2 * var(--side))); margin: 100px auto 0; }
 .ab3-top + .ab3-ch { margin-top: 52px; }
 .ab3-ch h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
-.ab3-ch .txt p { margin: 0; color: #000; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
+.ab3-ch .txt p { margin: 0; color: var(--ink); font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
 .ab3-ch .txt p + p { margin-top: 1.134em; }
 .ab3-ch .txt a { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; transition: background-size .5s cubic-bezier(.65, 0, .35, 1); }
 .ab3-ch .txt a:hover { background-size: 0 1px; background-position: 100% 100%; }
@@ -50,6 +50,7 @@ main { position: relative; z-index: 2; }
 }
 /* phone (her 1151:12650): the chapters in the case studies' phone style */
 @media (max-width: 600px) {
+  .ab3-top h1 { line-height: 36px; }   /* 40/36, as the Playground's line */
   .ab3-top + .ab3-ch { margin-top: 20px; }
   .ab3-ch h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
   .ab3-ch .txt p { line-height: 1.2; }

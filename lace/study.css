@@ -5,7 +5,7 @@
    everything. */
 
 .dots { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(circle, rgba(20, 20, 20, .16) 1.1px, transparent 1.6px) 0 0 / 17px 17px;
+  background: radial-gradient(circle, rgba(27, 27, 27, .16) 1.1px, transparent 1.6px) 0 0 / 17px 17px;
   -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%);
   mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%); }
 main { position: relative; z-index: 2; }
@@ -51,9 +51,8 @@ main { position: relative; z-index: 2; }
 /* tiles, corners 16 (her 2026-11-10 change): one wide, or one large beside two small (the
    large one on the left, or on the right to answer it) */
 /* each tile is a picture from her mockup, its own colour baked in */
-.st-tile { margin: 0; overflow: hidden; border-radius: 16px; background: #c4c4c4; }
+.st-tile { margin: 0; overflow: hidden; border-radius: 16px; background: #ebe9e3; }
 /* tiles still waiting for their pictures: her light grey */
-.st-tile:empty { background: #eaeaea; }
 .st-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .st-pics { margin-top: 120px; }
 .st-pics--one .st-tile { aspect-ratio: 818 / 560; }
@@ -65,7 +64,7 @@ main { position: relative; z-index: 2; }
 /* sections: 56/60 heading, 32 under it the text (30/34) */
 .st-sec { margin-top: 120px; scroll-margin-top: 48px; }
 .st-sec h2 { margin: 0 0 32px; font-weight: 500; font-size: clamp(32px, 3.889vw, 56px); line-height: 1.0715; letter-spacing: -.02em; }
-.st-sec .txt p { margin: 0; color: #000; font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
+.st-sec .txt p { margin: 0; color: var(--ink); font-size: clamp(20px, 2.083vw, 30px); line-height: 1.134; letter-spacing: -.02em; }
 .st-sec .txt p + p { margin-top: 1.134em; }
 
 /* next project (her 868:1071): a hairline 100 under the last pictures, 24
@@ -110,9 +109,8 @@ main { position: relative; z-index: 2; }
 @media (max-width: 900px) {
   .st { padding-top: 130px; }
   .st-facts { grid-template-columns: 1fr 1fr; gap: 20px 24px; white-space: normal; }
-  .st-hero { margin-top: 40px; border-radius: 12px; }
+  .st-hero { margin-top: 40px; }
   .st-hero:not(.st-hero--full) img { width: 84%; }   /* a whole-mockup hero keeps filling its tile */
-  .st-tile { border-radius: 12px; }
   .st-sec { margin-top: 72px; }
   .st-sec h2 { margin-bottom: 20px; }
   .st-pics { margin-top: 48px; }
@@ -134,8 +132,7 @@ main { position: relative; z-index: 2; }
      group shows its two small pictures above the large one */
   .st { padding-top: 142px; }
   .st-facts { row-gap: 24px; }
-  .st-hero { margin-top: 72px; border-radius: 16px; }
-  .st-tile { border-radius: 16px; }
+  .st-hero { margin-top: 72px; }
   .st-sec h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
   .st-sec .txt p { line-height: 1.2; }
   .st-sec .txt p + p { margin-top: 1.2em; }

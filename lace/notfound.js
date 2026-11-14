@@ -119,7 +119,7 @@ function frame(now) {
   for (let n = 0; n < cur.length; n++) { const g = tgt[n], c = cur[n]; cur[n] = c + (g - c) * (g > c ? ku : kd); }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, cv.width, cv.height);
   ctx.setTransform(F.dpr, 0, 0, F.dpr, 0, 0);
-  lace(ctx, cur, cols, rows, F, '#141414');
+  lace(ctx, cur, cols, rows, F, '#1b1b1b');
   requestAnimationFrame(frame);
 }
 if (!reduce) requestAnimationFrame(frame);

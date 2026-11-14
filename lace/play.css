@@ -11,7 +11,7 @@ html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .board { position: fixed; inset: 0; overflow: hidden; cursor: grab; }
 .pg.grabbing .board, .pg.grabbing .piece { cursor: grabbing; }
 .board__dots { position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(circle, rgba(20, 20, 20, .16) var(--dot, 1.1px), transparent calc(var(--dot, 1.1px) + .5px)) 0 0 / var(--pitch, 17px) var(--pitch, 17px);
+  background: radial-gradient(circle, rgba(27, 27, 27, .16) var(--dot, 1.1px), transparent calc(var(--dot, 1.1px) + .5px)) 0 0 / var(--pitch, 17px) var(--pitch, 17px);
   -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%);
   mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%); }
 .board__layer { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }

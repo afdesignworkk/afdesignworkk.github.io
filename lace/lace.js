@@ -70,10 +70,10 @@ function draw(dt, fade) {
   const { W, H, dpr, c, cols, rows, x, y, cur, sw } = F;
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, gl.width, gl.height);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  lace(ctx, cur, cols, rows, { c, x, y }, '#141414');
+  lace(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b');
 
   bctx.setTransform(1, 0, 0, 1, 0, 0); bctx.clearRect(0, 0, bg.width, bg.height);
-  bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.fillStyle = '#141414';
+  bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.fillStyle = '#1b1b1b';
   for (let k = rings.length - 1; k >= 0; k--) { rings[k].age += dt; if (rings[k].age > 3.2) rings.splice(k, 1); }
   const ku = 1 - Math.pow(.7, dt * 60), kd = 1 - Math.pow(.95, dt * 60), reach = Math.hypot(W, H) * .6;
   const every = Math.max(1, Math.round(17 / c));        // on a phone the cells are small: every other one keeps the page's 17 px grid

@@ -50,7 +50,7 @@ function frame(now) {
   for (let n = 0; n < F.cur.length; n++) { const a = F.tgt[n], b = F.cur[n]; F.cur[n] = b + (a - b) * (a > b ? ku : kd); }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, cv.width, cv.height);
   ctx.setTransform(F.dpr, 0, 0, F.dpr, 0, 0);
-  lace(ctx, F.cur, F.cols, F.rows, { c: F.c, x: F.x, y: F.y }, '#141414');
+  lace(ctx, F.cur, F.cols, F.rows, { c: F.c, x: F.x, y: F.y }, '#1b1b1b');
   if (live) requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
