@@ -116,7 +116,7 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
       el.style.display = hit ? 'none' : '';
       const z = F * (1 - NEAR / w), k = (F - z) / F;                       // depth from its size
       el.style.width = `${(sw * k).toFixed(1)}px`; el.style.height = `${(sh * k).toFixed(1)}px`;
-      el.style.borderRadius = `${(Math.max(8, 12 * ks) * k).toFixed(1)}px`;   // her corners: 12 (830:489)
+      el.style.borderRadius = `${((W <= 600 ? 12 : Math.max(8, 12 * ks)) * k).toFixed(1)}px`;   // her corners: 12 (830:489; on a phone too, 1151:12650)
       return { el, x: sx * k, y: sy * k, z, ph: i * 1.7, hit };
     }).filter((t) => !t.hit);
   };

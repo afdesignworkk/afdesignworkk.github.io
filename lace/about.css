@@ -48,3 +48,11 @@ main { position: relative; z-index: 2; }
   .ab3-ch h2 { margin-bottom: 20px; }
   .ab3-page .foot { padding-top: 96px; }
 }
+/* phone (her 1151:12650): the chapters in the case studies' phone style */
+@media (max-width: 600px) {
+  .ab3-top + .ab3-ch { margin-top: 20px; }
+  .ab3-ch h2 { margin-bottom: 32px; font-size: 40px; line-height: 34px; }
+  .ab3-ch .txt p { line-height: 1.2; }
+  .ab3-ch .txt p + p { margin-top: 1.2em; }
+  .ab3-page .foot { padding-top: 120px; }
+}
