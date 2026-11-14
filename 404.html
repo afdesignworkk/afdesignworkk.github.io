@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>document.documentElement.classList.add('pre-in');setTimeout(()=>document.documentElement.classList.remove('pre-in'),6000)</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found — Anna Fesenko</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/lace/lace.css?v=64">
+  <style>
+    /* the page's faint dot grid (as About) and one line in the middle of the
+       screen with the way back home */
+    .dots { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(circle, rgba(20, 20, 20, .16) 1.1px, transparent 1.6px) 0 0 / 17px 17px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%);
+      mask-image: radial-gradient(ellipse 70% 75% at 50% 45%, #000 20%, rgba(0, 0, 0, .45) 100%); }
+    .nf { position: relative; z-index: 2; min-height: 100svh; display: grid; place-content: center; justify-items: center; gap: 24px; padding: 120px var(--side); text-align: center; }
+    .nf h1 { margin: 0; max-width: 14em; text-wrap: balance; font-weight: 500; font-size: clamp(40px, 4.861vw, 70px); line-height: .914; letter-spacing: -.02em; }
+    .nf p { margin: 0; color: var(--mute); }
+    .nf .pill { margin-top: 16px; }
+
+    /* A · Flown away: the lace butterfly, lost, flutters about the screen and
+       shies away from the pointer; over Back home it comes and perches */
+    .nf-fly { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    .nf-fly canvas { width: 100%; height: 100%; display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- 404: GitHub Pages shows this for any address that does not exist, so
+       every link and file here starts from the site's root. The lace
+       butterfly has lost its way and flutters about the screen; over Back
+       home it comes and perches (lace/notfound.js). -->
+
+  <div class="dots" aria-hidden="true"></div>
+  <header class="top">
+    <a class="tab" href="/index.html">Anna Fesenko</a>
+    <p class="clock"><time>11:15:45 PM GMT+2</time></p>
+    <nav aria-label="Main">
+      <a class="tab" href="/about.html">About</a>
+      <div class="drop">
+        <button class="drop__btn tab" type="button" aria-expanded="false" aria-controls="projects-menu">Projects</button>
+        <div class="drop__panel" id="projects-menu" hidden>
+          <ul>
+            <li><a class="row" href="/case-jeff.html"><span class="n">01</span><span class="t">Jeff.Q Productions<small>Portfolio website</small></span><span class="y">2026</span></a></li>
+            <li><a class="row" href="/case-spacebring.html"><span class="n">02</span><span class="t">Spacebring<small>Admin web app</small></span><span class="y">2025</span></a></li>
+            <li><a class="row" href="/case-marketing.html"><span class="n">03</span><span class="t">Spacebring<small>Marketing website</small></span><span class="y">2024</span></a></li>
+            <li><span class="row soon" aria-disabled="true"><span class="n">04</span><span class="t">TalentMinted<small>Job board system</small></span><span class="y">Soon</span></span></li>
+          </ul>
+        </div>
+      </div>
+      <a class="tab" href="/playground.html">Playground</a>
+      <a class="tab" href="mailto:af.designworkk@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <div class="nf-fly" aria-hidden="true"><canvas></canvas></div>
+
+  <main class="nf">
+    <h1 data-in>This page flew away</h1>
+    <p data-in>The link may be old or mistyped.</p>
+    <a class="pill" href="/" data-in><span data-label>Back home</span><span class="go" aria-hidden="true"><svg viewBox="0 0 12 12" width="12" height="12"><path d="M4.5 2.25L8.25 6L4.5 9.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script type="module" src="/lace/notfound.js?v=2"></script>
+</body>
+</html>
