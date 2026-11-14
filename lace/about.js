@@ -2,7 +2,8 @@
 // Projects menu), Roll pills, the footer's copy button and Back to top, then
 // the page itself: the opening room of tiles and the chapters' lines rising in.
 
-import { lines } from './lines.js?v=2';
+import { lines } from './lines.js?v=3';
+import { enter } from './enter.js?v=5';
 const { gsap, Lenis, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -132,7 +133,6 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
     // wait until her photos are ready (at most 2.5 s) so no tile flies in empty
     const ready = Promise.all(tiles.map((t) => t.querySelector('img')?.decode().catch(() => {})));
     Promise.race([ready, new Promise((r) => setTimeout(r, 2500))]).then(() => gsap.to(intro, { t: 1, duration: 2.4, ease: 'power2.out', delay: .1 }));
-    gsap.from(title, { opacity: 0, filter: 'blur(10px)', duration: 1.4, ease: 'power3.out', delay: .35, clearProps: 'filter' });
     const rx = gsap.quickTo(cam, 'rotationX', { duration: 1.6, ease: 'power3.out' }), ry = gsap.quickTo(cam, 'rotationY', { duration: 1.6, ease: 'power3.out' });
     addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; ry((e.clientX / innerWidth - .5) * 6); rx(-(e.clientY / innerHeight - .5) * 4); });
     const render = (time) => {
@@ -157,3 +157,7 @@ document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preve
 lines('.ab3-ch .txt p');
 
 addEventListener('load', () => ScrollTrigger.refresh());
+
+// the first screen comes in as on every page (enter.js): the menu, then the
+// title and the hint float up while the room fills
+enter({ title: ['.ab3-top h1', '.ab3-hint'] });

@@ -5,7 +5,7 @@
 // statements and the About page's chapters (lines.css rules live in lace.css).
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function wrap(node, out) {
+export function wrap(node, out) {
   for (const n of [...node.childNodes]) {
     if (n.nodeType === 3) {
       const frag = document.createDocumentFragment();
@@ -23,7 +23,7 @@ function wrap(node, out) {
 }
 
 // the words grouped into lines as the text wraps now
-function rows(words) {
+export function rows(words) {
   const m = new Map();
   for (const w of words) { const k = Math.round(w.getBoundingClientRect().top); if (!m.has(k)) m.set(k, []); m.get(k).push(w); }
   return [...m.keys()].sort((a, b) => a - b).map((k) => m.get(k));

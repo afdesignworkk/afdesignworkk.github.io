@@ -6,8 +6,6 @@
 html.pg, .pg body { height: 100%; overflow: hidden; overscroll-behavior: none; }
 .pg body { touch-action: none; user-select: none; -webkit-user-select: none; }
 
-.top a.tab:first-child { color: inherit; }
-
 /* the table: the home page's resting dot grid (same pitch, dot and fade
    towards the edges), moved with the board */
 .board { position: fixed; inset: 0; overflow: hidden; cursor: grab; }

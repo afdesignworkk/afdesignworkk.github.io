@@ -13,7 +13,8 @@
 // the next: it rides up with the first a little, swings out to the side in
 // an arc, and lands on the next.
 import { lace, butterfly } from './field.js?v=1';
-import { lines } from './lines.js?v=2';
+import { lines } from './lines.js?v=3';
+import { enter as enterPage } from './enter.js?v=5';
 
 const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -219,7 +220,7 @@ gsap.ticker.add((time, dms) => {
   rollBand(dt);
   rollFoot();
   // the hero's text fades as it nears the menu, so the two never overlap
-  for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))) * Math.min(1, intro.k * 1.3); }
+  for (const el of heroText) { const r = el.getBoundingClientRect(); el.style.opacity = Math.min(1, Math.max(0, (r.top - 80) / (F.H * .3))); }
 });
 
 // the Projects menu: opens on click (and on hover with a mouse), the panel
@@ -620,6 +621,7 @@ tick(); setInterval(tick, 1000);
 (window.__loaded || Promise.resolve('first')).then((mode) => {
   const d = mode === 'first' ? .5 : mode === 'instant' ? .1 : .3;
   if (mode === 'instant') intro.k = 1; else gsap.to(intro, { k: 1, duration: 1.8, ease: 'expo.out', delay: d - .3 });
-  gsap.from('.top, .hero .line, .hero .intro', { y: 8, duration: 1, ease: 'power2.out', stagger: .1, delay: d });
-  gsap.from('.top', { opacity: 0, duration: 1, ease: 'power2.out', delay: d });
 });
+// the first screen comes in as on every page (enter.js): the menu, then the
+// line and the intro float up
+enterPage({ title: ['.hero .line', '.hero .intro'], wait: window.__loaded || Promise.resolve() });

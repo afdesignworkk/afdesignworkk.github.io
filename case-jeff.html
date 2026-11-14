@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>document.documentElement.classList.add('pre-in');setTimeout(()=>document.documentElement.classList.remove('pre-in'),6000)</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jeff.Q Productions — Anna Fesenko</title>
   <meta name="description" content="Case study: designing and launching a portfolio website for Jeff.Q Productions, a filmmaker, with free hosting and no engineers.">
@@ -21,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="lace/lace.css?v=63">
+  <link rel="stylesheet" href="lace/lace.css?v=64">
   <link rel="stylesheet" href="lace/study.css?v=13">
 </head>
 <body class="st-page">
@@ -55,7 +56,7 @@
 
   <main class="st">
     <!-- the rail: back to the work, and where you are in the story -->
-    <aside class="st-rail" aria-label="Case study">
+    <aside class="st-rail" data-in aria-label="Case study">
       <a class="pill st-back" href="index.html#work"><span class="go"><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M9.5 6h-7M5.5 3L2.5 6l3 3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-label>All projects</span></a>
       <ol class="st-toc">
         <li><a href="#s1">Overview</a></li>
@@ -67,15 +68,15 @@
 
     <div class="st-main">
       <header class="st-top">
-        <h1>Designing and launching a filmmaker’s portfolio</h1>
-        <dl class="st-facts">
+        <h1 data-in>Designing and launching a filmmaker’s portfolio</h1>
+        <dl class="st-facts" data-in>
           <div><dt>Role</dt><dd>UI/UX designer</dd></div>
           <div><dt>Scope</dt><dd>Website design and build</dd></div>
           <div><dt>Year</dt><dd>2026</dd></div>
           <div><dt>Live website</dt><dd><a class="cs-out" href="https://jeffqproductions.github.io/" target="_blank" rel="noopener">Visit the site</a></dd></div>
         </dl>
       </header>
-      <figure class="st-hero st-hero--full"><img src="assets/case-jeff/hero.webp?v=4" alt="The Jeff.Q Productions home page: the Maison Solenne film at the front of a reel of film cards on black, with its title, details and a numbered timeline below" width="1636" height="1120" decoding="async"></figure>
+      <figure class="st-hero st-hero--full" data-in><img src="assets/case-jeff/hero.webp?v=4" alt="The Jeff.Q Productions home page: the Maison Solenne film at the front of a reel of film cards on black, with its title, details and a numbered timeline below" width="1636" height="1120" decoding="async"></figure>
 
       <section class="st-sec" id="s1" aria-labelledby="h-s1">
         <h2 id="h-s1">Overview</h2>
@@ -132,7 +133,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-  <script type="module" src="lace/study.js?v=5"></script>
+  <script type="module" src="lace/study.js?v=6"></script>
   <script type="module" src="lace/mark.js?v=2"></script>
 </body>
 </html>

@@ -4,7 +4,8 @@
 // section's text rises in line by line from behind a mask (lines.js), and the
 // rail marks the section you are reading. The pictures simply sit in place.
 
-import { lines } from './lines.js?v=2';
+import { lines } from './lines.js?v=3';
+import { enter } from './enter.js?v=5';
 const { gsap, Lenis, ScrollTrigger } = window;
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -87,10 +88,9 @@ for (const b of document.querySelectorAll('[data-copy]')) {
 }
 document.querySelector('.foot__top')?.addEventListener('click', (e) => { e.preventDefault(); lenis.scrollTo(0, { duration: reduce ? 0 : 2 }); });
 
-if (!reduce) {
-  gsap.from('.st-top h1, .st-facts > div', { opacity: 0, y: 20, filter: 'blur(10px)', duration: 1, ease: 'power3.out', stagger: .06, delay: .1, clearProps: 'filter,transform' });
-  gsap.from('.st-rail > *', { opacity: 0, y: 12, duration: .9, ease: 'power3.out', stagger: .08, delay: .3, clearProps: 'transform' });
-}
+// the first screen comes in as on every page (enter.js): the menu, the title,
+// then the facts, the rail and the picture
+enter({ title: ['.st-top h1'], rest: ['.st-facts > div', '.st-rail > *', '.st-hero'] });
 lines('.st-sec .txt p');
 
 // the rail's index: nothing is marked over the title and the hero; the dot

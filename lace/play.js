@@ -1,6 +1,8 @@
 // Playground: the board, and the top bar's clock, Projects
 // menu (the same as on the home page, lace.js).
 
+import { enter } from './enter.js?v=5';
+
 const { gsap } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
@@ -107,17 +109,14 @@ gsap.ticker.add((t, dms) => {
 gsap.ticker.lagSmoothing(0);
 
 // --- coming in ------------------------------------------------------------------
-// The title rises line by line, then the pieces fade up from the middle out.
+// The first screen comes in as on every page (enter.js): the menu, the title,
+// then the hint; the pieces fade up from the middle out.
+enter({ title: [title], rest: [hint] });
 if (!reduce) {
-  const lines = title.querySelectorAll('span');
-  gsap.set(lines, { opacity: 0, y: 24 });
-  gsap.set(hint, { opacity: 0 });
   gsap.set(pieces, { opacity: 0, y: 30 });
   const cx = FRAME.cx, cy = FRAME.cy;
   const order = pieces.map((p) => { const s = p.style; return Math.hypot(+s.getPropertyValue('--x') + +s.getPropertyValue('--w') / 2 - cx, +s.getPropertyValue('--y') + +s.getPropertyValue('--h') / 2 - cy); });
   const start = () => {
-    gsap.to(lines, { opacity: 1, y: 0, duration: .9, ease: 'power3.out', stagger: .1 });
-    gsap.to(hint, { opacity: 1, duration: .6, delay: .5 });
     pieces.forEach((p, k) => gsap.to(p, { opacity: 1, y: 0, duration: .9, ease: 'power3.out', delay: .25 + order[k] / 1400, clearProps: 'transform' }));
   };
   document.fonts.ready.then(start, start);

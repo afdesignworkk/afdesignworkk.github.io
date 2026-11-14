@@ -106,6 +106,8 @@ a.row:hover .t::before, a.row:focus-visible .t::before { transform: scale(1); }
 .about--deck .about__say { max-width: none; }
 /* lines rising from behind a mask (lines.js): each word in its own clipped
    box, a little taller than the type so descenders are never cut */
+/* the first screen waits for its entrance (enter.js) */
+html.pre-in .top, html.pre-in [data-in] { visibility: hidden; }
 .mw { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .06em .16em; margin: 0 -.06em -.16em; }
 .mw__in { display: inline-block; will-change: transform; }
 .mw.up .mw__in { will-change: auto; }
