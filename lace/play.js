@@ -2,6 +2,7 @@
 // menu (the same as on the home page, lace.js).
 
 import { enter } from './enter.js?v=5';
+import './menu.js?v=1';
 
 const { gsap } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

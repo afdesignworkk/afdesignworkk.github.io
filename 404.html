@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap">
-  <link rel="stylesheet" href="/lace/lace.css?v=64">
+  <link rel="stylesheet" href="/lace/lace.css?v=66">
   <style>
     /* the page's faint dot grid (as About) and one line in the middle of the
        screen with the way back home */
@@ -41,7 +41,8 @@
   <header class="top">
     <a class="tab" href="/index.html">Anna Fesenko</a>
     <p class="clock"><time>11:15:45 PM GMT+2</time></p>
-    <nav aria-label="Main">
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <nav id="menu" aria-label="Main">
       <a class="tab" href="/about.html">About</a>
       <div class="drop">
         <button class="drop__btn tab" type="button" aria-expanded="false" aria-controls="projects-menu">Projects</button>
@@ -68,6 +69,6 @@
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-  <script type="module" src="/lace/notfound.js?v=2"></script>
+  <script type="module" src="/lace/notfound.js?v=3"></script>
 </body>
 </html>

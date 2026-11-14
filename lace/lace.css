@@ -215,6 +215,56 @@ body.on-ink .veil { background: linear-gradient(var(--ink) 50%, rgba(27, 27, 27,
   .veil { height: 120px; }
 }
 
+/* Phone (her frame 1131:10079, 402 wide): 24 px sides on a 4-column grid,
+   the name and a menu button on the top bar, the menu opening as an ink panel
+   (lace/menu.js); the home hero in the flow under a full-width butterfly; the
+   footer's small print stacked. */
+.burger { display: none; }
+@media (max-width: 600px) {
+  :root { --side: 24px; }
+  .top { top: 50px; flex-direction: row; align-items: center; }
+  .burger { display: grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+  .burger span { grid-area: 1 / 1; width: 16.5px; height: 1.5px; border-radius: 1px; background: currentColor; transition: transform .45s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
+  .burger span:nth-child(1) { transform: translateY(-6px); } .burger span:nth-child(3) { transform: translateY(6px); }
+  .top.menu-open .burger span:nth-child(1) { transform: rotate(45deg); }
+  .top.menu-open .burger span:nth-child(2) { opacity: 0; }
+  .top.menu-open .burger span:nth-child(3) { transform: rotate(-45deg); }
+  /* the menu: an ink panel under the bar, the pages large, then the projects */
+  .top nav { display: none; position: absolute; top: calc(100% + 16px); right: 0; width: calc(100vw - 2 * var(--side)); flex-direction: column; gap: 0;
+    padding: 8px 24px 12px; border-radius: 20px; background: var(--ink); color: var(--bg); box-shadow: 0 20px 20px rgba(20, 20, 20, .18); }
+  .top.menu-open nav { display: flex; }
+  .top nav > .tab { padding: 12px 0 14px; font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -.02em; color: var(--bg); }
+  .top nav > .tab + .tab, .top nav > .drop + .tab { border-top: 1px solid rgba(247, 247, 244, .12); }
+  .top nav .tab::before { display: none; }
+  .top nav > .tab[aria-current] { color: rgba(247, 247, 244, .5); }
+  .drop { order: 9; margin-top: 12px; border-top: 1px solid rgba(247, 247, 244, .12); }
+  .drop__btn { display: block; padding: 16px 0 0; pointer-events: none; font-size: 12px; line-height: 16px; color: rgba(247, 247, 244, .5); }
+  .drop__panel, .drop__panel[hidden] { display: block; position: static; width: auto; margin: 0; padding: 0; background: none; box-shadow: none; clip-path: none !important; transform: none !important; }
+  .drop.open::after { display: none; }
+  .drop__panel li { opacity: 1 !important; transform: none !important; }
+  .veil { height: 120px; }
+
+  /* home: the butterfly full width at the top, the line and intro under it */
+  .hero { height: auto; min-height: 0; padding: 491px var(--side) 0; }
+  .hero .perch { top: 282px; }
+  .line, .intro { position: relative; left: auto; right: auto; top: auto; bottom: auto; }
+  .line { max-width: none; font-size: min(40px, 9.95vw); line-height: .85; }   /* 40/34 at 402, two lines on narrower phones too */
+  .intro { max-width: none; margin: 24px 0 0; }
+  .band__line { font-size: 40px; line-height: 45px; }
+  .about { padding-top: 120px; padding-bottom: 120px; }
+  .work { padding-top: 120px; padding-bottom: 120px; }
+  .work__h { font-size: 40px; line-height: 34px; }
+  .work__list { row-gap: 30px; }
+
+  /* the footer: a small line, the email, Copy email, then the small print
+     one under another */
+  .foot { padding-top: 120px; }
+  .foot__say { font-size: 16px; line-height: 20px; }
+  .foot__email { margin-top: 16px; }
+  .foot__row { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; margin-top: 120px; margin-bottom: 120px; }
+  .foot__c { order: 1; } .foot__social { order: 2; } .foot__status { order: 3; } .foot__top { order: 4; }
+}
+
 /* The home loader (her storyboard 898:224, "E · Flight"; loader.js + flight.js):
    a cream sheet over the page on the first visit of a session, the butterfly
    flying across as the progress, Loading and the percentage 100 above the foot */

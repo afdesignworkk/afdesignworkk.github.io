@@ -15,6 +15,7 @@
 import { lace, butterfly } from './field.js?v=1';
 import { lines } from './lines.js?v=3';
 import { enter as enterPage } from './enter.js?v=5';
+import './menu.js?v=1';
 
 const { gsap, Lenis } = window;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,7 +32,7 @@ const F = { W: 0, H: 0, dpr: 1, bw: 0, c: 10, cols: 0, rows: 0, x: 0, y: 0, cur:
 
 function size() {
   const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio, 2), phone = W < 760;
-  const bw = phone ? W * .94 : Math.min(W * .472, H * .756);   // the hero butterfly's width: 40 cells
+  const bw = W <= 600 ? W - 48 : phone ? W * .94 : Math.min(W * .472, H * .756);   // the hero butterfly's width: 40 cells (phone: the column, her 1131:10079)
   const c = bw / 40, cols = Math.ceil(W / c) + 1, rows = Math.ceil(H / c) + 1;
   Object.assign(F, { W, H, dpr, bw, c, cols, rows, x: (W - cols * c) / 2, y: (H - rows * c) / 2,
     cur: new Float32Array(cols * rows), tgt: new Float32Array(cols * rows), sw: new Float32Array(cols * rows) });
