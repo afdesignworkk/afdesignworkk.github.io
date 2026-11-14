@@ -19,7 +19,7 @@ main { position: relative; z-index: 2; }
 .reduce .ab3-top { height: auto; }
 .ab3-room { position: absolute; inset: 0; perspective: 1000px; }
 .ab3-cam { position: absolute; inset: 0; transform-style: preserve-3d; }
-/* her tiles: #f1efe9, corners 16, 97% */
+/* her tiles: #f1efe9, corners 12 (set in about.js), 97% */
 .ab3-tile { position: absolute; left: 50%; top: 50%; margin: 0; overflow: hidden; background: #f1efe9; opacity: 0; will-change: transform, opacity; }
 .ab3-tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* her line, 70/64, centred in the screen, over the room */
