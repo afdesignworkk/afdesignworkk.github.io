@@ -12,7 +12,7 @@
 // between two perches decides where the butterfly is on its way from one to
 // the next: it rides up with the first a little, swings out to the side in
 // an arc, and lands on the next.
-import { lace, butterfly } from './field.js?v=1';
+import { lace, butterfly, soft, laceMix as mixAt } from './field.js?v=2';
 import { lines } from './lines.js?v=3';
 import { enter as enterPage } from './enter.js?v=5';
 import './menu.js?v=3';
@@ -79,7 +79,7 @@ function draw(dt, fade) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   // big: soft inside; small (in About): the loader's lace, where the dots
   // overlap and cut each other, so its outline reads as a butterfly
-  if (laceMix < .999) { ctx.globalAlpha = 1 - laceMix; drawB(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b'); }
+  if (laceMix < .999) { ctx.globalAlpha = 1 - laceMix; soft(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b'); }
   if (laceMix > .001) { ctx.globalAlpha = laceMix; lace(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b'); ctx.globalCompositeOperation = 'source-over'; }
   ctx.globalAlpha = 1;
 
@@ -253,9 +253,8 @@ gsap.ticker.add((time, dms) => {
   const u = F.bw / 2 * B.s;
   // big (the hero) in soft-inside dots; small (in About) in the loader's lace.
   // Between .26 and .45 of its hero size the two cross over.
-  const big = Math.min(1, Math.max(0, (B.s - .26) / .19)), gw = big * big * (3 - 2 * big);
   const by = B.y + Math.sin(t * .8) * .035 * u, brot = B.rot + Math.sin(t * .37) * .05;
-  laceMix = 1 - gw;
+  laceMix = mixAt(B.s);
   shape(B.x, by, B.s * intro.k, brot, open);
   step(dt);
   draw(dt, Math.min(1, intro.k));
@@ -688,18 +687,3 @@ tick(); setInterval(tick, 1000);
 enterPage({ title: ['.hero .line', '.hero .intro'], wait: window.__loaded || Promise.resolve() });
 
 
-// --- the big butterfly, lighter (her mentor, 2026-11-24): the edge in full
-// dots, the inside in fine ones ------------------------------------------------
-function drawB(ctx, cur, cols, rows, L, ink) {
-  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = ink;
-  ctx.beginPath();
-  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-    const v = cur[j * cols + i];
-    if (v < .03) continue;
-    const edge = 1 - Math.abs(v - .5) * 2;
-    const r = v > .5 ? L.c * (.1 + .28 * Math.max(0, edge)) : L.c * (.06 + .32 * v * 2 * .9);
-    const px = L.x + (i + .5) * L.c, py = L.y + (j + .5) * L.c;
-    ctx.moveTo(px + r, py); ctx.arc(px, py, r, 0, 6.2832);
-  }
-  ctx.fill();
-}

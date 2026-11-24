@@ -4,7 +4,7 @@
 // shrink slowly, as on the home page). At 100 % it turns, climbs in an arc,
 // grows to full size and lands on its perch in the hero; the page appears
 // around it.
-import { lace, butterfly } from './field.js?v=1';
+import { lace, butterfly, soft, laceMix } from './field.js?v=2';
 const { gsap } = window, L = window.LOADER;
 if (L) {
 const el = L.el, cv = el.querySelector('canvas'), ctx = cv.getContext('2d'), pct = el.querySelector('.ld__pct');
@@ -50,7 +50,12 @@ function frame(now) {
   for (let n = 0; n < F.cur.length; n++) { const a = F.tgt[n], b = F.cur[n]; F.cur[n] = b + (a - b) * (a > b ? ku : kd); }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, cv.width, cv.height);
   ctx.setTransform(F.dpr, 0, 0, F.dpr, 0, 0);
-  lace(ctx, F.cur, F.cols, F.rows, { c: F.c, x: F.x, y: F.y }, '#1b1b1b');
+  // small it flies in lace; as it grows to land it turns into the hero's
+  // lighter dots, so the page takes over the same butterfly
+  const mix = laceMix(B.s), L0 = { c: F.c, x: F.x, y: F.y };
+  if (mix < .999) { ctx.globalAlpha = 1 - mix; soft(ctx, F.cur, F.cols, F.rows, L0, '#1b1b1b'); }
+  if (mix > .001) { ctx.globalAlpha = mix; lace(ctx, F.cur, F.cols, F.rows, L0, '#1b1b1b'); ctx.globalCompositeOperation = 'source-over'; }
+  ctx.globalAlpha = 1;
   if (live) requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

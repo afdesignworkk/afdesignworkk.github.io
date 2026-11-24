@@ -60,6 +60,26 @@ export function lace(ctx, cur, cols, rows, L, ink) {
   }
 }
 
+// soft: the big butterfly, lighter (her mentor, 2026-11-24): the edge in full
+// dots, the inside in fine ones; the home hero and the loader's landing
+export function soft(ctx, cur, cols, rows, L, ink) {
+  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = ink;
+  ctx.beginPath();
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const v = cur[j * cols + i];
+    if (v < .03) continue;
+    const edge = 1 - Math.abs(v - .5) * 2;
+    const r = v > .5 ? L.c * (.1 + .28 * Math.max(0, edge)) : L.c * (.06 + .32 * v * 2 * .9);
+    const px = L.x + (i + .5) * L.c, py = L.y + (j + .5) * L.c;
+    ctx.moveTo(px + r, py); ctx.arc(px, py, r, 0, 6.2832);
+  }
+  ctx.fill();
+}
+
+// small and big: the loader's lace when small, soft when big, crossing over
+// between .26 and .45 of the hero size (s), so the two never jump
+export function laceMix(s) { const b = Math.min(1, Math.max(0, (s - .26) / .19)); return 1 - b * b * (3 - 2 * b); }
+
 // --- shapes, in the field's unit space ---------------------------------------
 
 // a butterfly seen from above; `open` 1 = wings flat, 0 = folded up
