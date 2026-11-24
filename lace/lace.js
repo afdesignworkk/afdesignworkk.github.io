@@ -77,7 +77,11 @@ function draw(dt, fade) {
   const { W, H, dpr, c, cols, rows, x, y, cur, sw } = F;
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, gl.width, gl.height);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  lace(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b');
+  // big: soft inside; small (in About): the loader's lace, where the dots
+  // overlap and cut each other, so its outline reads as a butterfly
+  if (laceMix < .999) { ctx.globalAlpha = 1 - laceMix; drawB(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b'); }
+  if (laceMix > .001) { ctx.globalAlpha = laceMix; lace(ctx, cur, cols, rows, { c, x, y }, '#1b1b1b'); ctx.globalCompositeOperation = 'source-over'; }
+  ctx.globalAlpha = 1;
 
   bctx.setTransform(1, 0, 0, 1, 0, 0); bctx.clearRect(0, 0, bg.width, bg.height);
   bctx.setTransform(dpr, 0, 0, dpr, 0, 0); bctx.fillStyle = '#1b1b1b';
@@ -106,10 +110,15 @@ function draw(dt, fade) {
 // The butterfly lands on the layout's [data-perch-on]: its perch is set from
 // that element's untransformed box, so it holds at any width.
 const about = document.querySelector('.about'), aboutPerch = about.querySelector('.perch');
+// her mentor (2026-11-24): small, never on the prints; it flies about on the
+// right, under the words, near the About me pill
+const box = (el) => { let x = 0, y = 0; for (let n = el; n && n !== about; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y, w: el.offsetWidth, h: el.offsetHeight }; };
 function placePerch() {
-  const el = about.querySelector('[data-perch-on]');
-  let x = el.offsetWidth / 2, y = el.offsetHeight / 2;
-  for (let n = el; n && n !== about; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+  const text = box(about.querySelector('.about__text')), pill = box(about.querySelector('.about__text .pill'));
+  const half = F.bw * (+aboutPerch.dataset.scale || .24) / 2;          // half the landed butterfly's width
+  let x, y;
+  if (innerWidth <= 900) { x = text.x + text.w - half; y = pill.y + pill.h / 2; }          // stacked: at the end of the pill's row
+  else { x = text.x + text.w - 215; y = pill.y + pill.h / 2 + 48; }   // clear of the last line as it bobs
   aboutPerch.style.left = x + 'px'; aboutPerch.style.top = y + 'px';
 }
 placePerch(); addEventListener('resize', placePerch);
@@ -208,16 +217,28 @@ function rollBand(dt) {
 const B = { x: 0, y: 0, s: 1, rot: 0 };
 { const t0 = target(0); Object.assign(B, t0); }
 let phase = 0, t = 0;
+let laceMix = 0;                                         // 0: soft inside, 1: the loader's lace
 const intro = { k: 0 };
 gsap.ticker.add((time, dms) => {
   const dt = Math.min(dms, 50) / 1000;
   t += dt;
   const ty = lenis.scroll, T = target(ty);
+  // About (her pick, 2026-11-24): once it has come down it doesn't sit still,
+  // it flies about on the right, under the words, right of the pill
+  // it flies as on the loader: back and forth on a loose wave, nose along
+  // its path, wings beating fast, a trail of page dots fading behind it
+  let near = 0;
+  if (perches[1] && innerWidth > 900) {
+    near = Math.max(0, Math.min(1, 1 - Math.abs(ty - perches[1].settle) / (innerHeight * .45)));
+    T.x += near * (Math.sin(t * .55) * 120 + Math.sin(t * 1.3 + 1) * 25);   // stays inside the margin
+    T.y += near * (Math.sin(t * 1.9) * 22 + Math.sin(t * 3.7) * 7);
+  }
   const kf = 1 - Math.pow(.84, dt * 60);                  // a soft lag behind the scroll: it flies, it isn't dragged
   const px = B.x, py = B.y;
   B.x += (T.x - B.x) * kf; B.y += (T.y - B.y) * kf; B.s += (T.s - B.s) * kf;
   const vx = (B.x - px) / Math.max(dt, .001), vy = (B.y - py) / Math.max(dt, .001), speed = Math.hypot(vx, vy);
-  B.rot += (Math.max(-.35, Math.min(.35, vx * .0004)) - B.rot) * (1 - Math.pow(.9, dt * 60));   // banks into the turn
+  B.rot += (Math.max(-.35, Math.min(.35, vx * .0004)) - B.rot) * (1 - Math.pow(.9, dt * 60)) * (1 - near);   // banks into the turn
+  if (near > 0 && speed > 6) { const head = Math.atan2(vy, vx) + Math.PI / 2, d = Math.atan2(Math.sin(head - B.rot), Math.cos(head - B.rot)); B.rot += d * (1 - Math.pow(.85, dt * 60)) * near; }   // nose along its path
 
   // flapping speed drifts and, sitting still, it now and then glides with
   // wings open; flying, it beats faster and never glides
@@ -226,10 +247,16 @@ gsap.ticker.add((time, dms) => {
   const beat = Math.floor(phase / 6.2832);
   phase += dt * ((2.6 + Math.sin(t * .7) * .6) * (1 - glide * .92) + fly * 4) * (reduce ? 0 : 1);
   if (Math.floor(phase / 6.2832) > beat && intro.k > .9) rings.push({ age: 0, x: B.x, y: B.y, s: B.s });
-  const open = Math.pow(.5 + .5 * Math.cos(phase), .75) * (1 - glide) + glide;
+  const open0 = Math.pow(.5 + .5 * Math.cos(phase), .75) * (1 - glide) + glide;
+  const open = open0 + ((1 - (.5 - .5 * Math.cos(t * 13))) - open0) * near;      // the loader's quick beat while it flies about
 
   const u = F.bw / 2 * B.s;
-  shape(B.x, B.y + Math.sin(t * .8) * .035 * u, B.s * intro.k, B.rot + Math.sin(t * .37) * .05, open);
+  // big (the hero) in soft-inside dots; small (in About) in the loader's lace.
+  // Between .26 and .45 of its hero size the two cross over.
+  const big = Math.min(1, Math.max(0, (B.s - .26) / .19)), gw = big * big * (3 - 2 * big);
+  const by = B.y + Math.sin(t * .8) * .035 * u, brot = B.rot + Math.sin(t * .37) * .05;
+  laceMix = 1 - gw;
+  shape(B.x, by, B.s * intro.k, brot, open);
   step(dt);
   draw(dt, Math.min(1, intro.k));
   rollWorks(dt);
@@ -659,3 +686,20 @@ tick(); setInterval(tick, 1000);
 // the first screen comes in as on every page (enter.js): the menu, then the
 // line and the intro float up
 enterPage({ title: ['.hero .line', '.hero .intro'], wait: window.__loaded || Promise.resolve() });
+
+
+// --- the big butterfly, lighter (her mentor, 2026-11-24): the edge in full
+// dots, the inside in fine ones ------------------------------------------------
+function drawB(ctx, cur, cols, rows, L, ink) {
+  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = ink;
+  ctx.beginPath();
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const v = cur[j * cols + i];
+    if (v < .03) continue;
+    const edge = 1 - Math.abs(v - .5) * 2;
+    const r = v > .5 ? L.c * (.1 + .28 * Math.max(0, edge)) : L.c * (.06 + .32 * v * 2 * .9);
+    const px = L.x + (i + .5) * L.c, py = L.y + (j + .5) * L.c;
+    ctx.moveTo(px + r, py); ctx.arc(px, py, r, 0, 6.2832);
+  }
+  ctx.fill();
+}
